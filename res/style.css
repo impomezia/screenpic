@@ -1,0 +1,64 @@
+#top_frame, #RecentView {
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+#control_frame {
+  background: #fff;
+}
+
+#links_frame {
+  background: url(:/images/links-bg.png) repeat-x #f1f5fb;
+  min-height: 43px;
+}
+
+#menu_btn::menu-indicator {
+  image: none;
+}
+
+#site_btn {
+  color: #0066cc;
+  background: none;
+  border: none;
+}
+
+#site_btn:hover {
+  text-decoration: underline;
+}
+
+QScrollBar:vertical {
+  background: #fff;
+  width: 8px
+}
+
+QScrollBar:horizontal {
+  background: #fff;
+  height: 8px
+}
+
+QScrollBar::handle:vertical {
+  background: #ccc;
+  border-radius: 3px
+}
+
+QScrollBar::handle:horizontal {
+  background: #ccc;
+  border-radius: 3px
+}
+
+QScrollBar::sub-line:vertical,
+QScrollBar::add-line:vertical {
+  height: 0
+}
+
+QScrollBar::sub-line:horizontal,
+QScrollBar::add-line:horizontal {
+  width: 0
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical,
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+  background:none;
+}
