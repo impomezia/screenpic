@@ -47,6 +47,7 @@
 #include "Translation.h"
 #include "TrayIcon.h"
 #include "uploaders/UploadResult.h"
+#include "version.h"
 
 #define TAG "AppCore"
 
@@ -328,7 +329,7 @@ void AppCore::initProviders()
     m_providers->add(provider);
   }
 
-  m_settings->setDefault(Settings::kProvider, LS("rup"));
+  m_settings->setDefault(Settings::kProvider, LS(ORG_PROVIDER));
   m_providers->setCurrentId(m_settings->value(Settings::kProvider).toString());
 }
 

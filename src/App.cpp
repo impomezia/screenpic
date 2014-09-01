@@ -162,7 +162,7 @@ bool App::release()
 
   QVariantMap data;
   data.insert("version", applicationVersion());
-  data.insert("url",     QString("https://download.schat.me/screenpic/screenpic-%1.exe").arg(applicationVersion()));
+  data.insert("url",     QString(LS(ORG_UPDATE_URL) + LS("/screenpic-%1.exe")).arg(applicationVersion()));
   data.insert("size",    file.size());
   data.insert("hash",    hash);
 

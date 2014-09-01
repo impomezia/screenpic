@@ -27,5 +27,8 @@
 #define ORG_NAME       "Alexander Sedov"
 #define ORG_COPYRIGHT  "Copyright (C) 2013-2014 Alexander Sedov"
 #define ORG_DOMAIN     "rup.io"
+#define ORG_SITE       "https://rup.io"
+#define ORG_UPDATE_URL "https://download.schat.me/screenpic"
+#define ORG_PROVIDER   "rup"
 
 #endif /* VERSION_H_ */

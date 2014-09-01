@@ -31,6 +31,7 @@
 #include "Settings.h"
 #include "sglobal.h"
 #include "tools/OsInfo.h"
+#include "version.h"
 
 const QString AutoUpdate::kEnabled = LS("Update/Enabled");
 const QString AutoUpdate::kReady   = LS("Update/Ready");
@@ -67,7 +68,7 @@ AutoUpdate::AutoUpdate(Settings *settings, QObject *parent)
   , m_status(Unknown)
 {
   m_settings->setDefault(kEnabled, true);
-  m_settings->setDefault(kUrl,     QUrl("https://download.schat.me/screenpic/release.json"));
+  m_settings->setDefault(kUrl,     QUrl(LS(ORG_UPDATE_URL) + LS("/release.json")));
 
   m_net  = new QNetworkAccessManager(this);
   m_sha1 = new QCryptographicHash(QCryptographicHash::Sha1);

@@ -230,7 +230,7 @@ void TrayWindow::onLangChanged(QAction *action)
 
 void TrayWindow::onSiteClicked()
 {
-  QDesktopServices::openUrl(QUrl("http://rup.io"));
+  QDesktopServices::openUrl(QUrl(LS(ORG_SITE)));
 
   close();
 }
