@@ -5,6 +5,12 @@ CONFIG += c++11
 QT += core gui network sql
 DEFINES += QT_STATICPLUGIN
 
+macx {
+   TARGET = Screenpic
+   ICON = ../os/osx/app.icns
+   QMAKE_INFO_PLIST = ../os/osx/Info.plist
+}
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 lessThan(QT_MAJOR_VERSION, 5) {
     !win32-msvc*:QMAKE_CXXFLAGS += -std=c++0x
