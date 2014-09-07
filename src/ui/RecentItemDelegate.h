@@ -1,5 +1,4 @@
-/*   $Id$
- *   Copyright (C) 2013 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -28,9 +27,9 @@ class RecentItemDelegate : public QStyledItemDelegate
 
 public:
   RecentItemDelegate(QObject *parent = 0);
-  virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
-  virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
-  virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+  virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
+  virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+  virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 signals:
   void closeRequest();

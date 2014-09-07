@@ -328,6 +328,7 @@ void EditorWindow::fillMainToolBar()
 
   m_titleEdit = new TitleWidget(this);
   m_mainToolBar->addWidget(m_titleEdit);
+  m_mainToolBar->addSeparator();
 
   m_copyAction = m_mainToolBar->addAction(QIcon(":/images/copy.png"), tr("Copy (Ctrl+C)"), m_scene, SLOT(copy()));
   m_saveAction = m_mainToolBar->addAction(QIcon(":/images/save.png"), tr("Save as... (Ctrl+S)"), this, SLOT(saveAs()));
@@ -406,6 +407,8 @@ void EditorWindow::retranslateUi()
 
 void EditorWindow::updateStyleSheet()
 {
+# ifndef Q_OS_MACX
   m_mainToolBar->setStyleSheet(QString("QToolBar { background-color: %1; margin:0px; border:0px; border-top: 1px solid %2; }").arg(palette().color(QPalette::Window).name()).arg(palette().color(QPalette::Midlight).name()));
   m_modeToolBar->setStyleSheet(QString("QToolBar { background-color: %1; margin:0px; border:0px; border-bottom: 1px solid %2; }").arg(palette().color(QPalette::Window).name()).arg(palette().color(QPalette::Midlight).name()));
+# endif
 }

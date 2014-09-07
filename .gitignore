@@ -5,3 +5,4 @@
 /src/Makefile.Debug
 /src/Makefile.Release
 /screenpic.pro.user
+.DS_Store

@@ -43,12 +43,13 @@ SettingsDialog::SettingsDialog(AppCore *core, QWidget *parent)
   m_settingsBtn->setChecked(true);
 
 # ifndef NO_GLOBAL_SHORTCUTS
-  m_hotkeysBtn  = addBtn(QIcon(LS(":/images/hotkeys.png")), tr("Hotkeys"));
+  m_hotkeysBtn = addBtn(QIcon(LS(":/images/hotkeys.png")), tr("Hotkeys"));
 # endif
 
-  m_serversBtn  = addBtn(QIcon(LS(":/images/servers.png")), tr("Servers"));
+  m_serversBtn = addBtn(QIcon(LS(":/images/servers.png")), tr("Servers"));
 
   m_aboutBtn = new QToolButton(this);
+  m_aboutBtn->setObjectName("settings_btn");
   m_aboutBtn->setText(QApplication::applicationVersion());
   m_aboutBtn->setAutoRaise(true);
   m_aboutBtn->setCheckable(true);
@@ -129,6 +130,7 @@ void SettingsDialog::tooglePage()
 QToolButton *SettingsDialog::addBtn(const QIcon &icon, const QString &text)
 {
   QToolButton *button = new QToolButton(this);
+  button->setObjectName("settings_btn");
   button->setIcon(icon);
   button->setText(text);
   button->setAutoRaise(true);

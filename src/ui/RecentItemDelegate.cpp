@@ -88,7 +88,11 @@ void RecentItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
 QRect RecentItemDelegate::adjustRect(const QRect &rect, int column) const
 {
+#ifdef Q_OS_MAC
+  const int margin = 1;
+#else
   const int margin = 3;
+#endif
 
   QRect out = rect;
   out.setTop(rect.top() + margin);

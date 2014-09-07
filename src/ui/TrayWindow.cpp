@@ -64,31 +64,9 @@ TrayWindow::TrayWindow(AppCore *core, QWidget *parent)
   m_controlFrame = new QFrame(this);
   m_controlFrame->setObjectName("control_frame");
 
-  QToolButton *btn = 0;
-
-  btn = new QToolButton(this);
-  btn->setFocusPolicy(Qt::NoFocus);
-  btn->setAutoRaise(true);
-  btn->setIconSize(QSize(32, 32));
-  btn->setIcon(QIcon(":/images/rect.png"));
-  btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-  m_buttons.insert(RectangleBtn, btn);
-
-  btn = new QToolButton(this);
-  btn->setFocusPolicy(Qt::NoFocus);
-  btn->setAutoRaise(true);
-  btn->setIconSize(QSize(32, 32));
-  btn->setIcon(QIcon(":/images/desktop.png"));
-  btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-  m_buttons.insert(FullscreenBtn, btn);
-
-  btn = new QToolButton(this);
-  btn->setFocusPolicy(Qt::NoFocus);
-  btn->setAutoRaise(true);
-  btn->setIconSize(QSize(32, 32));
-  btn->setIcon(QIcon(":/images/open.png"));
-  btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-  m_buttons.insert(FileBtn, btn);
+  addButton(QIcon(":/images/rect.png"),    RectangleBtn);
+  addButton(QIcon(":/images/desktop.png"), FullscreenBtn);
+  addButton(QIcon(":/images/open.png"),    FileBtn);
 
   m_linksFrame = new QFrame(this);
   m_linksFrame->setObjectName("links_frame");
@@ -242,6 +220,21 @@ void TrayWindow::showSettings()
     m_settingsDialog = new SettingsDialog(m_core);
 
   m_settingsDialog->show();
+}
+
+
+QToolButton *TrayWindow::addButton(const QIcon &icon, Buttons type)
+{
+  QToolButton *btn = new QToolButton(this);
+  btn->setObjectName("action_btn");
+  btn->setFocusPolicy(Qt::NoFocus);
+  btn->setAutoRaise(true);
+  btn->setIconSize(QSize(32, 32));
+  btn->setIcon(icon);
+  btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+  m_buttons.insert(type, btn);
+
+  return btn;
 }
 
 

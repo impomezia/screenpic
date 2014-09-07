@@ -64,6 +64,7 @@ private:
     FileBtn
   };
 
+  QToolButton *addButton(const QIcon &icon, Buttons type);
   void addLang(const QString &lang);
   void createMenu();
   void retranslateUi();

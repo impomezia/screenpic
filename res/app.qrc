@@ -44,5 +44,6 @@
         <file>translations/app_en.qm</file>
         <file>translations/app_ru.qm</file>
         <file>translations/qt_ru.qm</file>
+        <file>style_osx.css</file>
     </qresource>
 </RCC>

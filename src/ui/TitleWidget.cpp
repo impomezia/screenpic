@@ -28,8 +28,7 @@ TitleWidget::TitleWidget(QWidget *parent)
   m_lineEdit->setPlaceholderText(tr("Enter title"));
 
   QHBoxLayout *layout = new QHBoxLayout(this);
-  layout->addWidget(m_lineEdit, 3);
-  layout->addStretch(1);
+  layout->addWidget(m_lineEdit);
   layout->setContentsMargins(10, 0, 10, 0);
 }
 

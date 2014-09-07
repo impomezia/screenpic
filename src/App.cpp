@@ -54,8 +54,21 @@ App::App(int &argc, char **argv)
   connect(this, SIGNAL(messageReceived(QString)), SLOT(handleMessage(QString)));
 
   QFile css(":/style.css");
+#ifdef Q_OS_MAC
+  if (css.open(QFile::ReadOnly)) {
+      QByteArray data = css.readAll();
+
+      css.close();
+      css.setFileName(":/style_osx.css");
+      if (css.open(QFile::ReadOnly))
+          data += css.readAll();
+
+      setStyleSheet(data);
+  }
+#else
   if (css.open(QFile::ReadOnly))
     setStyleSheet(css.readAll());
+#endif
 }
 
 
