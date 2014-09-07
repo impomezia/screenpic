@@ -1,5 +1,6 @@
 TEMPLATE = app
 TARGET = screenpic
+CONFIG += c++11
 
 QT += core gui network sql
 DEFINES += QT_STATICPLUGIN

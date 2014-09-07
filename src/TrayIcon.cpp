@@ -114,10 +114,12 @@ void TrayIcon::onUploadFinished(const UploadResult &result)
 
 void TrayIcon::onActivated(QSystemTrayIcon::ActivationReason reason)
 {
+# ifdef Q_OS_WIN
   if (reason == QSystemTrayIcon::Trigger) {
     m_core->grabRect();
     return;
   }
+# endif
 
   if (m_window->isVisible())
     m_window->close();

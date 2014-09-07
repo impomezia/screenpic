@@ -1,5 +1,5 @@
 TEMPLATE       = lib
-CONFIG         += plugin static
+CONFIG         += plugin static c++11
 lessThan(QT_MAJOR_VERSION, 5):!win32-msvc*:QMAKE_CXXFLAGS += -std=c++0x
 
 DEPENDPATH += \
