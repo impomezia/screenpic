@@ -1,5 +1,4 @@
-/*   $Id$
- *   Copyright (C) 2013 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -36,7 +35,7 @@ signals:
   void changed(const QString &id, const QKeySequence &shortcut);
 
 protected:
-  void changeEvent(QEvent *event);
+  void changeEvent(QEvent *event) override;
 
 private slots:
   void apply();

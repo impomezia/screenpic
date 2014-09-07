@@ -29,10 +29,17 @@ HotkeyEditor::HotkeyEditor(const QString &id, const QKeySequence &shortcut, cons
 {
   setAttribute(Qt::WA_DeleteOnClose);
 
+# ifdef Q_OS_MAC
+  m_metaKey  = new QCheckBox(tr("⌃"),    this);
+  m_ctrlKey  = new QCheckBox(tr("⌘"),    this);
+  m_altKey   = new QCheckBox(tr("⌥"),    this);
+  m_shiftKey = new QCheckBox(tr("⇧"),    this);
+# else
   m_metaKey  = new QCheckBox(tr("Win"),   this);
   m_ctrlKey  = new QCheckBox(tr("Ctrl"),  this);
   m_altKey   = new QCheckBox(tr("Alt"),   this);
   m_shiftKey = new QCheckBox(tr("Shift"), this);
+# endif
 
   m_comboBox = new QComboBox(this);
   m_comboBox->setMaxVisibleItems(50);

@@ -112,7 +112,15 @@ QKeySequence HotkeysPage::shortcut(const QString &id) const
 QString HotkeysPage::toHuman(const QKeySequence &seq) const
 {
   QString key = seq.toString();
+# ifdef Q_OS_MAC
+  key.replace(LS("Meta"),   "⌃");
+  key.replace(LS("Ctrl"),   "⌘");
+  key.replace(LS("Alt"),    "⌥");
+  key.replace(LS("Shift"),  "⇧");
+  key.remove("+");
+# else
   key.replace(LS("Meta"),   LS("Win"));
+# endif
   key.replace(LS("Print"),  LS("Print Screen"));
   key.replace(LS("PgUp"),   LS("Page Up"));
   key.replace(LS("PgDown"), LS("Page Down"));

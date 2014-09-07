@@ -8,9 +8,9 @@ DEFINES += QT_STATICPLUGIN
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 lessThan(QT_MAJOR_VERSION, 5) {
     !win32-msvc*:QMAKE_CXXFLAGS += -std=c++0x
-    
-    GLOBAL_SHORTCUTS = 1
 }
+
+GLOBAL_SHORTCUTS = 1
 
 include(config.pri)
 
@@ -150,7 +150,12 @@ contains(GLOBAL_SHORTCUTS, 1) {
     win32 {
         DEFINES += QXT_STATIC
         SOURCES += libqxt/qxtglobalshortcut_win.cpp
-    } 
+    }
+
+    macx {
+        SOURCES += libqxt/qxtglobalshortcut_mac.cpp
+        LIBS += -framework Carbon
+    }
 }
 else {
     DEFINES += NO_GLOBAL_SHORTCUTS
