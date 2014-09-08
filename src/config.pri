@@ -1,1 +1,1 @@
-DEBUG_LOG = 1
+DEBUG_LOG = 0

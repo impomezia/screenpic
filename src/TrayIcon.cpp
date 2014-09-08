@@ -119,6 +119,8 @@ void TrayIcon::onActivated(QSystemTrayIcon::ActivationReason reason)
     m_core->grabRect();
     return;
   }
+# else
+  Q_UNUSED(reason);
 # endif
 
   if (m_window->isVisible())

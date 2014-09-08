@@ -1,5 +1,4 @@
-/*   $Id$
- *   Copyright (C) 2013 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -15,6 +14,7 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDir>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QVariant>
@@ -34,6 +34,10 @@ ShareHistoryDB::ShareHistoryDB(QObject *parent)
 
 int ShareHistoryDB::open(const QString &fileName)
 {
+  QDir dir(QFileInfo(fileName).absolutePath());
+  if (!dir.exists())
+    dir.mkpath(dir.absolutePath());
+
   QSqlDatabase db = QSqlDatabase::addDatabase(LS("QSQLITE"), m_id);
   db.setDatabaseName(fileName);
   if (!db.open())

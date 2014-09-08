@@ -33,6 +33,12 @@ Settings::Settings(const QString &fileName, QObject *parent)
 }
 
 
+Settings::Settings(const QString &organization, const QString &application, QObject *parent)
+  : QSettings(organization, application, parent)
+{
+}
+
+
 QVariant Settings::value(const QString &key, const QVariant &defaultValue) const
 {
   if (defaultValue.isValid())

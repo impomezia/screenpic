@@ -65,7 +65,12 @@ AppCore::AppCore(QObject *parent)
   LOG_DEBUG("starting...")
 # endif
 
+# ifdef Q_OS_WIN
   m_settings = new Settings(QApplication::applicationDirPath() + "/screenpic.ini", this);
+# else
+  m_settings = new Settings(QApplication::organizationDomain(), QApplication::applicationName(), this);
+# endif
+
   m_settings->setDefault(Settings::kCaptureMouse, true);
   m_settings->setDefault(Settings::kEditor,       true);
   m_settings->setDefault(Settings::kSaveCopy,     false);
@@ -83,7 +88,11 @@ AppCore::AppCore(QObject *parent)
   m_pluginManager = new PluginManager(this);
 
   m_db = new ShareHistoryDB(this);
+# ifdef Q_OS_MAC
+  m_db->open(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/history.db");
+# else
   m_db->open(QApplication::applicationDirPath() + "/history.db");
+# endif
 
 # ifndef NO_GLOBAL_SHORTCUTS
   m_shortcuts = new GlobalShortcuts(this, this);

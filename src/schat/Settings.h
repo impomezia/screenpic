@@ -41,6 +41,7 @@ public:
   static const QString kTranslation;
 
   Settings(const QString &fileName, QObject *parent = 0);
+  Settings(const QString &organization, const QString &application = QString(), QObject *parent = 0);
   QVariant defaultValue(const QString &key) const override { return m_default.value(key); }
   QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) const override;
   void setDefault(const QString &key, const QVariant &value) override;
