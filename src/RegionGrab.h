@@ -42,13 +42,13 @@ signals:
   void regionUpdated(const QRect &rect);
 
 protected:
-  void keyPressEvent(QKeyEvent *event);
-  void mouseDoubleClickEvent(QMouseEvent *event);
-  void mouseMoveEvent(QMouseEvent *event);
-  void mousePressEvent(QMouseEvent *event);
-  void mouseReleaseEvent(QMouseEvent *event);
-  void paintEvent(QPaintEvent *event);
-  void resizeEvent(QResizeEvent *event);
+  void keyPressEvent(QKeyEvent *event) override;
+  void mouseDoubleClickEvent(QMouseEvent *event) override;
+  void mouseMoveEvent(QMouseEvent *event) override;
+  void mousePressEvent(QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event) override;
+  void paintEvent(QPaintEvent *event) override;
+  void resizeEvent(QResizeEvent *event) override;
 
 private slots:
   void init();

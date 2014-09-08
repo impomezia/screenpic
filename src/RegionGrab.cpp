@@ -68,6 +68,11 @@ void RegionGrab::keyPressEvent(QKeyEvent* event)
   if (event->key() == Qt::Key_Escape) {
     emit regionUpdated(m_selection);
     emit regionGrabbed(QPixmap());
+
+#   ifdef Q_OS_MAC
+    showNormal();
+#   endif
+
     close();
   }
   else if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
@@ -351,7 +356,13 @@ void RegionGrab::init()
   resize(rect.size());
   move(rect.topLeft());
   setCursor(Qt::CrossCursor);
+
+# ifdef Q_OS_MAC
+  showFullScreen();
+# else
   show();
+# endif
+
   raise();
   activateWindow();
   setFocus();
@@ -431,6 +442,9 @@ void RegionGrab::grabRect()
     emit regionGrabbed(m_pixmap.copy(r));
   }
 
+# ifdef Q_OS_MAC
+  showNormal();
+# endif
   close();
 }
 
