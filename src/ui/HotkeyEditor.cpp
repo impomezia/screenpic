@@ -45,7 +45,9 @@ HotkeyEditor::HotkeyEditor(const QString &id, const QKeySequence &shortcut, cons
   m_comboBox->setMaxVisibleItems(50);
 
   m_comboBox->addItem(tr("None"));
+# ifndef Q_OS_MAC
   m_comboBox->addItem("Print Screen", Qt::Key_Print);
+# endif
   m_comboBox->addItem("Insert",       Qt::Key_Insert);
   m_comboBox->addItem("Delete",       Qt::Key_Delete);
   m_comboBox->addItem("Home",         Qt::Key_Home);

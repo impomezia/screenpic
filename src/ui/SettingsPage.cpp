@@ -50,6 +50,11 @@ SettingsPage::SettingsPage(AppCore *core, QWidget *parent)
   m_browseBtn->setAutoDefault(false);
   m_browseBtn->setVisible(m_saveCopy->isChecked());
 
+# ifdef Q_OS_MAC
+  m_autoRun->hide();
+  m_captureMouse->hide();
+# endif
+
   QHBoxLayout *saveLay = new QHBoxLayout();
   saveLay->addWidget(m_fileEdit);
   saveLay->addWidget(m_browseBtn);

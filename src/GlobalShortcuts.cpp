@@ -1,5 +1,4 @@
-/*   $Id$
- *   Copyright (C) 2013 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,8 +28,12 @@ GlobalShortcuts::GlobalShortcuts(AppCore *core, QObject *parent)
   , m_core(core)
   , m_settings(core->settings())
 {
+# ifdef Q_OS_MAC
+  init(kRectangle,  LS("Ctrl+Shift+X"));
+# else
   init(kFullscreen, LS("Print"));
   init(kRectangle,  LS("Ctrl+Print"));
+# endif
 }
 
 
@@ -43,13 +46,17 @@ bool GlobalShortcuts::set(const QString &id, const QKeySequence &shortcut)
   if (gs && gs->shortcut() == shortcut)
     return true;
 
-  if (gs)
-    delete gs;
-
-  gs = new QxtGlobalShortcut(this);
-  if (!gs->setShortcut(shortcut)) {
+  if (gs) {
     delete gs;
     gs = 0;
+  }
+
+  if (!shortcut.isEmpty()) {
+    gs = new QxtGlobalShortcut(this);
+    if (!gs->setShortcut(shortcut)) {
+      delete gs;
+      gs = 0;
+    }
   }
 
   m_core->settings()->setValue(id, shortcut.toString());
