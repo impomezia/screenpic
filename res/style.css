@@ -62,3 +62,14 @@ QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal {
   background:none;
 }
+
+QGroupBox {
+  margin-top: 4ex;
+  font-weight: bold;
+  border: 1px solid transparent;
+}
+
+QGroupBox::title {
+  subcontrol-origin: margin;
+  subcontrol-position: top left;
+}

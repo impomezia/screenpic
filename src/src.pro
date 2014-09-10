@@ -77,6 +77,7 @@ HEADERS += \
     ui/TrayWindow.h \
     uploaders/Uploader.h \
     uploaders/UploadResult.h \
+    version.h \
 
 SOURCES += \
     App.cpp \

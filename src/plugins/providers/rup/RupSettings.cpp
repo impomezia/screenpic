@@ -34,6 +34,7 @@ RupSettings::RupSettings(const QString &token, QWidget *parent)
     m_tokenEdit->setText(QString().fill(' ', 42));
 
   m_pasteBtn = new QToolButton(this);
+  m_pasteBtn->setObjectName("toolButton");
   m_pasteBtn->setAutoRaise(true);
   m_pasteBtn->setIcon(QIcon(LS(":/images/edit-paste.png")));
 
@@ -47,6 +48,7 @@ RupSettings::RupSettings(const QString &token, QWidget *parent)
   layout->addWidget(m_tokenEdit, 0, 0);
   layout->addWidget(m_pasteBtn, 0, 1);
   layout->addWidget(m_createBtn, 1, 0, 1, 2);
+  layout->setSpacing(4);
 
   retranslateUi();
 
@@ -111,7 +113,7 @@ void RupSettings::makeRed(bool red)
 
 void RupSettings::retranslateUi()
 {
-  setTitle(tr("Access token:"));
+  setTitle(tr("Access token"));
   m_pasteBtn->setToolTip(tr("Paste"));
   m_createBtn->setText(tr("Create new token"));
 }

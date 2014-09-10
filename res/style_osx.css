@@ -1,19 +1,19 @@
-#menu_btn, #action_btn, #settings_btn {
+#menu_btn, #action_btn, #settings_btn, #toolButton {
   background: transparent;
   border: 1px solid transparent;
 }
 
-#menu_btn:hover, #action_btn:hover, #settings_btn:hover {
+#menu_btn:hover, #action_btn:hover, #settings_btn:hover, #toolButton:hover {
   background-color: #deefff;
   border-color: #7fb5ec;
 }
 
-#menu_btn:checked, #action_btn:checked, #settings_btn:checked {
+#menu_btn:checked, #action_btn:checked, #settings_btn:checked, #toolButton:checked {
   background-color: #bfdfff;
   border-color: #66a7e8;
 }
 
-#menu_btn:pressed, #action_btn:pressed, #settings_btn:pressed {
+#menu_btn:pressed, #action_btn:pressed, #settings_btn:pressed, #toolButton:pressed {
   margin-top: 1px;
   margin-left: 1px;
 }

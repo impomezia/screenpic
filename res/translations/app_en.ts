@@ -13,12 +13,12 @@
 <context>
     <name>AppCore</name>
     <message>
-        <location filename="../../src/AppCore.cpp" line="168"/>
+        <location filename="../../src/AppCore.cpp" line="191"/>
         <source>Images (*.jpg *.jpeg *.png *.gif *.JPG *.PNG)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/AppCore.cpp" line="168"/>
+        <location filename="../../src/AppCore.cpp" line="191"/>
         <source>Open image</source>
         <translation type="unfinished"></translation>
     </message>
@@ -26,72 +26,72 @@
 <context>
     <name>EditorWindow</name>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="384"/>
-        <source>Hand (H)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="352"/>
         <location filename="../../src/editor/EditorWindow.cpp" line="385"/>
-        <source>Rectangle (U)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="348"/>
-        <source>Move (H)</source>
+        <source>Hand (H)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/editor/EditorWindow.cpp" line="353"/>
         <location filename="../../src/editor/EditorWindow.cpp" line="386"/>
-        <source>Ellipse</source>
+        <source>Rectangle (U)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="356"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="349"/>
+        <source>Move (H)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/editor/EditorWindow.cpp" line="354"/>
         <location filename="../../src/editor/EditorWindow.cpp" line="387"/>
-        <source>Arrow</source>
+        <source>Ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/editor/EditorWindow.cpp" line="357"/>
         <location filename="../../src/editor/EditorWindow.cpp" line="388"/>
-        <source>Line</source>
+        <source>Arrow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="360"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="358"/>
         <location filename="../../src/editor/EditorWindow.cpp" line="389"/>
-        <source>Pen (P)</source>
+        <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/editor/EditorWindow.cpp" line="361"/>
         <location filename="../../src/editor/EditorWindow.cpp" line="390"/>
-        <source>Brush</source>
+        <source>Pen (P)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/editor/EditorWindow.cpp" line="362"/>
         <location filename="../../src/editor/EditorWindow.cpp" line="391"/>
-        <source>Marker</source>
+        <source>Brush</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="365"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="363"/>
         <location filename="../../src/editor/EditorWindow.cpp" line="392"/>
-        <source>Text (T)</source>
+        <source>Marker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/editor/EditorWindow.cpp" line="366"/>
         <location filename="../../src/editor/EditorWindow.cpp" line="393"/>
+        <source>Text (T)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/editor/EditorWindow.cpp" line="367"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="394"/>
         <source>Blur</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="349"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="394"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="350"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="395"/>
         <source>Crop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -106,38 +106,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="335"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="396"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="336"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="397"/>
         <source>Publish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="337"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="397"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="338"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="398"/>
         <source>Publish (Ctrl+Enter)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/editor/EditorWindow.cpp" line="320"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="399"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="400"/>
         <source>Undo (Ctrl+Z)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/editor/EditorWindow.cpp" line="324"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="400"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="401"/>
         <source>Redo (Ctrl+Y)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="332"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="402"/>
-        <source>Copy (Ctrl+C)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/editor/EditorWindow.cpp" line="333"/>
         <location filename="../../src/editor/EditorWindow.cpp" line="403"/>
+        <source>Copy (Ctrl+C)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/editor/EditorWindow.cpp" line="334"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="404"/>
         <source>Save as... (Ctrl+S)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -145,53 +145,73 @@
 <context>
     <name>HotkeyEditor</name>
     <message>
-        <location filename="../../src/ui/HotkeyEditor.cpp" line="212"/>
+        <location filename="../../src/ui/HotkeyEditor.cpp" line="221"/>
         <source>Edit Hotkey</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/HotkeyEditor.cpp" line="32"/>
+        <location filename="../../src/ui/HotkeyEditor.cpp" line="38"/>
         <source>Win</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/ui/HotkeyEditor.cpp" line="33"/>
-        <source>Ctrl</source>
+        <source>â</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/ui/HotkeyEditor.cpp" line="34"/>
-        <source>Alt</source>
+        <source>â</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/ui/HotkeyEditor.cpp" line="35"/>
-        <source>Shift</source>
+        <source>â¥</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/HotkeyEditor.cpp" line="36"/>
+        <source>â§</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/HotkeyEditor.cpp" line="39"/>
+        <source>Ctrl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/ui/HotkeyEditor.cpp" line="40"/>
-        <location filename="../../src/ui/HotkeyEditor.cpp" line="214"/>
+        <source>Alt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/HotkeyEditor.cpp" line="41"/>
+        <source>Shift</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/HotkeyEditor.cpp" line="47"/>
+        <location filename="../../src/ui/HotkeyEditor.cpp" line="223"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/HotkeyEditor.cpp" line="216"/>
+        <location filename="../../src/ui/HotkeyEditor.cpp" line="225"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/HotkeyEditor.cpp" line="217"/>
+        <location filename="../../src/ui/HotkeyEditor.cpp" line="226"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/HotkeyEditor.cpp" line="218"/>
+        <location filename="../../src/ui/HotkeyEditor.cpp" line="227"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/HotkeyEditor.cpp" line="219"/>
+        <location filename="../../src/ui/HotkeyEditor.cpp" line="228"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
@@ -199,24 +219,24 @@
 <context>
     <name>HotkeysPage</name>
     <message>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="173"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="181"/>
         <source>Global shortcuts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/ui/HotkeysPage.cpp" line="41"/>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="175"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="183"/>
         <source>Capture rectangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/ui/HotkeysPage.cpp" line="42"/>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="176"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="184"/>
         <source>Capture fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="167"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="175"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
@@ -314,12 +334,12 @@
 <context>
     <name>RecentItemDelegate</name>
     <message>
-        <location filename="../../src/ui/RecentItemDelegate.cpp" line="132"/>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="136"/>
         <source>Copy link</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../../src/ui/RecentItemDelegate.cpp" line="109"/>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="113"/>
         <source>%n bytes</source>
         <translation>
             <numerusform>%n byte</numerusform>
@@ -327,17 +347,17 @@
         </translation>
     </message>
     <message>
-        <location filename="../../src/ui/RecentItemDelegate.cpp" line="112"/>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="116"/>
         <source>%1 kB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/RecentItemDelegate.cpp" line="114"/>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="118"/>
         <source>%1 MB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/RecentItemDelegate.cpp" line="173"/>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="177"/>
         <source>Upload error: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -345,7 +365,7 @@
 <context>
     <name>RegionGrab</name>
     <message>
-        <location filename="../../src/RegionGrab.cpp" line="252"/>
+        <location filename="../../src/RegionGrab.cpp" line="257"/>
         <source>Select a region using the mouse. To take the snapshot, press the Enter key or double click. Press Esc to quit.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -353,17 +373,17 @@
 <context>
     <name>RupSettings</name>
     <message>
-        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="114"/>
-        <source>Access token:</source>
+        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="116"/>
+        <source>Access token</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="115"/>
+        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="117"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="116"/>
+        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="118"/>
         <source>Create new token</source>
         <translation type="unfinished"></translation>
     </message>
@@ -372,19 +392,19 @@
     <name>SettingsDialog</name>
     <message>
         <location filename="../../src/ui/SettingsDialog.cpp" line="42"/>
-        <location filename="../../src/ui/SettingsDialog.cpp" line="133"/>
+        <location filename="../../src/ui/SettingsDialog.cpp" line="148"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsDialog.cpp" line="45"/>
-        <location filename="../../src/ui/SettingsDialog.cpp" line="134"/>
+        <location filename="../../src/ui/SettingsDialog.cpp" line="46"/>
+        <location filename="../../src/ui/SettingsDialog.cpp" line="152"/>
         <source>Hotkeys</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsDialog.cpp" line="46"/>
-        <location filename="../../src/ui/SettingsDialog.cpp" line="135"/>
+        <location filename="../../src/ui/SettingsDialog.cpp" line="49"/>
+        <location filename="../../src/ui/SettingsDialog.cpp" line="149"/>
         <source>Servers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -392,27 +412,27 @@
 <context>
     <name>SettingsPage</name>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="149"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="154"/>
         <source>Run at Windows start up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="150"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="155"/>
         <source>Skip editor window (instant upload)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="151"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="156"/>
         <source>Capture mouse cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="152"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="157"/>
         <source>Save screenshot copy in selected folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="153"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="158"/>
         <source>Browse...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -430,7 +450,7 @@
     <message>
         <location filename="../../src/schat/Translation.cpp" line="35"/>
         <location filename="../../src/schat/Translation.cpp" line="134"/>
-        <location filename="../../src/ui/TrayWindow.cpp" line="253"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="246"/>
         <source>English</source>
         <translation>English</translation>
     </message>
@@ -462,55 +482,55 @@
 <context>
     <name>TrayWindow</name>
     <message>
-        <location filename="../../src/ui/TrayWindow.cpp" line="278"/>
-        <location filename="../../src/ui/TrayWindow.cpp" line="303"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="271"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="296"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/TrayWindow.cpp" line="266"/>
-        <location filename="../../src/ui/TrayWindow.cpp" line="302"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="259"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="295"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/TrayWindow.cpp" line="264"/>
-        <location filename="../../src/ui/TrayWindow.cpp" line="301"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="257"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="294"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/TrayWindow.cpp" line="300"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="293"/>
         <source>Recent uploads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/TrayWindow.cpp" line="305"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="298"/>
         <source>Rectangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/TrayWindow.cpp" line="306"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="299"/>
         <source>Capture Rectangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/TrayWindow.cpp" line="308"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="301"/>
         <source>Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/TrayWindow.cpp" line="309"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="302"/>
         <source>Capture Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/TrayWindow.cpp" line="311"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="304"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/TrayWindow.cpp" line="312"/>
+        <location filename="../../src/ui/TrayWindow.cpp" line="305"/>
         <source>Open Image</source>
         <translation type="unfinished"></translation>
     </message>
