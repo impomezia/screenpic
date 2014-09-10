@@ -17,3 +17,7 @@
   margin-top: 1px;
   margin-left: 1px;
 }
+
+QGroupBox {
+  margin-top: 2ex;
+}
