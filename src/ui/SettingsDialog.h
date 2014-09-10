@@ -38,6 +38,8 @@ protected:
   void changeEvent(QEvent *event) override;
 
 private slots:
+  inline void adjustSize() { QDialog::adjustSize(); }
+  void onAdjustSizeRequest();
   void tooglePage();
 
 private:

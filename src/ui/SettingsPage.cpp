@@ -71,8 +71,6 @@ SettingsPage::SettingsPage(AppCore *core, QWidget *parent)
   connect(m_autoRun, SIGNAL(clicked(bool)), SLOT(onAutoRunClicked(bool)));
   connect(m_editorBtn, SIGNAL(clicked(bool)), SLOT(onEditorClicked(bool)));
   connect(m_captureMouse, SIGNAL(clicked(bool)), SLOT(onCaptureMouseClicked(bool)));
-  connect(m_saveCopy, SIGNAL(clicked(bool)), m_fileEdit, SLOT(setVisible(bool)));
-  connect(m_saveCopy, SIGNAL(clicked(bool)), m_browseBtn, SLOT(setVisible(bool)));
   connect(m_saveCopy, SIGNAL(clicked(bool)), SLOT(onSaveCopyClicked(bool)));
   connect(m_browseBtn, SIGNAL(clicked()), SLOT(browse()));
   connect(m_fileEdit, SIGNAL(textChanged(QString)), SLOT(onPathChanged(QString)));
@@ -134,7 +132,13 @@ void SettingsPage::onPathChanged(const QString &text)
 
 void SettingsPage::onSaveCopyClicked(bool checked)
 {
+  m_fileEdit->setVisible(checked);
+  m_browseBtn->setVisible(checked);
+
   m_core->settings()->setValue(Settings::kSaveCopy, checked);
+
+  adjustSize();
+  emit adjustSizeRequest();
 }
 
 

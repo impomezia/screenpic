@@ -29,6 +29,8 @@ ServersPage::ServersPage(AppCore *core, QWidget *parent)
   : QWidget(parent)
   , m_core(core)
 {
+  setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
   m_serversCombo = new QComboBox(this);
   m_stackedWidget = new QStackedWidget(this);
 
@@ -40,7 +42,11 @@ ServersPage::ServersPage(AppCore *core, QWidget *parent)
       m_serversCombo->addItem(provider->icon(), provider->name(), provider->id());
 
       QWidget *widget = provider->settingsWidget(this);
-      m_stackedWidget->addWidget(widget ? widget : new QWidget(this));
+      if (!widget)
+        widget = new QWidget(this);
+
+      widget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+      m_stackedWidget->addWidget(widget);
     }
   }
 
@@ -55,6 +61,7 @@ ServersPage::ServersPage(AppCore *core, QWidget *parent)
   layout->setRowStretch(2, 1);
 
   m_stackedWidget->setCurrentIndex(m_serversCombo->currentIndex());
+  m_stackedWidget->currentWidget()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
   connect(m_serversCombo, SIGNAL(currentIndexChanged(int)), SLOT(onIndexChanged(int)));
 }
@@ -73,6 +80,16 @@ void ServersPage::onIndexChanged(int index)
 {
   m_stackedWidget->setCurrentIndex(index);
   m_core->settings()->setValue(Settings::kProvider, m_serversCombo->itemData(index));
+
+  for (int i = 0; i < m_stackedWidget->count(); ++i) {
+      QSizePolicy::Policy policy = QSizePolicy::Ignored;
+      if (i == m_stackedWidget->currentIndex())
+          policy = QSizePolicy::Expanding;
+
+      m_stackedWidget->widget(i)->setSizePolicy(policy, policy);
+  }
+
+  emit adjustSizeRequest();
 }
 
 

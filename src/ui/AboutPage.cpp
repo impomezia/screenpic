@@ -30,6 +30,8 @@ AboutPage::AboutPage(AppCore *core, QWidget *parent)
   : QWidget(parent)
   , m_core(core)
 {
+  setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
   m_updateBtn = new QCheckBox(this);
   m_updateBtn->setChecked(core->settings()->value(AutoUpdate::kEnabled).toBool());
 

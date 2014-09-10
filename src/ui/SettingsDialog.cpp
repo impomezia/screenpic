@@ -19,6 +19,7 @@
 #include <QStackedWidget>
 #include <QToolButton>
 #include <QVBoxLayout>
+#include <QTimer>
 
 #include "AboutPage.h"
 #include "HotkeysPage.h"
@@ -88,6 +89,11 @@ SettingsDialog::SettingsDialog(AppCore *core, QWidget *parent)
   layout->addWidget(m_pages);
   layout->setMargin(0);
   layout->setSpacing(0);
+
+  m_settingsPage->setMinimumWidth(minimumWidth());
+
+  connect(m_settingsPage, SIGNAL(adjustSizeRequest()), SLOT(onAdjustSizeRequest()));
+  connect(m_serversPage, SIGNAL(adjustSizeRequest()), SLOT(onAdjustSizeRequest()));
 }
 
 
@@ -97,6 +103,12 @@ void SettingsDialog::changeEvent(QEvent *event)
     retranslateUi();
 
   QDialog::changeEvent(event);
+}
+
+
+void SettingsDialog::onAdjustSizeRequest()
+{
+  QTimer::singleShot(0, this, SLOT(adjustSize()));
 }
 
 
@@ -124,6 +136,17 @@ void SettingsDialog::tooglePage()
 
   if (button == m_aboutBtn)
     m_pages->setCurrentWidget(m_aboutPage);
+
+  for (int i = 0; i < m_pages->count(); ++i) {
+      QSizePolicy::Policy policy = QSizePolicy::Ignored;
+      if (i == m_pages->currentIndex())
+          policy = QSizePolicy::Expanding;
+
+      QWidget *page = m_pages->widget(i);
+      page->setSizePolicy(policy, policy);
+  }
+
+  onAdjustSizeRequest();
 }
 
 

@@ -30,6 +30,9 @@ class ServersPage : public QWidget
 public:
   ServersPage(AppCore *core, QWidget *parent = 0);
 
+signals:
+  void adjustSizeRequest();
+
 protected:
   void changeEvent(QEvent *event) override;
 

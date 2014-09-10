@@ -32,6 +32,8 @@ HotkeysPage::HotkeysPage(AppCore *core, QWidget *parent)
   : QWidget(parent)
   , m_core(core)
 {
+  setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
   m_primaryLabel = new QLabel(this);
 
   QGridLayout *primaryLay = new QGridLayout;
