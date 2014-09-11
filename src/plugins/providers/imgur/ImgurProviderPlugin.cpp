@@ -15,6 +15,7 @@
  */
 
 #include "ImgurProviderPlugin.h"
+#include "ImgurSettings.h"
 #include "ImgurUploader.h"
 #include "sglobal.h"
 
@@ -56,8 +57,9 @@ QVariant ImgurProviderPlugin::data() const
 
 QWidget *ImgurProviderPlugin::settingsWidget(QWidget *parent)
 {
-  Q_UNUSED(parent)
-  return 0;
+  ImgurSettings *widget = new ImgurSettings(parent);
+
+  return widget;
 }
 
 
