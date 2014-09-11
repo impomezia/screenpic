@@ -17,12 +17,13 @@
 #ifndef RUPSETTINGS_H_
 #define RUPSETTINGS_H_
 
-#include <QGroupBox>
+#include <QWidget>
 
+class QGroupBox;
 class QLineEdit;
 class QToolButton;
 
-class RupSettings : public QGroupBox
+class RupSettings : public QWidget
 {
   Q_OBJECT
 
@@ -45,9 +46,10 @@ private:
   void makeRed(bool red = true);
   void retranslateUi();
 
+  QGroupBox *m_tokenGroup;
   QLineEdit *m_tokenEdit;
-  QToolButton *m_pasteBtn;
   QToolButton *m_createBtn;
+  QToolButton *m_pasteBtn;
 };
 
 #endif // RUPSETTINGS_H_

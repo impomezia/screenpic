@@ -17,6 +17,7 @@
 #include <QDesktopServices>
 #include <QEvent>
 #include <QGridLayout>
+#include <QGroupBox>
 #include <QLineEdit>
 #include <QToolButton>
 #include <QUrl>
@@ -25,8 +26,10 @@
 #include "sglobal.h"
 
 RupSettings::RupSettings(const QString &token, QWidget *parent)
-  : QGroupBox(parent)
+  : QWidget(parent)
 {
+  m_tokenGroup = new QGroupBox(this);
+
   m_tokenEdit = new QLineEdit(this);
   m_tokenEdit->setEchoMode(QLineEdit::Password);
 
@@ -44,11 +47,15 @@ RupSettings::RupSettings(const QString &token, QWidget *parent)
   m_createBtn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   m_createBtn->setIcon(QIcon(LS(":/images/globe.png")));
 
-  QGridLayout *layout = new QGridLayout(this);
-  layout->addWidget(m_tokenEdit, 0, 0);
-  layout->addWidget(m_pasteBtn, 0, 1);
-  layout->addWidget(m_createBtn, 1, 0, 1, 2);
-  layout->setSpacing(4);
+  QGridLayout *tokenLayout = new QGridLayout(m_tokenGroup);
+  tokenLayout->addWidget(m_tokenEdit, 0, 0);
+  tokenLayout->addWidget(m_pasteBtn, 0, 1);
+  tokenLayout->addWidget(m_createBtn, 1, 0, 1, 2);
+  tokenLayout->setSpacing(4);
+
+  QVBoxLayout *layout = new QVBoxLayout(this);
+  layout->addWidget(m_tokenGroup);
+  layout->setMargin(0);
 
   retranslateUi();
 
@@ -113,7 +120,7 @@ void RupSettings::makeRed(bool red)
 
 void RupSettings::retranslateUi()
 {
-  setTitle(tr("Access token"));
+  m_tokenGroup->setTitle(tr("Access token"));
   m_pasteBtn->setToolTip(tr("Paste"));
   m_createBtn->setText(tr("Create new token"));
 }
