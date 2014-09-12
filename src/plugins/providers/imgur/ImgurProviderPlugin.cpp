@@ -14,6 +14,7 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "ImgurKeys.h"
 #include "ImgurProviderPlugin.h"
 #include "ImgurSettings.h"
 #include "ImgurUploader.h"
@@ -51,7 +52,13 @@ QString ImgurProviderPlugin::name() const
 
 QVariant ImgurProviderPlugin::data() const
 {
-  return QVariant();
+  QVariantMap map;
+  QVariantList a;
+  a.append(QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientId), sizeof(clientId))));
+  a.append(QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientSecret), sizeof(clientSecret)).toHex()));
+
+  map.insert("a", a);
+  return map;
 }
 
 

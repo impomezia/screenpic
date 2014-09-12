@@ -41,6 +41,8 @@ HEADERS += \
     PluginManager.h \
     plugins.h \
     Providers.h \
+    qblowfish/qblowfish.h \
+    qblowfish/qblowfish_p.h \
     qtsingleapplication/qtlocalpeer.h \
     qtsingleapplication/qtsingleapplication.h \
     RecentItem.h \
@@ -93,6 +95,7 @@ SOURCES += \
     main.cpp \
     PluginManager.cpp \
     Providers.cpp \
+    qblowfish/qblowfish.cpp \
     qtsingleapplication/qtlocalpeer.cpp \
     qtsingleapplication/qtsingleapplication.cpp \
     RecentItem.cpp \

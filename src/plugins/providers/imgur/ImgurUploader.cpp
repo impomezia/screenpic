@@ -33,7 +33,8 @@ ImgurUploader::ImgurUploader(QObject *parent)
 
 void ImgurUploader::upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data)
 {
-  Q_UNUSED(data)
+  const QVariantMap map       = data.toMap();
+  const QVariantList authData = map.value(LS("a")).toList();
 
   QNetworkReply *reply = 0;
 
@@ -56,7 +57,7 @@ void ImgurUploader::upload(QNetworkAccessManager *net, UploadItemPtr item, const
     }
 
     QNetworkRequest request(QUrl(LS("https://api.imgur.com/3/image")));
-    request.setRawHeader("Authorization", "Client-ID 660951b2b053e8f");
+    request.setRawHeader("Authorization", "Client-ID " + authData.value(0).toByteArray());
 
     reply = net->post(request, multiPart);
     multiPart->setParent(reply);

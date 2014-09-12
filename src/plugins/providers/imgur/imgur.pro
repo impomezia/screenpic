@@ -7,6 +7,7 @@ HEADERS = \
     ImgurProviderPlugin.h \
     ImgurUploader.h \
     ImgurSettings.h \
+    ImgurKeys.h \
 
 SOURCES = \
     ImgurProviderPlugin.cpp \
