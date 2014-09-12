@@ -30,6 +30,7 @@ class ImgurProviderPlugin : public QObject, IPlugin, IProvider
   Q_PLUGIN_METADATA(IID "io.rup.provider.imgur")
 
 public:
+  ImgurProviderPlugin();
   int maxImages() const override;
   QIcon icon() const override;
   qint64 maxSize() const override;
@@ -38,13 +39,14 @@ public:
   QVariant data() const override;
   QWidget *settingsWidget(QWidget *parent = 0) override;
   Uploader *uploader(QObject *parent = 0) const override;
-  void init(ISettings *settings) override;
+  void init(ISettings *settings, IProviderListener *listener) override;
 
 private slots:
   void onPinReady(const QString &pin);
   void onPinRequest();
 
 private:
+  IProviderListener *m_listener;
   QString m_clientId;
   QString m_clientSecret;
 };

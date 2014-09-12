@@ -14,31 +14,15 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NONEPROVIDERPLUGIN_H_
-#define NONEPROVIDERPLUGIN_H_
+#ifndef IPROVIDERLISTENER_H_
+#define IPROVIDERLISTENER_H_
 
-#include <QObject>
+#include "id/ChatId.h"
 
-#include "interfaces/IPlugin.h"
-#include "interfaces/IProvider.h"
-
-class NoneProviderPlugin : public QObject, IPlugin, IProvider
+class IProviderListener
 {
-  Q_OBJECT
-  Q_INTERFACES(IPlugin)
-  Q_INTERFACES(IProvider)
-  Q_PLUGIN_METADATA(IID "io.rup.provider.none")
-
 public:
-  int maxImages() const override;
-  QIcon icon() const override;
-  qint64 maxSize() const override;
-  QString id() const override;
-  QString name() const override;
-  QVariant data() const override;
-  QWidget *settingsWidget(QWidget *parent = 0) override;
-  Uploader *uploader(QObject *parent = 0) const override;
-  void init(ISettings *settings, IProviderListener *listener) override;
+  virtual void onCustomRequest(const ChatId &id, const QString &provider, const QVariant &data) = 0;
 };
 
-#endif // NONEPROVIDERPLUGIN_H_
+#endif // IPROVIDERLISTENER_H_

@@ -29,7 +29,10 @@ public:
   void upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data) override;
 
 protected:
-  virtual void read(UploadResult &result, QNetworkReply *reply) override;
+  void read(UploadResult &result, QNetworkReply *reply) override;
+
+private slots:
+  void tokenReady();
 };
 
 #endif /* UPLOADERIMGUR_H_ */

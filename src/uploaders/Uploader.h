@@ -35,7 +35,7 @@ public:
   virtual void upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data) = 0;
 
 signals:
-  void finished(const ChatId &id, const QVariant &data);
+  void finished(const ChatId &id, QString provider, const QVariant &data);
   void finished(const UploadResult &result);
   void uploadProgress(const ChatId &id, int percent);
 

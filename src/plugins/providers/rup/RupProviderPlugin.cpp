@@ -85,8 +85,10 @@ Uploader *RupProviderPlugin::uploader(QObject *parent) const
 }
 
 
-void RupProviderPlugin::init(ISettings *settings)
+void RupProviderPlugin::init(ISettings *settings, IProviderListener *listener)
 {
+  Q_UNUSED(listener)
+
   m_settings = settings;
   m_token = settings->value(id() + LS(".provider/Token")).toString();
 

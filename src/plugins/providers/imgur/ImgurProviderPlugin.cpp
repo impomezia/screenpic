@@ -21,7 +21,16 @@
 #include "ImgurProviderPlugin.h"
 #include "ImgurSettings.h"
 #include "ImgurUploader.h"
+#include "interfaces/IProviderListener.h"
 #include "sglobal.h"
+
+ImgurProviderPlugin::ImgurProviderPlugin()
+  : QObject()
+  , IPlugin()
+  , IProvider()
+  , m_listener(0)
+{
+}
 
 int ImgurProviderPlugin::maxImages() const
 {
@@ -85,9 +94,11 @@ Uploader *ImgurProviderPlugin::uploader(QObject *parent) const
 }
 
 
-void ImgurProviderPlugin::init(ISettings *settings)
+void ImgurProviderPlugin::init(ISettings *settings, IProviderListener *listener)
 {
   Q_UNUSED(settings);
+
+  m_listener = listener;
 
   m_clientId     = QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientId), sizeof(clientId)));
   m_clientSecret = QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientSecret), sizeof(clientSecret)).toHex());
@@ -96,7 +107,13 @@ void ImgurProviderPlugin::init(ISettings *settings)
 
 void ImgurProviderPlugin::onPinReady(const QString &pin)
 {
-  qDebug() << pin;
+  if (pin.isEmpty())
+    return;
+
+  QVariantMap map = data().toMap();
+  map.insert(LS("pin"), pin);
+
+  m_listener->onCustomRequest(ChatId().init(ChatId::MessageId), id(), map);
 }
 
 

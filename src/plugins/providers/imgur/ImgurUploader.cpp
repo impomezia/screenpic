@@ -33,9 +33,25 @@ ImgurUploader::ImgurUploader(QObject *parent)
 
 void ImgurUploader::request(QNetworkAccessManager *net, const ChatId &id, const QVariant &data)
 {
-  Q_UNUSED(net)
-  Q_UNUSED(id)
-  Q_UNUSED(data)
+  const QVariantMap map       = data.toMap();
+  const QVariantList authData = map.value(LS("a")).toList();
+  if (authData.isEmpty())
+    return;
+
+
+  if (map.contains(LS("pin"))) {
+    QNetworkRequest request(QUrl(LS("https://api.imgur.com/oauth2/token")));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, LS("application/x-www-form-urlencoded"));
+
+    QByteArray body = "client_id=" + authData.value(0).toByteArray() +
+                      "&client_secret=" + authData.value(1).toByteArray() +
+                      "&grant_type=pin" +
+                      "&pin=" + map.value("pin").toByteArray();
+
+    QNetworkReply *reply = net->post(request, body);
+    reply->setProperty("id", id.toByteArray());
+    connect(reply, SIGNAL(finished()), SLOT(tokenReady()));
+  }
 }
 
 
@@ -95,4 +111,20 @@ void ImgurUploader::read(UploadResult &result, QNetworkReply *reply)
   result.json      = json;
   result.desc      = json.value(LS("description")).toString();
   result.images.append(image);
+}
+
+
+void ImgurUploader::tokenReady()
+{
+  QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+  if (!reply)
+    return;
+
+  QVariantMap map;
+  map.insert(LS("type"),  LS("token"));
+  map.insert(LS("reply"), JSON::parse(reply->readAll()));
+
+  emit finished(reply->property("id").toByteArray(), LS("imgur"), map);
+
+  reply->deleteLater();
 }

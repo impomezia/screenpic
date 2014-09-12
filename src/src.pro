@@ -34,6 +34,7 @@ HEADERS += \
     interfaces/IItemCommand.h \
     interfaces/IPlugin.h \
     interfaces/IProvider.h \
+    interfaces/IProviderListener.h \
     interfaces/IServiceTask.h \
     interfaces/ISettings.h \
     k8json/k8json.h \

@@ -47,6 +47,7 @@ void Uploader::onFinished()
   UploadResult result(reply);
   read(result, reply);
 
+  reply->deleteLater();
   emit finished(result);
 }
 

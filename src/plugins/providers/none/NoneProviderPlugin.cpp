@@ -67,9 +67,10 @@ Uploader *NoneProviderPlugin::uploader(QObject *parent) const
 }
 
 
-void NoneProviderPlugin::init(ISettings *settings)
+void NoneProviderPlugin::init(ISettings *settings, IProviderListener *listener)
 {
   Q_UNUSED(settings);
+  Q_UNUSED(listener);
 }
 
 Q_EXPORT_PLUGIN2(NoneProvider, NoneProviderPlugin);
