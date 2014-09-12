@@ -31,6 +31,14 @@ GeekpicUploader::GeekpicUploader(QObject *parent)
 }
 
 
+void GeekpicUploader::request(QNetworkAccessManager *net, const ChatId &id, const QVariant &data)
+{
+  Q_UNUSED(net)
+  Q_UNUSED(id)
+  Q_UNUSED(data)
+}
+
+
 void GeekpicUploader::upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data)
 {
   Q_UNUSED(data)

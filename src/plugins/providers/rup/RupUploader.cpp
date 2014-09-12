@@ -31,6 +31,14 @@ RupUploader::RupUploader(QObject *parent)
 }
 
 
+void RupUploader::request(QNetworkAccessManager *net, const ChatId &id, const QVariant &data)
+{
+  Q_UNUSED(net)
+  Q_UNUSED(id)
+  Q_UNUSED(data)
+}
+
+
 void RupUploader::upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data)
 {
   const QVariantMap map = data.toMap();

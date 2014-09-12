@@ -14,6 +14,9 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDesktopServices>
+#include <QUrl>
+
 #include "ImgurKeys.h"
 #include "ImgurProviderPlugin.h"
 #include "ImgurSettings.h"
@@ -54,8 +57,8 @@ QVariant ImgurProviderPlugin::data() const
 {
   QVariantMap map;
   QVariantList a;
-  a.append(QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientId), sizeof(clientId))));
-  a.append(QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientSecret), sizeof(clientSecret)).toHex()));
+  a.append(m_clientId);
+  a.append(m_clientSecret);
 
   map.insert("a", a);
   return map;
@@ -64,7 +67,13 @@ QVariant ImgurProviderPlugin::data() const
 
 QWidget *ImgurProviderPlugin::settingsWidget(QWidget *parent)
 {
+# ifndef IMGUR_HAS_CLIENT_SECRET
+  return 0;
+# endif
+
   ImgurSettings *widget = new ImgurSettings(parent);
+  connect(widget, SIGNAL(pinRequest()), SLOT(onPinRequest()));
+  connect(widget, SIGNAL(pinReady(QString)), SLOT(onPinReady(QString)));
 
   return widget;
 }
@@ -79,6 +88,21 @@ Uploader *ImgurProviderPlugin::uploader(QObject *parent) const
 void ImgurProviderPlugin::init(ISettings *settings)
 {
   Q_UNUSED(settings);
+
+  m_clientId     = QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientId), sizeof(clientId)));
+  m_clientSecret = QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientSecret), sizeof(clientSecret)).toHex());
+}
+
+
+void ImgurProviderPlugin::onPinReady(const QString &pin)
+{
+  qDebug() << pin;
+}
+
+
+void ImgurProviderPlugin::onPinRequest()
+{
+  QDesktopServices::openUrl(QUrl(LS("https://api.imgur.com/oauth2/authorize?client_id=") + m_clientId + LS("&response_type=pin")));
 }
 
 Q_EXPORT_PLUGIN2(ImgurProvider, ImgurProviderPlugin);

@@ -43,6 +43,17 @@ ShareNet::~ShareNet()
 }
 
 
+void ShareNet::add(const ChatId &id, const QString &provider, const QVariant &data)
+{
+  Q_ASSERT(m_uploaders.contains(provider));
+
+  if (!m_uploaders.contains(provider))
+    return;
+
+  m_uploaders[provider]->request(m_net, id, data);
+}
+
+
 void ShareNet::add(UploadItemPtr item, const QString &provider, const QVariant &data)
 {
   Q_ASSERT(m_uploaders.contains(provider));

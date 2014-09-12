@@ -39,6 +39,14 @@ public:
   QWidget *settingsWidget(QWidget *parent = 0) override;
   Uploader *uploader(QObject *parent = 0) const override;
   void init(ISettings *settings) override;
+
+private slots:
+  void onPinReady(const QString &pin);
+  void onPinRequest();
+
+private:
+  QString m_clientId;
+  QString m_clientSecret;
 };
 
 #endif /* IMGURPROVIDER_H_ */

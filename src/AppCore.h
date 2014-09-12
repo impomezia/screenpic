@@ -58,6 +58,7 @@ public:
 public slots:
   void add(QRunnable *task);
   void add(UploadItemPtr item);
+  void customRequest(const ChatId &id, const QVariant &data);
   void grabRect();
   void grabScreen();
   void openFile();

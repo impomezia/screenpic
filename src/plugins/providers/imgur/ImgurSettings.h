@@ -32,10 +32,15 @@ class ImgurSettings : public QWidget
 public:
   ImgurSettings(QWidget *parent = 0);
 
+signals:
+  void pinReady(const QString &pin);
+  void pinRequest();
+
 protected:
   void changeEvent(QEvent *event) override;
 
 private slots:
+  void onCompleteClicked();
   void onPaste();
 
 private:

@@ -63,6 +63,8 @@ ImgurSettings::ImgurSettings(QWidget *parent)
   retranslateUi();
 
   connect(m_pasteBtn, SIGNAL(clicked()), SLOT(onPaste()));
+  connect(m_openPageBtn, SIGNAL(clicked()), SIGNAL(pinRequest()));
+  connect(m_completeBtn, SIGNAL(clicked()), SLOT(onCompleteClicked()));
 }
 
 
@@ -72,6 +74,12 @@ void ImgurSettings::changeEvent(QEvent *event)
     retranslateUi();
 
   QWidget::changeEvent(event);
+}
+
+
+void ImgurSettings::onCompleteClicked()
+{
+  emit pinReady(m_pinEdit->text());
 }
 
 

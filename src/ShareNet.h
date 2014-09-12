@@ -44,6 +44,7 @@ signals:
   void uploadProgress(const ChatId &id, int percent);
 
 public slots:
+  void add(const ChatId &id, const QString &provider, const QVariant &data);
   void add(UploadItemPtr item, const QString &provider, const QVariant &data);
 
 private:

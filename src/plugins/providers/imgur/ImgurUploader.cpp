@@ -31,6 +31,14 @@ ImgurUploader::ImgurUploader(QObject *parent)
 }
 
 
+void ImgurUploader::request(QNetworkAccessManager *net, const ChatId &id, const QVariant &data)
+{
+  Q_UNUSED(net)
+  Q_UNUSED(id)
+  Q_UNUSED(data)
+}
+
+
 void ImgurUploader::upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data)
 {
   const QVariantMap map       = data.toMap();

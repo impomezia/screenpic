@@ -25,7 +25,8 @@ class RupUploader : public Uploader
 
 public:
   RupUploader(QObject *parent = 0);
-  virtual void upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data) override;
+  void request(QNetworkAccessManager *net, const ChatId &id, const QVariant &data) override;
+  void upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data) override;
 
 protected:
   virtual void read(UploadResult &result, QNetworkReply *reply) override;

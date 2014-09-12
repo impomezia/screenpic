@@ -172,6 +172,15 @@ void AppCore::add(UploadItemPtr item)
 }
 
 
+void AppCore::customRequest(const ChatId &id, const QVariant &data)
+{
+  IProvider *provider = m_providers->current();
+  Q_ASSERT(provider);
+
+  QMetaObject::invokeMethod(m_net, "add", Qt::QueuedConnection, Q_ARG(ChatId, id), Q_ARG(QString, provider->id()), Q_ARG(QVariant, data));
+}
+
+
 void AppCore::grabRect()
 {
   LOG_DEBUG("grab rectangle...")
