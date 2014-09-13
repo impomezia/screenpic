@@ -75,10 +75,11 @@ QVariant ImgurProviderPlugin::data() const
   a.append(m_clientId);
   a.append(m_clientSecret);
 
-  if (!m_refreshToken.isEmpty()) {
+  if (!m_refreshToken.isEmpty())
     a.append(m_refreshToken);
+
+  if (!m_accessToken.isEmpty() && m_expires != 0 && (m_expires - QDateTime::currentMSecsSinceEpoch()) > 600000)
     a.append(m_accessToken);
-  }
 
   map.insert("a", a);
   return map;

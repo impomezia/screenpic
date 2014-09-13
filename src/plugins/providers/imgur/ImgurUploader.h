@@ -17,6 +17,8 @@
 #ifndef UPLOADERIMGUR_H_
 #define UPLOADERIMGUR_H_
 
+#include <QQueue>
+
 #include "uploaders/Uploader.h"
 
 class ImgurUploader : public Uploader
@@ -33,6 +35,15 @@ protected:
 
 private slots:
   void tokenReady();
+
+private:
+  void getToken(const ChatId &id, const QByteArray &grantType, const QByteArray &data, const QVariantList &authData);
+
+private:
+  QNetworkAccessManager *m_net;
+  QQueue<UploadItemPtr> m_queue;
+  QString m_clientId;
+  QString m_clientSecret;
 };
 
 #endif /* UPLOADERIMGUR_H_ */
