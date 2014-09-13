@@ -75,7 +75,12 @@ ImgurSettings::ImgurSettings(QWidget *parent)
   loginLayout->addWidget(m_errorLabel, 2, 3, 1, 2);
   loginLayout->setColumnStretch(1, 1);
   loginLayout->setColumnStretch(3, 1);
+
+# ifdef Q_OS_MAC
+  loginLayout->setSpacing(9);
+# else
   loginLayout->setSpacing(4);
+# endif
 
   QGridLayout *accountLayout = new QGridLayout(m_accountGroup);
   accountLayout->addWidget(m_userNameLabel, 0, 0);
