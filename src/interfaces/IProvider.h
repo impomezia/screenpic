@@ -14,11 +14,13 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UPLOADPROVIDER_H_
-#define UPLOADPROVIDER_H_
+#ifndef IPROVIDER_H_
+#define IPROVIDER_H_
 
 #include <QIcon>
 
+class ChatId;
+class IProviderListener;
 class ISettings;
 class QObject;
 class Uploader;
@@ -27,18 +29,19 @@ class IProvider
 {
 public:
   inline virtual ~IProvider() {}
-  virtual int maxImages() const                         = 0;
-  virtual QIcon icon() const                            = 0;
-  virtual qint64 maxSize() const                        = 0;
-  virtual QString id() const                            = 0;
-  virtual QString name() const                          = 0;
-  virtual QVariant data() const                         = 0;
-  virtual QWidget *settingsWidget(QWidget *parent = 0)  = 0;
-  virtual Uploader *uploader(QObject *parent = 0) const = 0;
-  virtual void init(ISettings *settings)                = 0;
+  virtual int maxImages() const                                       = 0;
+  virtual QIcon icon() const                                          = 0;
+  virtual qint64 maxSize() const                                      = 0;
+  virtual QString id() const                                          = 0;
+  virtual QString name() const                                        = 0;
+  virtual QVariant data() const                                       = 0;
+  virtual QWidget *settingsWidget(QWidget *parent = 0)                = 0;
+  virtual Uploader *uploader(QObject *parent = 0) const               = 0;
+  virtual void handleReply(const ChatId &id, const QVariant &data)    = 0;
+  virtual void init(ISettings *settings, IProviderListener *listener) = 0;
 };
 
-Q_DECLARE_INTERFACE(IProvider, "io.rup.IProvider/1.0")
+Q_DECLARE_INTERFACE(IProvider, "io.rup.IProvider/1.1")
 
 
-#endif /* UPLOADPROVIDER_H_ */
+#endif /* IPROVIDER_H_ */

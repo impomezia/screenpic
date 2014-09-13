@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="en_US">
-<defaultcodec>UTF-8</defaultcodec>
 <context>
     <name>AboutPage</name>
     <message>
-        <location filename="../../src/ui/AboutPage.cpp" line="79"/>
+        <location filename="../../src/ui/AboutPage.cpp" line="81"/>
         <source>Automatic update</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13,12 +12,12 @@
 <context>
     <name>AppCore</name>
     <message>
-        <location filename="../../src/AppCore.cpp" line="191"/>
+        <location filename="../../src/AppCore.cpp" line="197"/>
         <source>Images (*.jpg *.jpeg *.png *.gif *.JPG *.PNG)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/AppCore.cpp" line="191"/>
+        <location filename="../../src/AppCore.cpp" line="197"/>
         <source>Open image</source>
         <translation type="unfinished"></translation>
     </message>
@@ -219,25 +218,63 @@
 <context>
     <name>HotkeysPage</name>
     <message>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="181"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="183"/>
         <source>Global shortcuts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="41"/>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="183"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="43"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="185"/>
         <source>Capture rectangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="42"/>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="184"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="44"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="186"/>
         <source>Capture fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="175"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="177"/>
         <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImgurSettings</name>
+    <message>
+        <location filename="../../src/plugins/providers/imgur/ImgurSettings.cpp" line="176"/>
+        <source>User account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/plugins/providers/imgur/ImgurSettings.cpp" line="178"/>
+        <source>Open authorize page...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/plugins/providers/imgur/ImgurSettings.cpp" line="179"/>
+        <source>Enter verification PIN from authorize page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/plugins/providers/imgur/ImgurSettings.cpp" line="180"/>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/plugins/providers/imgur/ImgurSettings.cpp" line="181"/>
+        <source>Complete authorization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/plugins/providers/imgur/ImgurSettings.cpp" line="183"/>
+        <source>Username:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/plugins/providers/imgur/ImgurSettings.cpp" line="184"/>
+        <source>Logout</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -373,17 +410,17 @@
 <context>
     <name>RupSettings</name>
     <message>
-        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="116"/>
+        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="123"/>
         <source>Access token</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="117"/>
+        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="124"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="118"/>
+        <location filename="../../src/plugins/providers/rup/RupSettings.cpp" line="125"/>
         <source>Create new token</source>
         <translation type="unfinished"></translation>
     </message>
@@ -391,20 +428,20 @@
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../../src/ui/SettingsDialog.cpp" line="42"/>
-        <location filename="../../src/ui/SettingsDialog.cpp" line="148"/>
+        <location filename="../../src/ui/SettingsDialog.cpp" line="43"/>
+        <location filename="../../src/ui/SettingsDialog.cpp" line="171"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsDialog.cpp" line="46"/>
-        <location filename="../../src/ui/SettingsDialog.cpp" line="152"/>
+        <location filename="../../src/ui/SettingsDialog.cpp" line="47"/>
+        <location filename="../../src/ui/SettingsDialog.cpp" line="175"/>
         <source>Hotkeys</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsDialog.cpp" line="49"/>
-        <location filename="../../src/ui/SettingsDialog.cpp" line="149"/>
+        <location filename="../../src/ui/SettingsDialog.cpp" line="50"/>
+        <location filename="../../src/ui/SettingsDialog.cpp" line="172"/>
         <source>Servers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -412,27 +449,27 @@
 <context>
     <name>SettingsPage</name>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="154"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="158"/>
         <source>Run at Windows start up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="155"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="159"/>
         <source>Skip editor window (instant upload)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="156"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="160"/>
         <source>Capture mouse cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="157"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="161"/>
         <source>Save screenshot copy in selected folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="158"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="162"/>
         <source>Browse...</source>
         <translation type="unfinished"></translation>
     </message>

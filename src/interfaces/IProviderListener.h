@@ -14,22 +14,15 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RUPUPLOADER_H_
-#define RUPUPLOADER_H_
+#ifndef IPROVIDERLISTENER_H_
+#define IPROVIDERLISTENER_H_
 
-#include "uploaders/Uploader.h"
+#include "id/ChatId.h"
 
-class RupUploader : public Uploader
+class IProviderListener
 {
-  Q_OBJECT
-
 public:
-  RupUploader(QObject *parent = 0);
-  void request(QNetworkAccessManager *net, const ChatId &id, const QVariant &data) override;
-  void upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data) override;
-
-protected:
-  virtual void read(UploadResult &result, QNetworkReply *reply) override;
+  virtual void onCustomRequest(const ChatId &id, const QString &provider, const QVariant &data) = 0;
 };
 
-#endif /* RUPUPLOADER_H_ */
+#endif // IPROVIDERLISTENER_H_

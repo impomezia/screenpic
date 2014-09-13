@@ -25,6 +25,7 @@ class NoneUploader : public Uploader
 
 public:
   NoneUploader(QObject *parent = 0);
+  void request(QNetworkAccessManager *net, const ChatId &id, const QVariant &data) override;
   void upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data) override;
 
 protected:

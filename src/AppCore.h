@@ -21,6 +21,7 @@
 #include <QObject>
 
 #include "data/UploadItem.h"
+#include "interfaces/IProviderListener.h"
 
 class AutoUpdate;
 class GlobalShortcuts;
@@ -40,7 +41,7 @@ class UploadItem;
 class UploadResult;
 struct Thumbnail;
 
-class AppCore : public QObject
+class AppCore : public QObject, public IProviderListener
 {
   Q_OBJECT
 
@@ -55,6 +56,8 @@ public:
   inline Settings *settings() const         { return m_settings; }
   inline Translation *translation() const   { return m_translation; }
 
+  void onCustomRequest(const ChatId &id, const QString &provider, const QVariant &data) override;
+
 public slots:
   void add(QRunnable *task);
   void add(UploadItemPtr item);
@@ -65,6 +68,7 @@ public slots:
 
 private slots:
   void onEditingFinished(UploadItemPtr item);
+  void onFinished(const ChatId &id, const QString &provider, const QVariant &data);
   void onImageSaved(const ChatId &id, const QByteArray &body, const Thumbnail &thumbnail);
   void onSettingsChanged(const QString &key, const QVariant &value);
   void onTaskReady(qint64 counter, QObject *object);

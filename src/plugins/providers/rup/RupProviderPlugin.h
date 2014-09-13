@@ -38,7 +38,8 @@ public:
   QVariant data() const override;
   QWidget *settingsWidget(QWidget *parent = 0) override;
   Uploader *uploader(QObject *parent = 0) const override;
-  void init(ISettings *settings) override;
+  void handleReply(const ChatId &id, const QVariant &data) override;
+  void init(ISettings *settings, IProviderListener *listener) override;
 
 private slots:
   void onTokenChanged(const QString &token);

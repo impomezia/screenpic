@@ -32,6 +32,7 @@ ShareNet::ShareNet(Providers *providers, QNetworkAccessManager *net, QObject *pa
 
   foreach (const Uploader *uploader, m_uploaders) {
     connect(uploader, SIGNAL(finished(UploadResult)), SIGNAL(finished(UploadResult)));
+    connect(uploader, SIGNAL(finished(ChatId,QString,QVariant)), SIGNAL(finished(ChatId,QString,QVariant)));
     connect(uploader, SIGNAL(uploadProgress(ChatId,int)), SIGNAL(uploadProgress(ChatId,int)));
   }
 }
@@ -40,6 +41,17 @@ ShareNet::ShareNet(Providers *providers, QNetworkAccessManager *net, QObject *pa
 ShareNet::~ShareNet()
 {
   qDeleteAll(m_uploaders);
+}
+
+
+void ShareNet::add(const ChatId &id, const QString &provider, const QVariant &data)
+{
+  Q_ASSERT(m_uploaders.contains(provider));
+
+  if (!m_uploaders.contains(provider))
+    return;
+
+  m_uploaders[provider]->request(m_net, id, data);
 }
 
 

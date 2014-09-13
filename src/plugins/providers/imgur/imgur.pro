@@ -4,11 +4,14 @@ QT = core gui network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 HEADERS = \
-   ImgurProviderPlugin.h \
-   ImgurUploader.h \
+    ImgurProviderPlugin.h \
+    ImgurUploader.h \
+    ImgurSettings.h \
+    ImgurKeys.h \
 
 SOURCES = \
-   ImgurProviderPlugin.cpp \
-   ImgurUploader.cpp \
+    ImgurProviderPlugin.cpp \
+    ImgurUploader.cpp \
+    ImgurSettings.cpp \
  
 include(../../plugins.pri)

@@ -16,11 +16,18 @@
 
 #include <QLabel>
 
+#include "3rdparty/qblowfish/qblowfish.h"
+#include "interfaces/ISettings.h"
 #include "RupProviderPlugin.h"
 #include "RupSettings.h"
 #include "RupUploader.h"
 #include "sglobal.h"
-#include "interfaces/ISettings.h"
+
+const unsigned char key[] = {
+  0x03, 0xb9, 0x74, 0xde, 0xc3, 0xf3, 0xee, 0x4a,
+  0xf1, 0xfa, 0x95, 0x46, 0xaa, 0x0c, 0xa9, 0x5f
+};
+
 
 int RupProviderPlugin::maxImages() const
 {
@@ -78,17 +85,36 @@ Uploader *RupProviderPlugin::uploader(QObject *parent) const
 }
 
 
-void RupProviderPlugin::init(ISettings *settings)
+void RupProviderPlugin::handleReply(const ChatId &id, const QVariant &data)
 {
+  Q_UNUSED(id)
+  Q_UNUSED(data)
+}
+
+
+void RupProviderPlugin::init(ISettings *settings, IProviderListener *listener)
+{
+  Q_UNUSED(listener)
+
   m_settings = settings;
-  m_token = settings->value(id() + LS(".provider/Token")).toString();
+  m_token = m_settings->value(id() + LS(".provider/Token")).toString();
+
+  if (m_token.size() != 42) {
+    QBlowfish bf(QByteArray::fromRawData(reinterpret_cast<const char*>(key), sizeof(key)));
+    bf.setPaddingEnabled(true);
+
+    m_token = bf.decrypted(QByteArray::fromBase64(m_token.toLatin1()));
+  }
 }
 
 
 void RupProviderPlugin::onTokenChanged(const QString &token)
 {
+  QBlowfish bf(QByteArray::fromRawData(reinterpret_cast<const char*>(key), sizeof(key)));
+  bf.setPaddingEnabled(true);
+
   m_token = token;
-  m_settings->setValue(id() + LS(".provider/Token"), token);
+  m_settings->setValue(id() + LS(".provider/Token"), QString::fromLatin1(bf.encrypted(token.toLatin1()).toBase64()));
 }
 
 Q_EXPORT_PLUGIN2(RupProvider, RupProviderPlugin);

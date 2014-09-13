@@ -34,6 +34,7 @@ HEADERS += \
     interfaces/IItemCommand.h \
     interfaces/IPlugin.h \
     interfaces/IProvider.h \
+    interfaces/IProviderListener.h \
     interfaces/IServiceTask.h \
     interfaces/ISettings.h \
     k8json/k8json.h \
@@ -41,6 +42,8 @@ HEADERS += \
     PluginManager.h \
     plugins.h \
     Providers.h \
+    qblowfish/qblowfish.h \
+    qblowfish/qblowfish_p.h \
     qtsingleapplication/qtlocalpeer.h \
     qtsingleapplication/qtsingleapplication.h \
     RecentItem.h \
@@ -73,6 +76,7 @@ HEADERS += \
     ui/ServersPage.h \
     ui/SettingsDialog.h \
     ui/SettingsPage.h \
+    ui/Spinner.h \
     ui/TitleWidget.h \
     ui/TrayWindow.h \
     uploaders/Uploader.h \
@@ -93,6 +97,7 @@ SOURCES += \
     main.cpp \
     PluginManager.cpp \
     Providers.cpp \
+    qblowfish/qblowfish.cpp \
     qtsingleapplication/qtlocalpeer.cpp \
     qtsingleapplication/qtsingleapplication.cpp \
     RecentItem.cpp \
@@ -123,6 +128,7 @@ SOURCES += \
     ui/ServersPage.cpp \
     ui/SettingsDialog.cpp \
     ui/SettingsPage.cpp \
+    ui/Spinner.cpp \
     ui/TitleWidget.cpp \
     ui/TrayWindow.cpp \
     uploaders/Uploader.cpp \

@@ -14,9 +14,29 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDateTime>
+#include <QDesktopServices>
+#include <QUrl>
+
+#include "3rdparty/qblowfish/qblowfish.h"
+#include "ImgurKeys.h"
 #include "ImgurProviderPlugin.h"
+#include "ImgurSettings.h"
 #include "ImgurUploader.h"
+#include "interfaces/IProviderListener.h"
+#include "interfaces/ISettings.h"
+#include "JSON.h"
 #include "sglobal.h"
+
+ImgurProviderPlugin::ImgurProviderPlugin()
+  : QObject()
+  , IPlugin()
+  , IProvider()
+  , m_listener(0)
+  , m_expires(0)
+{
+}
+
 
 int ImgurProviderPlugin::maxImages() const
 {
@@ -50,14 +70,37 @@ QString ImgurProviderPlugin::name() const
 
 QVariant ImgurProviderPlugin::data() const
 {
-  return QVariant();
+  QVariantMap map;
+  QVariantList a;
+  a.append(m_clientId);
+  a.append(m_clientSecret);
+
+  if (!m_refreshToken.isEmpty())
+    a.append(m_refreshToken);
+
+  if (!m_accessToken.isEmpty() && m_expires != 0 && (m_expires - QDateTime::currentMSecsSinceEpoch()) > 600000)
+    a.append(m_accessToken);
+
+  map.insert("a", a);
+  return map;
 }
 
 
 QWidget *ImgurProviderPlugin::settingsWidget(QWidget *parent)
 {
-  Q_UNUSED(parent)
+# ifndef IMGUR_HAS_CLIENT_SECRET
   return 0;
+# endif
+
+  m_settingsWidget = new ImgurSettings(parent);
+  if (!m_username.isEmpty())
+    m_settingsWidget->setSuccess(m_username);
+
+  connect(m_settingsWidget, SIGNAL(pinRequest()), SLOT(onPinRequest()));
+  connect(m_settingsWidget, SIGNAL(pinReady(QString)), SLOT(onPinReady(QString)));
+  connect(m_settingsWidget, SIGNAL(logout()), SLOT(onLogout()));
+
+  return m_settingsWidget;
 }
 
 
@@ -67,9 +110,104 @@ Uploader *ImgurProviderPlugin::uploader(QObject *parent) const
 }
 
 
-void ImgurProviderPlugin::init(ISettings *settings)
+void ImgurProviderPlugin::handleReply(const ChatId &id, const QVariant &data)
 {
-  Q_UNUSED(settings);
+  Q_UNUSED(id)
+  const QVariantMap map = data.toMap();
+
+  if (map.isEmpty())
+    return;
+
+  if (map.value(LS("type")) == LS("token")) {
+    const QVariantMap reply = map.value(LS("reply")).toMap();
+    if (reply.isEmpty())
+      return;
+
+    if (!reply.contains(LS("access_token"))) {
+      if (m_settingsWidget)
+        m_settingsWidget->setError(reply.value(LS("data")).toMap().value(LS("error")).toString());
+
+      return;
+    }
+
+    m_accessToken  = reply.value(LS("access_token")).toString();
+    m_username     = reply.value(LS("account_username")).toString();
+    m_refreshToken = reply.value(LS("refresh_token")).toString();
+    m_expires      = QDateTime::currentMSecsSinceEpoch() + (reply.value(LS("expires_in")).toInt() * 1000);
+
+    if (m_settingsWidget)
+      m_settingsWidget->setSuccess(m_username);
+
+    saveToken();
+  }
+}
+
+
+void ImgurProviderPlugin::init(ISettings *settings, IProviderListener *listener)
+{
+  m_settings = settings;
+  m_listener = listener;
+
+  m_clientId     = QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientId), sizeof(clientId)));
+  m_clientSecret = QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientSecret), sizeof(clientSecret)).toHex());
+
+  const QByteArray token = m_settings->value(id() + LS(".provider/Token")).toString().toLatin1();
+  if (!token.isEmpty()) {
+    QBlowfish bf(QByteArray::fromRawData(reinterpret_cast<const char*>(key), sizeof(key)));
+    bf.setPaddingEnabled(true);
+
+    const QVariantList data = JSON::parse(bf.decrypted(QByteArray::fromBase64(token))).toList();
+    if (data.size() >= 4) {
+      m_clientId     = data.at(0).toString();
+      m_clientSecret = data.at(1).toString();
+      m_refreshToken = data.at(2).toString();
+      m_username     = data.at(3).toString();
+    }
+  }
+}
+
+
+void ImgurProviderPlugin::onLogout()
+{
+  m_expires = 0;
+  m_username = QString();
+  m_refreshToken = QString();
+  m_accessToken = QString();
+
+  m_settings->setValue(id() + LS(".provider/Token"), QString());
+}
+
+
+void ImgurProviderPlugin::onPinReady(const QString &pin)
+{
+  if (pin.isEmpty())
+    return;
+
+  QVariantMap map = data().toMap();
+  map.insert(LS("pin"), pin);
+
+  m_listener->onCustomRequest(ChatId().init(ChatId::MessageId), id(), map);
+}
+
+
+void ImgurProviderPlugin::onPinRequest()
+{
+  QDesktopServices::openUrl(QUrl(LS("https://api.imgur.com/oauth2/authorize?client_id=") + m_clientId + LS("&response_type=pin")));
+}
+
+
+void ImgurProviderPlugin::saveToken()
+{
+  QVariantList token;
+  token.append(m_clientId);
+  token.append(m_clientSecret);
+  token.append(m_refreshToken);
+  token.append(m_username);
+
+  QBlowfish bf(QByteArray::fromRawData(reinterpret_cast<const char*>(key), sizeof(key)));
+  bf.setPaddingEnabled(true);
+
+  m_settings->setValue(id() + LS(".provider/Token"), QString::fromLatin1(bf.encrypted(JSON::generate(token)).toBase64()));
 }
 
 Q_EXPORT_PLUGIN2(ImgurProvider, ImgurProviderPlugin);

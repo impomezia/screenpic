@@ -22,7 +22,9 @@
 #include "interfaces/IPlugin.h"
 #include "interfaces/IProvider.h"
 
-class ImgurProviderPlugin : public QObject, IPlugin, IProvider
+class ImgurSettings;
+
+class ImgurProviderPlugin : public QObject, public IPlugin, public IProvider
 {
   Q_OBJECT
   Q_INTERFACES(IPlugin)
@@ -30,6 +32,7 @@ class ImgurProviderPlugin : public QObject, IPlugin, IProvider
   Q_PLUGIN_METADATA(IID "io.rup.provider.imgur")
 
 public:
+  ImgurProviderPlugin();
   int maxImages() const override;
   QIcon icon() const override;
   qint64 maxSize() const override;
@@ -38,7 +41,26 @@ public:
   QVariant data() const override;
   QWidget *settingsWidget(QWidget *parent = 0) override;
   Uploader *uploader(QObject *parent = 0) const override;
-  void init(ISettings *settings) override;
+  void handleReply(const ChatId &id, const QVariant &data) override;
+  void init(ISettings *settings, IProviderListener *listener) override;
+
+private slots:
+  void onLogout();
+  void onPinReady(const QString &pin);
+  void onPinRequest();
+
+private:
+  void saveToken();
+
+  IProviderListener *m_listener;
+  ISettings *m_settings;
+  qint64 m_expires;
+  QPointer<ImgurSettings> m_settingsWidget;
+  QString m_accessToken;
+  QString m_clientId;
+  QString m_clientSecret;
+  QString m_refreshToken;
+  QString m_username;
 };
 
 #endif /* IMGURPROVIDER_H_ */
