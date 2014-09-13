@@ -33,8 +33,10 @@ class ImgurSettings : public QWidget
 public:
   ImgurSettings(QWidget *parent = 0);
   void setError(const QString &errorText);
+  void setSuccess(const QString &username);
 
 signals:
+  void logout();
   void pinReady(const QString &pin);
   void pinRequest();
 
@@ -43,19 +45,25 @@ protected:
 
 private slots:
   void onCompleteClicked();
+  void onLogout();
   void onPaste();
   void onTextChanged(const QString &text);
+  void queuedAdjustSize();
 
 private:
   void retranslateUi();
 
   QGroupBox *m_accountGroup;
+  QGroupBox *m_loginGroup;
   QLabel *m_errorLabel;
   QLabel *m_firstStepLabel;
   QLabel *m_secondStepLabel;
   QLabel *m_thirdStepLabel;
+  QLabel *m_userNameLabel;
+  QLabel *m_userNameValueLabel;
   QLineEdit *m_pinEdit;
   QPushButton *m_completeBtn;
+  QPushButton *m_logoutBtn;
   QPushButton *m_openPageBtn;
   QToolButton *m_pasteBtn;
   Spinner *m_spinner;

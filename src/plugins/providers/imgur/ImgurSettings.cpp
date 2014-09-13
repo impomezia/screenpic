@@ -20,6 +20,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QTimer>
 #include <QToolButton>
 
 #include "ImgurSettings.h"
@@ -29,7 +30,7 @@
 ImgurSettings::ImgurSettings(QWidget *parent)
   : QWidget(parent)
 {
-  m_accountGroup = new QGroupBox(this);
+  m_loginGroup = new QGroupBox(this);
 
   m_firstStepLabel = new QLabel("1.", this);
   m_openPageBtn = new QPushButton(this);
@@ -49,23 +50,45 @@ ImgurSettings::ImgurSettings(QWidget *parent)
   m_errorLabel = new QLabel(this);
   m_errorLabel->setObjectName("errorLabel");
 
+  m_accountGroup = new QGroupBox(this);
+  m_userNameLabel = new QLabel(this);
+  m_userNameValueLabel = new QLabel(this);
+  m_userNameValueLabel->setTextFormat(Qt::PlainText);
+
+  {
+    QFont font = m_userNameValueLabel->font();
+    font.setBold(true);
+    m_userNameValueLabel->setFont(font);
+  }
+
+  m_logoutBtn = new QPushButton(this);
+
+  QGridLayout *loginLayout = new QGridLayout(m_loginGroup);
+  loginLayout->addWidget(m_firstStepLabel, 0, 0);
+  loginLayout->addWidget(m_openPageBtn, 0, 1);
+  loginLayout->addWidget(m_secondStepLabel, 1, 0);
+  loginLayout->addWidget(m_pinEdit, 1, 1, 1, 3);
+  loginLayout->addWidget(m_pasteBtn, 1, 4);
+  loginLayout->addWidget(m_thirdStepLabel, 2, 0);
+  loginLayout->addWidget(m_completeBtn, 2, 1);
+  loginLayout->addWidget(m_spinner, 2, 2);
+  loginLayout->addWidget(m_errorLabel, 2, 3, 1, 2);
+  loginLayout->setColumnStretch(1, 1);
+  loginLayout->setColumnStretch(3, 1);
+  loginLayout->setSpacing(4);
+
   QGridLayout *accountLayout = new QGridLayout(m_accountGroup);
-  accountLayout->addWidget(m_firstStepLabel, 0, 0);
-  accountLayout->addWidget(m_openPageBtn, 0, 1);
-  accountLayout->addWidget(m_secondStepLabel, 1, 0);
-  accountLayout->addWidget(m_pinEdit, 1, 1, 1, 3);
-  accountLayout->addWidget(m_pasteBtn, 1, 4);
-  accountLayout->addWidget(m_thirdStepLabel, 2, 0);
-  accountLayout->addWidget(m_completeBtn, 2, 1);
-  accountLayout->addWidget(m_spinner, 2, 2);
-  accountLayout->addWidget(m_errorLabel, 2, 3, 1, 2);
+  accountLayout->addWidget(m_userNameLabel, 0, 0);
+  accountLayout->addWidget(m_userNameValueLabel, 0, 1);
+  accountLayout->addWidget(m_logoutBtn, 0, 2);
   accountLayout->setColumnStretch(1, 1);
-  accountLayout->setColumnStretch(3, 1);
-  accountLayout->setSpacing(4);
 
   QVBoxLayout *layout = new QVBoxLayout(this);
+  layout->addWidget(m_loginGroup);
   layout->addWidget(m_accountGroup);
   layout->setMargin(0);
+
+  m_accountGroup->hide();
 
   retranslateUi();
 
@@ -73,6 +96,7 @@ ImgurSettings::ImgurSettings(QWidget *parent)
   connect(m_pasteBtn, SIGNAL(clicked()), SLOT(onPaste()));
   connect(m_openPageBtn, SIGNAL(clicked()), SIGNAL(pinRequest()));
   connect(m_completeBtn, SIGNAL(clicked()), SLOT(onCompleteClicked()));
+  connect(m_logoutBtn, SIGNAL(clicked()), SLOT(onLogout()));
 }
 
 
@@ -82,6 +106,17 @@ void ImgurSettings::setError(const QString &errorText)
   m_spinner->stop();
   m_errorLabel->setText(errorText);
   m_errorLabel->show();
+}
+
+
+void ImgurSettings::setSuccess(const QString &username)
+{
+  m_loginGroup->hide();
+  m_accountGroup->show();
+
+  m_userNameValueLabel->setText(username);
+
+  QTimer::singleShot(0, this, SLOT(queuedAdjustSize()));
 }
 
 
@@ -108,6 +143,15 @@ void ImgurSettings::onCompleteClicked()
 }
 
 
+void ImgurSettings::onLogout()
+{
+  m_accountGroup->hide();
+  m_loginGroup->show();
+
+  emit logout();
+}
+
+
 void ImgurSettings::onPaste()
 {
   m_pinEdit->clear();
@@ -121,11 +165,21 @@ void ImgurSettings::onTextChanged(const QString &text)
 }
 
 
+void ImgurSettings::queuedAdjustSize()
+{
+  parentWidget()->parentWidget()->parentWidget()->parentWidget()->adjustSize();
+}
+
+
 void ImgurSettings::retranslateUi()
 {
-  m_accountGroup->setTitle(tr("User account"));
+  m_loginGroup->setTitle(tr("User account"));
+  m_accountGroup->setTitle(m_loginGroup->title());
   m_openPageBtn->setText(tr("Open authorize page..."));
   m_pinEdit->setPlaceholderText(tr("Enter verification PIN from authorize page"));
   m_pasteBtn->setToolTip(tr("Paste"));
   m_completeBtn->setText(tr("Complete authoruzation"));
+
+  m_userNameLabel->setText(tr("Username:"));
+  m_logoutBtn->setText(tr("Logout"));
 }

@@ -93,8 +93,12 @@ QWidget *ImgurProviderPlugin::settingsWidget(QWidget *parent)
 # endif
 
   m_settingsWidget = new ImgurSettings(parent);
+  if (!m_username.isEmpty())
+    m_settingsWidget->setSuccess(m_username);
+
   connect(m_settingsWidget, SIGNAL(pinRequest()), SLOT(onPinRequest()));
   connect(m_settingsWidget, SIGNAL(pinReady(QString)), SLOT(onPinReady(QString)));
+  connect(m_settingsWidget, SIGNAL(logout()), SLOT(onLogout()));
 
   return m_settingsWidget;
 }
@@ -131,6 +135,9 @@ void ImgurProviderPlugin::handleReply(const ChatId &id, const QVariant &data)
     m_refreshToken = reply.value(LS("refresh_token")).toString();
     m_expires      = QDateTime::currentMSecsSinceEpoch() + (reply.value(LS("expires_in")).toInt() * 1000);
 
+    if (m_settingsWidget)
+      m_settingsWidget->setSuccess(m_username);
+
     saveToken();
   }
 }
@@ -157,6 +164,17 @@ void ImgurProviderPlugin::init(ISettings *settings, IProviderListener *listener)
       m_username     = data.at(3).toString();
     }
   }
+}
+
+
+void ImgurProviderPlugin::onLogout()
+{
+  m_expires = 0;
+  m_username = QString();
+  m_refreshToken = QString();
+  m_accessToken = QString();
+
+  m_settings->setValue(id() + LS(".provider/Token"), QString());
 }
 
 

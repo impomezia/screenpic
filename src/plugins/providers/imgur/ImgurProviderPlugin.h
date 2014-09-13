@@ -45,6 +45,7 @@ public:
   void init(ISettings *settings, IProviderListener *listener) override;
 
 private slots:
+  void onLogout();
   void onPinReady(const QString &pin);
   void onPinRequest();
 
