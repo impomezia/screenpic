@@ -32,6 +32,7 @@ ImgurProviderPlugin::ImgurProviderPlugin()
 {
 }
 
+
 int ImgurProviderPlugin::maxImages() const
 {
   return 1;
@@ -91,6 +92,13 @@ QWidget *ImgurProviderPlugin::settingsWidget(QWidget *parent)
 Uploader *ImgurProviderPlugin::uploader(QObject *parent) const
 {
   return new ImgurUploader(parent);
+}
+
+
+void ImgurProviderPlugin::handleReply(const ChatId &id, const QVariant &data)
+{
+  Q_UNUSED(id)
+  Q_UNUSED(data)
 }
 
 

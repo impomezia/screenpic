@@ -241,6 +241,16 @@ void AppCore::onEditingFinished(UploadItemPtr item)
 }
 
 
+void AppCore::onFinished(const ChatId &id, const QString &provider, const QVariant &data)
+{
+  IProvider *p = m_providers->get(provider);
+  if (!p)
+    return;
+
+  p->handleReply(id, data);
+}
+
+
 /*!
  * Слот вызывается после того как изображение было сохранено в результирующий формат.
  */
@@ -292,6 +302,7 @@ void AppCore::onTaskReady(qint64 counter, QObject *object)
 
     connect(m_net, SIGNAL(finished(UploadResult)), m_tray, SLOT(onUploadFinished(UploadResult)));
     connect(m_net, SIGNAL(finished(UploadResult)), SLOT(onUploadFinished(UploadResult)));
+    connect(m_net, SIGNAL(finished(ChatId,QString,QVariant)), SLOT(onFinished(ChatId,QString,QVariant)));
     connect(m_net, SIGNAL(uploadProgress(ChatId,int)), SLOT(onUploadProgress(ChatId,int)));
   }
 }

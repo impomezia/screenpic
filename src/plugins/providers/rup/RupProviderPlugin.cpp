@@ -85,6 +85,13 @@ Uploader *RupProviderPlugin::uploader(QObject *parent) const
 }
 
 
+void RupProviderPlugin::handleReply(const ChatId &id, const QVariant &data)
+{
+  Q_UNUSED(id)
+  Q_UNUSED(data)
+}
+
+
 void RupProviderPlugin::init(ISettings *settings, IProviderListener *listener)
 {
   Q_UNUSED(listener)

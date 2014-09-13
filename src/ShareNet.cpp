@@ -32,6 +32,7 @@ ShareNet::ShareNet(Providers *providers, QNetworkAccessManager *net, QObject *pa
 
   foreach (const Uploader *uploader, m_uploaders) {
     connect(uploader, SIGNAL(finished(UploadResult)), SIGNAL(finished(UploadResult)));
+    connect(uploader, SIGNAL(finished(ChatId,QString,QVariant)), SIGNAL(finished(ChatId,QString,QVariant)));
     connect(uploader, SIGNAL(uploadProgress(ChatId,int)), SIGNAL(uploadProgress(ChatId,int)));
   }
 }

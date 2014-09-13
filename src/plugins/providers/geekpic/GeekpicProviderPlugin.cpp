@@ -67,6 +67,13 @@ Uploader *GeekpicProviderPlugin::uploader(QObject *parent) const
 }
 
 
+void GeekpicProviderPlugin::handleReply(const ChatId &id, const QVariant &data)
+{
+  Q_UNUSED(id)
+  Q_UNUSED(data)
+}
+
+
 void GeekpicProviderPlugin::init(ISettings *settings, IProviderListener *listener)
 {
   Q_UNUSED(settings);

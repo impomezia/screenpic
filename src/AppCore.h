@@ -68,6 +68,7 @@ public slots:
 
 private slots:
   void onEditingFinished(UploadItemPtr item);
+  void onFinished(const ChatId &id, const QString &provider, const QVariant &data);
   void onImageSaved(const ChatId &id, const QByteArray &body, const Thumbnail &thumbnail);
   void onSettingsChanged(const QString &key, const QVariant &value);
   void onTaskReady(qint64 counter, QObject *object);

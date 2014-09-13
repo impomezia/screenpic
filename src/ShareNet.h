@@ -40,6 +40,7 @@ public:
   inline QNetworkAccessManager *net() const { return m_net; }
 
 signals:
+  void finished(const ChatId &id, QString provider, const QVariant &data);
   void finished(const UploadResult &result);
   void uploadProgress(const ChatId &id, int percent);
 

@@ -19,6 +19,7 @@
 
 #include <QIcon>
 
+class ChatId;
 class IProviderListener;
 class ISettings;
 class QObject;
@@ -36,6 +37,7 @@ public:
   virtual QVariant data() const                                       = 0;
   virtual QWidget *settingsWidget(QWidget *parent = 0)                = 0;
   virtual Uploader *uploader(QObject *parent = 0) const               = 0;
+  virtual void handleReply(const ChatId &id, const QVariant &data)    = 0;
   virtual void init(ISettings *settings, IProviderListener *listener) = 0;
 };
 

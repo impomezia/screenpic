@@ -67,6 +67,13 @@ Uploader *NoneProviderPlugin::uploader(QObject *parent) const
 }
 
 
+void NoneProviderPlugin::handleReply(const ChatId &id, const QVariant &data)
+{
+  Q_UNUSED(id)
+  Q_UNUSED(data)
+}
+
+
 void NoneProviderPlugin::init(ISettings *settings, IProviderListener *listener)
 {
   Q_UNUSED(settings);
