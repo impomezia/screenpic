@@ -178,7 +178,7 @@ void ImgurSettings::retranslateUi()
   m_openPageBtn->setText(tr("Open authorize page..."));
   m_pinEdit->setPlaceholderText(tr("Enter verification PIN from authorize page"));
   m_pasteBtn->setToolTip(tr("Paste"));
-  m_completeBtn->setText(tr("Complete authoruzation"));
+  m_completeBtn->setText(tr("Complete authorization"));
 
   m_userNameLabel->setText(tr("Username:"));
   m_logoutBtn->setText(tr("Logout"));
