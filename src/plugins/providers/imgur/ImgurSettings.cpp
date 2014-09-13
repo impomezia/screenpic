@@ -24,6 +24,7 @@
 
 #include "ImgurSettings.h"
 #include "sglobal.h"
+#include "ui/Spinner.h"
 
 ImgurSettings::ImgurSettings(QWidget *parent)
   : QWidget(parent)
@@ -43,17 +44,23 @@ ImgurSettings::ImgurSettings(QWidget *parent)
 
   m_thirdStepLabel = new QLabel("3.", this);
   m_completeBtn = new QPushButton(this);
+  m_completeBtn->setEnabled(false);
+  m_spinner = new Spinner(this);
+  m_errorLabel = new QLabel(this);
+  m_errorLabel->setObjectName("errorLabel");
 
   QGridLayout *accountLayout = new QGridLayout(m_accountGroup);
   accountLayout->addWidget(m_firstStepLabel, 0, 0);
   accountLayout->addWidget(m_openPageBtn, 0, 1);
   accountLayout->addWidget(m_secondStepLabel, 1, 0);
-  accountLayout->addWidget(m_pinEdit, 1, 1, 1, 2);
-  accountLayout->addWidget(m_pasteBtn, 1, 3);
+  accountLayout->addWidget(m_pinEdit, 1, 1, 1, 3);
+  accountLayout->addWidget(m_pasteBtn, 1, 4);
   accountLayout->addWidget(m_thirdStepLabel, 2, 0);
   accountLayout->addWidget(m_completeBtn, 2, 1);
+  accountLayout->addWidget(m_spinner, 2, 2);
+  accountLayout->addWidget(m_errorLabel, 2, 3, 1, 2);
   accountLayout->setColumnStretch(1, 1);
-  accountLayout->setColumnStretch(2, 1);
+  accountLayout->setColumnStretch(3, 1);
   accountLayout->setSpacing(4);
 
   QVBoxLayout *layout = new QVBoxLayout(this);
@@ -62,9 +69,19 @@ ImgurSettings::ImgurSettings(QWidget *parent)
 
   retranslateUi();
 
+  connect(m_pinEdit, SIGNAL(textChanged(QString)), SLOT(onTextChanged(QString)));
   connect(m_pasteBtn, SIGNAL(clicked()), SLOT(onPaste()));
   connect(m_openPageBtn, SIGNAL(clicked()), SIGNAL(pinRequest()));
   connect(m_completeBtn, SIGNAL(clicked()), SLOT(onCompleteClicked()));
+}
+
+
+void ImgurSettings::setError(const QString &errorText)
+{
+  onTextChanged(m_pinEdit->text());
+  m_spinner->stop();
+  m_errorLabel->setText(errorText);
+  m_errorLabel->show();
 }
 
 
@@ -79,7 +96,15 @@ void ImgurSettings::changeEvent(QEvent *event)
 
 void ImgurSettings::onCompleteClicked()
 {
-  emit pinReady(m_pinEdit->text());
+  const QString text = m_pinEdit->text();
+  if (text.isEmpty())
+    return;
+
+  m_completeBtn->setEnabled(false);
+  m_spinner->start();
+  m_errorLabel->hide();
+
+  emit pinReady(text);
 }
 
 
@@ -87,6 +112,12 @@ void ImgurSettings::onPaste()
 {
   m_pinEdit->clear();
   m_pinEdit->paste();
+}
+
+
+void ImgurSettings::onTextChanged(const QString &text)
+{
+  m_completeBtn->setEnabled(!text.isEmpty());
 }
 
 

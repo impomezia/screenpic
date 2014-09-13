@@ -76,6 +76,7 @@ HEADERS += \
     ui/ServersPage.h \
     ui/SettingsDialog.h \
     ui/SettingsPage.h \
+    ui/Spinner.h \
     ui/TitleWidget.h \
     ui/TrayWindow.h \
     uploaders/Uploader.h \
@@ -127,6 +128,7 @@ SOURCES += \
     ui/ServersPage.cpp \
     ui/SettingsDialog.cpp \
     ui/SettingsPage.cpp \
+    ui/Spinner.cpp \
     ui/TitleWidget.cpp \
     ui/TrayWindow.cpp \
     uploaders/Uploader.cpp \

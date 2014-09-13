@@ -73,3 +73,8 @@ QGroupBox::title {
   subcontrol-origin: margin;
   subcontrol-position: top left;
 }
+
+#errorLabel {
+  color: #ac2925;
+  font-weight: bold;
+}

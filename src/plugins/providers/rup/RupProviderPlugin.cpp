@@ -97,7 +97,7 @@ void RupProviderPlugin::init(ISettings *settings, IProviderListener *listener)
   Q_UNUSED(listener)
 
   m_settings = settings;
-  m_token = settings->value(id() + LS(".provider/Token")).toString();
+  m_token = m_settings->value(id() + LS(".provider/Token")).toString();
 
   if (m_token.size() != 42) {
     QBlowfish bf(QByteArray::fromRawData(reinterpret_cast<const char*>(key), sizeof(key)));

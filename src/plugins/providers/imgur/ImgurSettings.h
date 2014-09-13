@@ -24,6 +24,7 @@ class QLabel;
 class QLineEdit;
 class QPushButton;
 class QToolButton;
+class Spinner;
 
 class ImgurSettings : public QWidget
 {
@@ -31,6 +32,7 @@ class ImgurSettings : public QWidget
 
 public:
   ImgurSettings(QWidget *parent = 0);
+  void setError(const QString &errorText);
 
 signals:
   void pinReady(const QString &pin);
@@ -42,11 +44,13 @@ protected:
 private slots:
   void onCompleteClicked();
   void onPaste();
+  void onTextChanged(const QString &text);
 
 private:
   void retranslateUi();
 
   QGroupBox *m_accountGroup;
+  QLabel *m_errorLabel;
   QLabel *m_firstStepLabel;
   QLabel *m_secondStepLabel;
   QLabel *m_thirdStepLabel;
@@ -54,6 +58,7 @@ private:
   QPushButton *m_completeBtn;
   QPushButton *m_openPageBtn;
   QToolButton *m_pasteBtn;
+  Spinner *m_spinner;
 };
 
 #endif // IMGURSETTINGS_H_

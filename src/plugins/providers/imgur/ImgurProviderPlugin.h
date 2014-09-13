@@ -22,6 +22,8 @@
 #include "interfaces/IPlugin.h"
 #include "interfaces/IProvider.h"
 
+class ImgurSettings;
+
 class ImgurProviderPlugin : public QObject, public IPlugin, public IProvider
 {
   Q_OBJECT
@@ -47,9 +49,17 @@ private slots:
   void onPinRequest();
 
 private:
+  void saveToken();
+
   IProviderListener *m_listener;
+  ISettings *m_settings;
+  qint64 m_expires;
+  QPointer<ImgurSettings> m_settingsWidget;
+  QString m_accessToken;
   QString m_clientId;
   QString m_clientSecret;
+  QString m_refreshToken;
+  QString m_username;
 };
 
 #endif /* IMGURPROVIDER_H_ */
