@@ -33,8 +33,9 @@ class Providers : public QObject
 public:
   Providers(QObject *parent = 0);
   ~Providers();
-  inline const QString& currentId() const        { return m_currentId; }
-  inline const QStringList& list() const         { return m_list; }
+  inline const bool contains(const QString &id) const { return m_map.contains(id); }
+  inline const QString& currentId() const             { return m_currentId; }
+  inline const QStringList& list() const              { return m_list; }
   IProvider *current() const;
   IProvider *get(const QString &id) const;
   void add(IProvider *provider);

@@ -169,7 +169,8 @@ void AppCore::add(UploadItemPtr item)
   if (!m_settings->value(Settings::kEditor).toBool())
     return onEditingFinished(item);
 
-  EditorWindow *window = new EditorWindow(m_settings);
+  EditorWindow *window = new EditorWindow(m_settings, m_translation);
+
   connect(window, SIGNAL(taskCreated(QRunnable*)), SLOT(add(QRunnable*)));
   connect(window, SIGNAL(editingFinished(UploadItemPtr)), SLOT(onEditingFinished(UploadItemPtr)));
 
@@ -355,7 +356,11 @@ void AppCore::initProviders()
     m_providers->add(provider);
   }
 
-  m_settings->setDefault(Settings::kProvider, LS(ORG_PROVIDER));
+  QString provider = m_settings->value(Settings::kEdition, QString()).toString();
+  if (provider.isEmpty() || !m_providers->contains(provider))
+    provider = LS(ORG_PROVIDER);
+
+  m_settings->setDefault(Settings::kProvider, provider);
   m_providers->setCurrentId(m_settings->value(Settings::kProvider).toString());
 }
 

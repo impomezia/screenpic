@@ -18,6 +18,7 @@
 #include "sglobal.h"
 
 const QString Settings::kCaptureMouse = LS("CaptureMouse");
+const QString Settings::kEdition      = LS("Edition");
 const QString Settings::kEditor       = LS("Editor");
 const QString Settings::kLastOpenDir  = LS("LastOpenDir");
 const QString Settings::kLastSaveDir  = LS("LastSaveDir");

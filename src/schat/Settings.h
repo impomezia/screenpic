@@ -32,6 +32,7 @@ class SCHAT_EXPORT Settings : public QSettings, public ISettings
 
 public:
   static const QString kCaptureMouse;
+  static const QString kEdition;
   static const QString kEditor;
   static const QString kLastOpenDir;
   static const QString kLastSaveDir;

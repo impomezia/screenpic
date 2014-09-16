@@ -38,12 +38,14 @@
 #include "Settings.h"
 #include "sglobal.h"
 #include "tasks/SaveTask.h"
+#include "Translation.h"
 #include "ui/TitleWidget.h"
 
-EditorWindow::EditorWindow(Settings *settings, QWidget *parent, Qt::WindowFlags flags)
+EditorWindow::EditorWindow(Settings *settings, Translation *translation, QWidget *parent, Qt::WindowFlags flags)
   : QMainWindow(parent, flags)
   , m_firstShow(true)
   , m_settings(settings)
+  , m_translation(translation)
 {
   setAttribute(Qt::WA_DeleteOnClose);
   setWindowTitle("Screenpic");
@@ -346,6 +348,17 @@ void EditorWindow::fillMainToolBar()
 
 void EditorWindow::fillModeToolBar()
 {
+  QLabel *label = 0;
+
+  if (QFile::exists(LS(":/images/logo.png"))) {
+    label = new QLabel(this);
+    label->setPixmap(QPixmap(LS(":/images/logo.png")));
+    label->setContentsMargins(0, 0, 6, 0);
+
+    m_modeToolBar->addWidget(label);
+    m_modeToolBar->addSeparator();
+  }
+
   addAction(QIcon(":/images/move-tool.png"), tr("Move (H)"), EditorScene::HandMode);
   addAction(QIcon(":/images/crop.png"), tr("Crop"), EditorScene::CropMode);
 
@@ -377,6 +390,23 @@ void EditorWindow::fillModeToolBar()
 
   m_modesGroup->addAction(dropper);
   m_modes.insert(EditorScene::DropperMode, dropper);
+
+  const QString edition = m_settings->value(Settings::kEdition, QString()).toString();
+
+  if (edition != QString()) {
+    const QString fileName = LS(":/images/") + edition + LS("-edition_") + m_translation->name().left(2) + LS(".png");
+    if (!QFile::exists(fileName))
+      return;
+
+    QWidget *stretch = new QWidget(this);
+    stretch->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    m_modeToolBar->addWidget(stretch);
+
+    label = new QLabel(this);
+    label->setPixmap(QPixmap(fileName));
+    label->setContentsMargins(6, 0, 6, 0);
+    m_modeToolBar->addWidget(label);
+  }
 }
 
 

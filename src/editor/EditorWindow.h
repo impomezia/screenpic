@@ -32,13 +32,14 @@ class QPushButton;
 class QRunnable;
 class Settings;
 class TitleWidget;
+class Translation;
 
 class EditorWindow : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  EditorWindow(Settings *settings, QWidget *parent = 0, Qt::WindowFlags flags = 0);
+  EditorWindow(Settings *settings, Translation *translation, QWidget *parent = 0, Qt::WindowFlags flags = 0);
   void open(UploadItemPtr item);
 
 signals:
@@ -86,6 +87,7 @@ private:
   QToolBar *m_modeToolBar;
   Settings *m_settings;
   TitleWidget *m_titleEdit;
+  Translation *m_translation;
   UploadItemPtr m_item;
 };
 
