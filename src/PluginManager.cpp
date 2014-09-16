@@ -17,7 +17,6 @@
 #include <QPluginLoader>
 
 #include "PluginManager.h"
-
 #include "plugins.h"
 
 PluginManager::PluginManager(QObject *parent)
