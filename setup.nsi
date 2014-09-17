@@ -12,6 +12,7 @@
 !define APP_REVISION  "0"
 !define APP_COPYRIGHT "Copyright © 2013-2014 Alexander Sedov"
 !define APP_SITE      "http://${APP_DOMAIN}"
+!define APP_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}"
 
 Var update
 
@@ -37,8 +38,9 @@ SetCompressorDictSize 8
 ReserveFile "res\plugins\FindProcDLL.dll"
 
 !define MUI_ABORTWARNING
-!define MUI_ICON                     "res\app.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "res\wizard.bmp"
+!define MUI_ICON                       "res\app.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP   "res\wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "res\wizard.bmp"
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 !define MUI_FINISHPAGE_TITLE_3LINES
 !define MUI_COMPONENTSPAGE_SMALLDESC
@@ -121,6 +123,13 @@ Section "$(SEC_CORE)" SecCore
     CreateShortCut  "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME_LOW}.exe" "" "" "" "" "" "${APP_NAME} ${APP_VERSION}"
 
     WriteUninstaller "$INSTDIR\uninstall.exe"
+    WriteRegStr HKCU "${APP_UNINST_KEY}" "DisplayName"     "${APP_NAME} ${APP_VERSION}"
+    WriteRegStr HKCU "${APP_UNINST_KEY}" "UnInstallString" "$INSTDIR\uninstall.exe"
+    WriteRegStr HKCU "${APP_UNINST_KEY}" "DisplayIcon"     "$INSTDIR\${APP_NAME_LOW}.exe"
+    WriteRegStr HKCU "${APP_UNINST_KEY}" "Publisher"       "${APP_DOMAIN}"
+    WriteRegStr HKCU "${APP_UNINST_KEY}" "URLInfoAbout"    "${APP_SITE}"
+    WriteRegStr HKCU "${APP_UNINST_KEY}" "DisplayVersion"  "${APP_VERSION}"
+    WriteRegStr HKCU "${APP_UNINST_KEY}" "InstallLocation" "$INSTDIR"
   ${EndIf}
 
   ${If} $update == true
@@ -178,7 +187,7 @@ Section "Uninstall"
 
   DeleteRegValue HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "${APP_NAME}"
   
-  ExecWait '"$INSTDIR\${APP_NAME_LOW}.exe" -exit'
+  !insertmacro KILL_ALL "$INSTDIR\${APP_NAME_LOW}.exe"
 
   RMDir "$SMPROGRAMS\${APP_NAME}"
   
@@ -191,6 +200,7 @@ Section "Uninstall"
   
   RMDir "$INSTDIR"
 
+  DeleteRegKey HKCU "${APP_UNINST_KEY}"
   DeleteRegKey /ifempty HKCU "${APP_REGKEY}"
 SectionEnd
 
