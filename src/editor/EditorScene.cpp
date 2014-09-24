@@ -202,6 +202,9 @@ void EditorScene::keyPressEvent(QKeyEvent *event)
 
 void EditorScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+  if (m_mode == TextMode)
+    return;
+
   QGraphicsScene::mouseMoveEvent(event);
 
   if (mode() != DropperMode)
