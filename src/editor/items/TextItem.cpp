@@ -60,6 +60,10 @@ void TextItem::focusInEvent(QFocusEvent *event)
 
 void TextItem::focusOutEvent(QFocusEvent *event)
 {
+  QTextCursor cursor(textCursor());
+  cursor.clearSelection();
+  setTextCursor(cursor);
+
   unsetCursor();
 
   QGraphicsTextItem::focusOutEvent(event);
