@@ -60,9 +60,11 @@ void TextItem::focusInEvent(QFocusEvent *event)
 
 void TextItem::focusOutEvent(QFocusEvent *event)
 {
-  QTextCursor cursor(textCursor());
-  cursor.clearSelection();
-  setTextCursor(cursor);
+  if(event->reason() != Qt::PopupFocusReason){
+    QTextCursor cursor(textCursor());
+    cursor.clearSelection();
+    setTextCursor(cursor);
+  }
 
   unsetCursor();
 
