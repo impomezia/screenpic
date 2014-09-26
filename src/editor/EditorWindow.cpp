@@ -269,9 +269,9 @@ void EditorWindow::onWidthChanged(int width)
 
   EditorItem *item = m_scene->item(m_scene->mode());
   if (item)
-    m_settings->setValue(LS("Modes/") + item->id() + LS(".width"), width);
+     m_screenpic->settings()->setValue(LS("Modes/") + item->id() + LS(".width"), width);
   else
-    m_settings->setValue(LS("Width"), width);
+     m_screenpic->settings()->setValue(LS("Width"), width);
 
   const QList<QGraphicsItem *> items = m_scene->selectedItems();
   if (items.isEmpty())
