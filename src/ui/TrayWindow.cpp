@@ -26,6 +26,7 @@
 #include <QVBoxLayout>
 
 #include "AppCore.h"
+#include "Observers.h"
 #include "Providers.h"
 #include "RecentView.h"
 #include "Settings.h"
@@ -42,6 +43,7 @@ TrayWindow::TrayWindow(AppCore *core, QWidget *parent)
   , m_core(core)
   , m_width(0)
 {
+  setObjectName(LS("TrayWindow"));
   setFocusPolicy(Qt::WheelFocus);
   setAcceptDrops(true);
 
@@ -117,6 +119,8 @@ TrayWindow::TrayWindow(AppCore *core, QWidget *parent)
   connect(m_buttons.value(FileBtn), SIGNAL(clicked()), SIGNAL(openFile()));
   connect(m_siteBtn, SIGNAL(clicked()), SLOT(onSiteClicked()));
   connect(m_pinBtn, SIGNAL(clicked(bool)), SLOT(setPin(bool)));
+
+  Observers::watch(this);
 }
 
 

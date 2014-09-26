@@ -25,6 +25,7 @@ class PluginManager : public QObject
 
 public:
   PluginManager(QObject *parent = 0);
+  ~PluginManager();
   QObjectList get(const char *className) const;
 };
 

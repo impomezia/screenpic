@@ -1,5 +1,4 @@
-/*   $Id$
- *   Copyright (C) 2013 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,7 +28,7 @@ class QBasicTimer;
 class QCryptographicHash;
 class QNetworkAccessManager;
 class QNetworkReply;
-class Settings;
+class ISettings;
 
 class UpdateInfo
 {
@@ -74,7 +73,7 @@ public:
   static const QString kUrl;
   static const QString kVersion;
 
-  AutoUpdate(Settings *settings, QObject *parent);
+  AutoUpdate(ISettings *settings, QObject *parent);
   ~AutoUpdate();
   inline Status status() const { return m_status; }
 
@@ -99,6 +98,7 @@ private:
   void setDone(Status status);
 
   DownloadState m_state;           ///< Состояние закачки.
+  ISettings *m_settings;           ///< Настройки.
   QBasicTimer *m_timer;            ///< Таймер периодической проверки.
   QByteArray m_rawJSON;            ///< Сырые JSON данные.
   QCryptographicHash *m_sha1;      ///< Класс для проверки SHA1 хеша файла.
@@ -106,7 +106,6 @@ private:
   qint64 m_lastCheck;              ///< Время последней успешной проверки обновлений.
   QNetworkAccessManager *m_net;    ///< Менеджер доступа к сети.
   QNetworkReply *m_current;        ///< Текущий ответ за запрос скачивания файла.
-  Settings *m_settings;            ///< Настройки.
   Status m_status;                 ///< Статус проверки обновлений.
   UpdateInfo m_info;               ///< Информация об обновлении.
 };

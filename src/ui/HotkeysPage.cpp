@@ -32,6 +32,7 @@ HotkeysPage::HotkeysPage(AppCore *core, QWidget *parent)
   : QWidget(parent)
   , m_core(core)
 {
+  setObjectName("HotkeysPage");
   setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
   m_primaryLabel = new QLabel(this);

@@ -34,7 +34,9 @@
 #include "EditorWindow.h"
 #include "GlobalShortcuts.h"
 #include "Grabber.h"
+#include "Hooks.h"
 #include "NodeLog.h"
+#include "Observers.h"
 #include "PluginManager.h"
 #include "Providers.h"
 #include "RecentModel.h"
@@ -56,6 +58,7 @@ AppCore::AppCore(QObject *parent)
   , m_autoUpdate(0)
   , m_netId(-1)
   , m_recentModel(0)
+  , m_net(0)
   , m_tray(0)
 {
 # ifndef NO_DEBUG_LOG
@@ -110,7 +113,11 @@ AppCore::AppCore(QObject *parent)
   m_service = new ServiceThread(this);
   m_netId = m_service->add(new ShareNetTask(m_providers));
 
-  connect(m_settings, SIGNAL(changed(QString,QVariant)), SLOT(onSettingsChanged(QString,QVariant)));
+  m_observers = new Observers(this, m_pluginManager->get("IObserver"), this);
+  m_hooks     = new Hooks(this, m_pluginManager->get("IHook"), this);
+
+  m_settings->addListener(this);
+
   connect(m_service, SIGNAL(ready(qint64,QObject*)), SLOT(onTaskReady(qint64,QObject*)));
   connect(m_grabber, SIGNAL(ready(UploadItemPtr)), SLOT(add(UploadItemPtr)));
 
@@ -130,18 +137,29 @@ AppCore::~AppCore()
 
 void AppCore::stop()
 {
-  LOG_DEBUG("stopping...")
-
   m_service->quit();
   m_service->wait();
+}
 
-  LOG_DEBUG("stopped")
+
+QString AppCore::edition() const
+{
+  return m_settings->value(Settings::kEdition, QString()).toString();
 }
 
 
 void AppCore::onCustomRequest(const ChatId &id, const QString &provider, const QVariant &data)
 {
   QMetaObject::invokeMethod(m_net, "add", Qt::QueuedConnection, Q_ARG(ChatId, id), Q_ARG(QString, provider), Q_ARG(QVariant, data));
+}
+
+
+void AppCore::onSettingsChanged(const QString &key, const QVariant &value)
+{
+  if (key == Settings::kProvider)
+    m_providers->setCurrentId(value.toString());
+  else if (key == Settings::kCaptureMouse)
+    m_grabber->setCaptureMouse(value.toBool());
 }
 
 
@@ -169,10 +187,13 @@ void AppCore::add(UploadItemPtr item)
   if (!m_settings->value(Settings::kEditor).toBool())
     return onEditingFinished(item);
 
-  EditorWindow *window = new EditorWindow(m_settings, m_translation);
+  EditorWindow *window = new EditorWindow(this);
+  window->setProvider(m_providers->current());
+  Observers::watch(window);
 
   connect(window, SIGNAL(taskCreated(QRunnable*)), SLOT(add(QRunnable*)));
   connect(window, SIGNAL(editingFinished(UploadItemPtr)), SLOT(onEditingFinished(UploadItemPtr)));
+  connect(m_providers, SIGNAL(currentChanged(IProvider*)), window, SLOT(setProvider(IProvider*)));
 
   window->open(item);
   window->show();
@@ -181,20 +202,24 @@ void AppCore::add(UploadItemPtr item)
 
 void AppCore::grabRect()
 {
-  LOG_DEBUG("grab rectangle...")
+  Observers::hitEvent(LS("capture"), LS("rectangle"));
+
   m_grabber->grab(Grabber::Region);
 }
 
 
 void AppCore::grabScreen()
 {
-  LOG_DEBUG("grab fullscreen...")
+  Observers::hitEvent(LS("capture"), LS("fullscreen"));
+
   m_grabber->grab(Grabber::FullScreen);
 }
 
 
 void AppCore::openFile()
 {
+  Observers::hitEvent(LS("capture"), LS("file"));
+
   openFile(QFileDialog::getOpenFileName(0, tr("Open image"), m_settings->value(Settings::kLastOpenDir).toString(), tr("Images (*.jpg *.jpeg *.png *.gif *.JPG *.PNG)")));
 }
 
@@ -242,16 +267,6 @@ void AppCore::onEditingFinished(UploadItemPtr item)
 }
 
 
-void AppCore::onFinished(const ChatId &id, const QString &provider, const QVariant &data)
-{
-  IProvider *p = m_providers->get(provider);
-  if (!p)
-    return;
-
-  p->handleReply(id, data);
-}
-
-
 /*!
  * Слот вызывается после того как изображение было сохранено в результирующий формат.
  */
@@ -266,24 +281,18 @@ void AppCore::onImageSaved(const ChatId &id, const QByteArray &body, const Thumb
   if (item->type() == ImageItem::Type && m_service->isReady()) {
     uploaditem_cast<ImageItem*>(item.data())->raw = body;
 
-    LOG_DEBUG("image converted: " << item->toString())
-
     IProvider *provider = m_providers->current();
     Q_ASSERT(provider);
 
-    QMetaObject::invokeMethod(m_net, "add", Qt::QueuedConnection, Q_ARG(UploadItemPtr, item), Q_ARG(QString, provider->id()), Q_ARG(QVariant, provider->data()));
+    Observers::hitEvent(LS("upload"), provider->id());
+
+    QVariant data = provider->data();
+    m_hooks->hookUploadData(provider->id(), data);
+
+    QMetaObject::invokeMethod(m_net, "add", Qt::QueuedConnection, Q_ARG(UploadItemPtr, item), Q_ARG(QString, provider->id()), Q_ARG(QVariant, data));
 
     m_recentModel->add(item);
   }
-}
-
-
-void AppCore::onSettingsChanged(const QString &key, const QVariant &value)
-{
-  if (key == Settings::kProvider)
-    m_providers->setCurrentId(value.toString());
-  else if (key == Settings::kCaptureMouse)
-    m_grabber->setCaptureMouse(value.toBool());
 }
 
 
@@ -303,8 +312,10 @@ void AppCore::onTaskReady(qint64 counter, QObject *object)
 
     connect(m_net, SIGNAL(finished(UploadResult)), m_tray, SLOT(onUploadFinished(UploadResult)));
     connect(m_net, SIGNAL(finished(UploadResult)), SLOT(onUploadFinished(UploadResult)));
-    connect(m_net, SIGNAL(finished(ChatId,QString,QVariant)), SLOT(onFinished(ChatId,QString,QVariant)));
+    connect(m_net, SIGNAL(finished(ChatId,QString,QVariant)), m_providers, SLOT(handleReply(ChatId,QString,QVariant)));
     connect(m_net, SIGNAL(uploadProgress(ChatId,int)), SLOT(onUploadProgress(ChatId,int)));
+
+    m_providers->networkReady();
   }
 }
 
@@ -347,14 +358,7 @@ void AppCore::startTasks()
  */
 void AppCore::initProviders()
 {
-  m_providers = new Providers(this);
-  QObjectList providers = m_pluginManager->get("IProvider");
-  for (int i = 0; i < providers.size(); ++i) {
-    IProvider *provider = qobject_cast<IProvider*>(providers.at(i));
-
-    provider->init(m_settings, this);
-    m_providers->add(provider);
-  }
+  m_providers = new Providers(this, this, m_pluginManager->get("INetHandle"), this);
 
   QString provider = m_settings->value(Settings::kEdition, QString()).toString();
   if (provider.isEmpty() || !m_providers->contains(provider))
@@ -370,10 +374,12 @@ void AppCore::initProviders()
  */
 void AppCore::initTranslation()
 {
-  m_translation = new Translation(this);
-  m_translation->setSearch(QStringList());
-  m_translation->setPrefix(LS("app_"));
+  Translation *translation = new Translation(this);
+  translation->setSearch(QStringList());
+  translation->setPrefix(LS("app_"));
 
   m_settings->setDefault(Settings::kTranslation, LS("auto"));
-  m_translation->load(m_settings->value(Settings::kTranslation).toString());
+  translation->load(m_settings->value(Settings::kTranslation).toString());
+
+  m_translation = translation;
 }

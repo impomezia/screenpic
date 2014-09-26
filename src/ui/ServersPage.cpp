@@ -29,6 +29,7 @@ ServersPage::ServersPage(AppCore *core, QWidget *parent)
   : QWidget(parent)
   , m_core(core)
 {
+  setObjectName("ServersPage");
   setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
   m_serversCombo = new QComboBox(this);

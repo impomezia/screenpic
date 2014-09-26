@@ -28,7 +28,7 @@ public:
   enum { Type };
 
   UploadItem(int mode = -1);
-  virtual ~UploadItem();
+  virtual ~UploadItem() {}
   inline const ChatId& id() const                      { return m_id; }
   inline const ChatId& roomId() const                  { return m_roomId; }
   inline const Thumbnail& thumbnail() const            { return m_thumbnail; }

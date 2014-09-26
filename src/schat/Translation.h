@@ -24,22 +24,23 @@
 #include <QStringList>
 
 #include "schat.h"
+#include "interfaces/ITranslation.h"
 
 class QTranslator;
 
-class SCHAT_EXPORT Translation : public QObject
+class SCHAT_EXPORT Translation : public QObject, public ITranslation
 {
   Q_OBJECT
 
 public:
   Translation(QObject *parent = 0);
   inline const QString& language() const        { return m_language; }
-  inline const QString& name() const            { return m_name; }
+  QString name() const override                 { return m_name; }
   inline const QString& prefix() const          { return m_prefix; }
   inline const QStringList& search() const      { return m_search; }
   inline void setPrefix(const QString &prefix)  { m_prefix = prefix; }
   void addOther(const QString &name);
-  void load(const QString &name);
+  void load(const QString &name) override;
   void setSearch(const QStringList &search);
 
 private:

@@ -70,6 +70,8 @@ HEADERS += \
     tools/Ver.h \
     TrayIcon.h \
     ui/AboutPage.h \
+    ui/BackdropWidget.h \
+    ui/DialogFrame.h \
     ui/Flyout.h \
     ui/RecentItemDelegate.h \
     ui/RecentView.h \
@@ -82,6 +84,16 @@ HEADERS += \
     uploaders/Uploader.h \
     uploaders/UploadResult.h \
     version.h \
+    interfaces/IObserver.h \
+    interfaces/IObserverListener.h \
+    Observers.h \
+    interfaces/ITranslation.h \
+    interfaces/IScreenpic.h \
+    interfaces/ISettingsListener.h \
+    interfaces/IHook.h \
+    Hooks.h \
+    interfaces/INetHandle.h \
+    editor/EditorProperties.h
 
 SOURCES += \
     App.cpp \
@@ -122,6 +134,8 @@ SOURCES += \
     tools/Ver.cpp \
     TrayIcon.cpp \
     ui/AboutPage.cpp \
+    ui/BackdropWidget.cpp \
+    ui/DialogFrame.cpp \
     ui/Flyout.cpp \
     ui/RecentItemDelegate.cpp \
     ui/RecentView.cpp \
@@ -133,15 +147,26 @@ SOURCES += \
     ui/TrayWindow.cpp \
     uploaders/Uploader.cpp \
     uploaders/UploadResult.cpp \
+    Observers.cpp \
+    Hooks.cpp \
+    editor/EditorProperties.cpp
 
 RESOURCES += ../res/app.qrc
 
 win32 {
     RC_FILE = ../res/app.rc
     HEADERS += capture/GDICapture.h
-    SOURCES += capture/GDICapture.cpp
+    SOURCES += capture/GDICapture.cpp tools/OsInfo_win.cpp
 
     LIBS += -luser32 -lgdi32
+}
+
+unix:!macx: {
+  SOURCES += tools/OsInfo_unix.cpp
+}
+
+macx: {
+  SOURCES += tools/OsInfo_mac.cpp
 }
 
 contains(GLOBAL_SHORTCUTS, 1) {
