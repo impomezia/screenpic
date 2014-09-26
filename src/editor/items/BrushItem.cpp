@@ -41,7 +41,6 @@ void BrushItem::start(const QPointF &point, const QPen &pen)
   grabMouse();
 
   QPen p = pen;
-  p.setWidth(15);
   p.setCapStyle(Qt::RoundCap);
   p.setJoinStyle(Qt::RoundJoin);
   setPen(p);

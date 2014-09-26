@@ -31,6 +31,7 @@ public:
   inline int type() const { return Type; }
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
   void setColor(const QColor &color);
+  void setWidth(const int &width);
   void start(const QPointF &point, const QPen &pen);
 
 protected:

@@ -30,6 +30,7 @@ class QGraphicsView;
 class QLineEdit;
 class QPushButton;
 class QRunnable;
+class QSpinBox;
 class Settings;
 class TitleWidget;
 class Translation;
@@ -61,6 +62,7 @@ private slots:
   void onModeChanged(int mode);
   void onRendered(const QImage &image);
   void onSelectionChanged();
+  void onWidthChanged(int width);
   void saveAs();
   void setMode();
 
@@ -83,6 +85,7 @@ private:
   QGraphicsView *m_view;
   QMap<int, QAction*> m_modes;
   QPushButton *m_publishBtn;
+  QSpinBox *m_widthSpBx;
   QToolBar *m_mainToolBar;
   QToolBar *m_modeToolBar;
   Settings *m_settings;

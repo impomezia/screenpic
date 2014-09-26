@@ -26,6 +26,7 @@
 #include <QLineEdit>
 #include <QMouseEvent>
 #include <QPushButton>
+#include <QSpinBox>
 #include <QToolBar>
 #include <QUndoStack>
 
@@ -35,6 +36,7 @@
 #include "ItemColorButton.h"
 #include "items/ColorCommand.h"
 #include "items/EditorItem.h"
+#include "items/WidthCommand.h"
 #include "Settings.h"
 #include "sglobal.h"
 #include "tasks/SaveTask.h"
@@ -90,6 +92,7 @@ EditorWindow::EditorWindow(Settings *settings, Translation *translation, QWidget
   connect(m_scene, SIGNAL(colorAtCursorChanged(QColor)), SLOT(onColorAtCursorChanged(QColor)));
   connect(m_scene, SIGNAL(colorSelected(QColor)), SLOT(onColorSelected(QColor)));
   connect(m_colorBtn, SIGNAL(changed(QRgb)), SLOT(onColorChanged(QRgb)));
+  connect(m_widthSpBx, SIGNAL(valueChanged(int)), SLOT(onWidthChanged(int)));
   connect(m_colorBtn, SIGNAL(dropperClicked()), SLOT(onDropperClicked()));
 }
 
@@ -185,6 +188,29 @@ void EditorWindow::onColorChanged(QRgb color)
   m_scene->undoStack()->push(command);
 }
 
+void EditorWindow::onWidthChanged(int width)
+{
+  m_scene->setWidth(width);
+
+  EditorItem *item = m_scene->item(m_scene->mode());
+  if (item)
+    m_settings->setValue(LS("Modes/") + item->id() + LS(".width"), width);
+  else
+    m_settings->setValue(LS("Width"), width);
+
+  const QList<QGraphicsItem *> items = m_scene->selectedItems();
+  if (items.isEmpty())
+    return;
+
+  WidthCommand *command = new WidthCommand(items, width);
+  if (!command->isValid()) {
+    delete command;
+    return;
+  }
+
+  m_scene->undoStack()->push(command);
+}
+
 
 void EditorWindow::onColorSelected(const QColor &color)
 {
@@ -234,6 +260,7 @@ void EditorWindow::onModeChanged(int mode)
 
     EditorItem *item = m_scene->item(static_cast<EditorScene::Mode>(mode));
     QColor color = m_colorBtn->customColor();
+    int width = m_widthSpBx->value();
 
     if (item) {
       m_view->viewport()->setCursor(item->cursor());
@@ -245,9 +272,16 @@ void EditorWindow::onModeChanged(int mode)
         m_scene->setColor(color.rgba());
         m_colorBtn->setColor(color.rgba());
       }
+
+      if (width > 0) {
+        width = m_settings->value(LS("Modes/") + item->id() + LS(".width"), item->width()).toInt();
+
+        m_widthSpBx->setValue(width);
+      }
     }
 
     m_colorAction->setEnabled(color.isValid());
+    m_widthSpBx->setEnabled(width > 0);
   }
 
   QAction *action = m_modes.value(mode);
@@ -276,6 +310,10 @@ void EditorWindow::onSelectionChanged()
   const QColor color = ColorCommand::getColor(m_scene->selectedItems());
   if (color.isValid())
     m_colorBtn->setColor(color.rgba());
+
+  const int width = WidthCommand::getWidth(m_scene->selectedItems());
+  if (width > 0)
+      m_widthSpBx->setValue(width);
 }
 
 
@@ -382,8 +420,13 @@ void EditorWindow::fillModeToolBar()
   m_colorBtn = new ItemColorButton(this);
   m_colorBtn->setColor(m_settings->value(LS("Color")).toString());
 
+  m_widthSpBx = new QSpinBox(this);
+  m_widthSpBx->setRange(1, 200);
+  m_widthSpBx->setValue(m_scene->pen().width());
+
   m_modeToolBar->addSeparator();
   m_colorAction = m_modeToolBar->addWidget(m_colorBtn);
+  m_colorAction = m_modeToolBar->addWidget(m_widthSpBx);
 
   QAction *dropper = new QAction(this);
   dropper->setCheckable(true);
