@@ -30,6 +30,7 @@ public:
   inline EditorItem() {}
   inline virtual ~EditorItem() {}
   inline virtual QColor color() const           { return 0xffd60808; }
+  inline virtual int width() const              { return int(); }
   inline virtual QString id() const             { return QString(); }
   inline virtual Qt::CursorShape cursor() const { return Qt::CrossCursor; }
   virtual IItemCommand *command(EditorScene *scene, const QPointF &point);
