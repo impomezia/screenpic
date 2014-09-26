@@ -2,13 +2,13 @@
 !include "LogicLib.nsh"
 !include "FileFunc.nsh"
 
-!AddPluginDir "res\plugins"
+!AddPluginDir "plugins"
 
 !define APP_NAME      "Screenpic"
 !define APP_NAME_LOW  "screenpic"
 !define APP_DOMAIN    "rup.io"
 !define APP_REGKEY    "Software\${APP_NAME}"
-!define APP_VERSION   "0.13.0"
+!define APP_VERSION   "0.13.2"
 !define APP_REVISION  "0"
 !define APP_COPYRIGHT "Copyright © 2013-2014 Alexander Sedov"
 !define APP_SITE      "http://${APP_DOMAIN}"
@@ -18,7 +18,7 @@ Var update
 
 Name "${APP_NAME}"
 BrandingText "${APP_COPYRIGHT}"
-OutFile "bin\${APP_NAME_LOW}-${APP_VERSION}.exe"
+OutFile "..\..\bin\${APP_NAME_LOW}-${APP_VERSION}.exe"
 InstallDir "$LOCALAPPDATA\${APP_NAME}"
 InstallDirRegKey HKCU "Software\${APP_NAME}" ""
 RequestExecutionLevel user
@@ -35,10 +35,10 @@ VIAddVersionKey  "ProductVersion"   "${APP_VERSION}"
 SetCompressor /SOLID lzma
 SetCompressorDictSize 8
 
-ReserveFile "res\plugins\FindProcDLL.dll"
+ReserveFile "plugins\FindProcDLL.dll"
 
 !define MUI_ABORTWARNING
-!define MUI_ICON                       "res\app.ico"
+!define MUI_ICON                       "..\..\res\app.ico"
 !define MUI_WELCOMEFINISHPAGE_BITMAP   "res\wizard.bmp"
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "res\wizard.bmp"
 !define MUI_WELCOMEPAGE_TITLE_3LINES
@@ -110,10 +110,10 @@ Section "$(SEC_CORE)" SecCore
   !insertmacro KILL_ALL "$INSTDIR\${APP_NAME_LOW}.exe"
 
   SetOutPath "$INSTDIR"
-  File "bin\libeay32.dll"
-  File "bin\ssleay32.dll"
+  File "..\..\bin\libeay32.dll"
+  File "..\..\bin\ssleay32.dll"
 
-  File "bin\${APP_NAME_LOW}.exe"
+  File "..\..\bin\${APP_NAME_LOW}.exe"
 
   ${If} $update == false
     WriteRegStr HKCU "${APP_REGKEY}" "" $INSTDIR
