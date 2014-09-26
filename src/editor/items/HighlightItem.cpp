@@ -41,7 +41,6 @@ void HighlightItem::start(const QPointF &point, const QPen &pen)
   grabMouse();
 
   QPen p = pen;
-  p.setWidth(20);
   p.setCapStyle(Qt::FlatCap);
   p.setJoinStyle(Qt::RoundJoin);
   setPen(p);

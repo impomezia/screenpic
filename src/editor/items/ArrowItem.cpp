@@ -56,6 +56,19 @@ void ArrowItem::setColor(const QColor &color)
   m_arrowHead->setBrush(color);
 }
 
+void ArrowItem::setWidth(const int &width)
+{
+  QPen pen = this->pen();
+  pen.setWidth(width);
+
+  setPen(pen);
+
+  pen = m_arrowHead->pen();
+  pen.setWidth(width);
+
+  m_arrowHead->setPen(pen);
+}
+
 
 void ArrowItem::start(const QPointF &point, const QPen &pen)
 {
@@ -131,11 +144,13 @@ void ArrowItem::arrowHead(const QPointF &point)
     delete m_arrowHead;
   }
 
+  int headFactor = this->pen().width()/2;
+
   QPolygonF polygon(4);
-  polygon[0] = QPointF(point.x() - 15, point.y() + 5);
+  polygon[0] = QPointF(point.x() - 15*headFactor, point.y() + 5*headFactor);
   polygon[1] = point;
-  polygon[2] = QPointF(point.x() - 15, point.y() - 5);
-  polygon[3] = QPointF(point.x() - 10, point.y());
+  polygon[2] = QPointF(point.x() - 15*headFactor, point.y() - 5*headFactor);
+  polygon[3] = QPointF(point.x() - 10*headFactor, point.y());
 
   QPen pen(this->pen().color());
   pen.setJoinStyle(Qt::MiterJoin);

@@ -14,27 +14,29 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EDITORITEM_H_
-#define EDITORITEM_H_
+#ifndef WIDTHCOMMAND_H_
+#define WIDTHCOMMAND_H_
 
-#include <QColor>
+#include <QUndoCommand>
 
-class EditorScene;
-class IItemCommand;
 class QGraphicsItem;
-class QPointF;
 
-class EditorItem
+class WidthCommand : public QUndoCommand
 {
 public:
-  inline EditorItem() {}
-  inline virtual ~EditorItem() {}
-  inline virtual QColor color() const           { return 0xffd60808; }
-  inline virtual int width() const              { return int(); }
-  inline virtual QString id() const             { return QString(); }
-  inline virtual Qt::CursorShape cursor() const { return Qt::CrossCursor; }
-  virtual IItemCommand *command(EditorScene *scene, const QPointF &point);
-  virtual QGraphicsItem *create(EditorScene *scene, const QPointF &point) = 0;
+  WidthCommand(const QList<QGraphicsItem *> items, const int &size, QUndoCommand *parent = 0);
+  bool isValid() const;
+  static int getWidth(QGraphicsItem *item);
+  static int getWidth(const QList<QGraphicsItem *> items);
+  void redo() override;
+  void undo() override;
+
+private:
+  void apply(const int &width);
+
+  int m_width;
+  int m_originalWidth;
+  QGraphicsItem *m_item;
 };
 
-#endif /* EDITORITEM_H_ */
+#endif // WIDTHCOMMAND_H_
