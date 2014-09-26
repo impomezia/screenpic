@@ -23,6 +23,7 @@
 
 #include "AboutPage.h"
 #include "HotkeysPage.h"
+#include "Observers.h"
 #include "ServersPage.h"
 #include "SettingsDialog.h"
 #include "SettingsPage.h"
@@ -30,10 +31,12 @@
 
 SettingsDialog::SettingsDialog(AppCore *core, QWidget *parent)
   : QDialog(parent)
+  , m_width(0)
 {
+  setObjectName("SettingsDialog");
   setAttribute(Qt::WA_DeleteOnClose);
   setWindowFlags(windowFlags() ^ Qt::WindowContextHelpButtonHint);
-  setWindowTitle("Screenpic");
+  setWindowTitle("Settings");
   setMinimumWidth(400);
 
   QFrame *topFrame = new QFrame(this);
@@ -48,14 +51,7 @@ SettingsDialog::SettingsDialog(AppCore *core, QWidget *parent)
 # endif
 
   m_serversBtn = addBtn(QIcon(LS(":/images/servers.png")), tr("Servers"));
-
-  m_aboutBtn = new QToolButton(this);
-  m_aboutBtn->setObjectName("settings_btn");
-  m_aboutBtn->setText(QApplication::applicationVersion());
-  m_aboutBtn->setAutoRaise(true);
-  m_aboutBtn->setCheckable(true);
-  m_aboutBtn->setToolButtonStyle(Qt::ToolButtonTextOnly);
-  connect(m_aboutBtn, SIGNAL(clicked()), SLOT(tooglePage()));
+  m_aboutBtn = addBtn(QIcon(LS(":/images/icon32.png")), tr("About"));
 
   m_pages = new QStackedWidget(this);
   m_pages->addWidget(m_settingsPage = new SettingsPage(core, this));
@@ -72,14 +68,11 @@ SettingsDialog::SettingsDialog(AppCore *core, QWidget *parent)
 
   QHBoxLayout *btnLay = new QHBoxLayout(topFrame);
   btnLay->addWidget(m_settingsBtn);
-  btnLay->addSpacing(20);
 # ifndef NO_GLOBAL_SHORTCUTS
   btnLay->addWidget(m_hotkeysBtn);
-  btnLay->addSpacing(20);
 # endif
   btnLay->addWidget(m_serversBtn);
   btnLay->addStretch();
-  btnLay->addSpacing(20);
   btnLay->addWidget(m_aboutBtn, 0, Qt::AlignTop);
   btnLay->setMargin(4);
 
@@ -92,6 +85,12 @@ SettingsDialog::SettingsDialog(AppCore *core, QWidget *parent)
 
   m_settingsPage->setMinimumWidth(minimumWidth());
 
+  Observers::watch(this);
+
+  for (int i = 0; i < m_pages->count(); ++i) {
+    Observers::watch(m_pages->widget(i));
+  }
+
   connect(m_settingsPage, SIGNAL(adjustSizeRequest()), SLOT(onAdjustSizeRequest()));
   connect(m_serversPage, SIGNAL(adjustSizeRequest()), SLOT(onAdjustSizeRequest()));
 }
@@ -103,6 +102,27 @@ void SettingsDialog::changeEvent(QEvent *event)
     retranslateUi();
 
   QDialog::changeEvent(event);
+}
+
+
+void SettingsDialog::showEvent(QShowEvent *event)
+{
+  QDialog::showEvent(event);
+
+  if (m_width)
+    return;
+
+  foreach (QToolButton *button, m_buttons) {
+    if (button->width() > m_width)
+      m_width = button->width();
+  }
+
+  if (m_width < 64)
+    m_width = 64;
+
+  foreach (QToolButton *button, m_buttons) {
+    button->setMinimumWidth(m_width);
+  }
 }
 
 
@@ -160,6 +180,9 @@ QToolButton *SettingsDialog::addBtn(const QIcon &icon, const QString &text)
   button->setCheckable(true);
   button->setIconSize(QSize(32, 32));
   button->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
+  m_buttons.append(button);
+
   connect(button, SIGNAL(clicked()), SLOT(tooglePage()));
 
   return button;
@@ -170,6 +193,7 @@ void SettingsDialog::retranslateUi()
 {
   m_settingsBtn->setText(tr("Settings"));
   m_serversBtn->setText(tr("Servers"));
+  m_aboutBtn->setText(tr("About"));
 
 # ifndef NO_GLOBAL_SHORTCUTS
   m_hotkeysBtn->setText(tr("Hotkeys"));

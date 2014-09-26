@@ -25,6 +25,15 @@ PluginManager::PluginManager(QObject *parent)
 }
 
 
+PluginManager::~PluginManager()
+{
+  QObjectList instances = QPluginLoader::staticInstances();
+  foreach (QObject *object, instances) {
+    delete object;
+  }
+}
+
+
 QObjectList PluginManager::get(const char *className) const
 {
   QObjectList out;

@@ -74,9 +74,9 @@ void GeekpicProviderPlugin::handleReply(const ChatId &id, const QVariant &data)
 }
 
 
-void GeekpicProviderPlugin::init(ISettings *settings, IProviderListener *listener)
+void GeekpicProviderPlugin::init(IScreenpic *screenpic, IProviderListener *listener)
 {
-  Q_UNUSED(settings);
+  Q_UNUSED(screenpic);
   Q_UNUSED(listener);
 }
 

@@ -22,26 +22,28 @@
 
 #include "data/UploadItem.h"
 #include "interfaces/IProviderListener.h"
+#include "interfaces/IScreenpic.h"
+#include "interfaces/ISettingsListener.h"
 
 class AutoUpdate;
 class GlobalShortcuts;
 class Grabber;
+class IHook;
 class NodeLog;
+class Observers;
 class PluginManager;
 class Providers;
 class QRunnable;
 class RecentModel;
 class ServiceThread;
-class Settings;
 class ShareHistoryDB;
 class ShareNet;
-class Translation;
 class TrayIcon;
 class UploadItem;
 class UploadResult;
 struct Thumbnail;
 
-class AppCore : public QObject, public IProviderListener
+class AppCore : public QObject, public IProviderListener, public IScreenpic, public ISettingsListener
 {
   Q_OBJECT
 
@@ -49,14 +51,17 @@ public:
   AppCore(QObject *parent = 0);
   ~AppCore();
   void stop();
-  inline AutoUpdate *autoUpdate() const     { return m_autoUpdate; }
-  inline GlobalShortcuts *shortcuts() const { return m_shortcuts; }
-  inline Providers *providers() const       { return m_providers; }
-  inline RecentModel *recentModel() const   { return m_recentModel; }
-  inline Settings *settings() const         { return m_settings; }
-  inline Translation *translation() const   { return m_translation; }
+  inline AutoUpdate *autoUpdate() const      { return m_autoUpdate; }
+  inline GlobalShortcuts *shortcuts() const  { return m_shortcuts; }
+  inline IHook *hooks() const                { return m_hooks; }
+  inline Providers *providers() const        { return m_providers; }
+  inline RecentModel *recentModel() const    { return m_recentModel; }
+  ISettings *settings() const override       { return m_settings; }
+  ITranslation *translation() const override { return m_translation; }
+  QString edition() const override;
 
   void onCustomRequest(const ChatId &id, const QString &provider, const QVariant &data) override;
+  void onSettingsChanged(const QString &key, const QVariant &value) override;
 
 public slots:
   void add(QRunnable *task);
@@ -68,9 +73,7 @@ public slots:
 
 private slots:
   void onEditingFinished(UploadItemPtr item);
-  void onFinished(const ChatId &id, const QString &provider, const QVariant &data);
   void onImageSaved(const ChatId &id, const QByteArray &body, const Thumbnail &thumbnail);
-  void onSettingsChanged(const QString &key, const QVariant &value);
   void onTaskReady(qint64 counter, QObject *object);
   void onUploadFinished(const UploadResult &result);
   void onUploadProgress(const ChatId &id, int percent);
@@ -83,18 +86,20 @@ private:
   AutoUpdate *m_autoUpdate;              ///< Менеджер автоматического обновления.
   GlobalShortcuts *m_shortcuts;          ///< Менеджер глобальных горячих клавиш.
   Grabber *m_grabber;
+  IHook *m_hooks;
   int m_netId;
+  ISettings *m_settings;                 ///< Настройки.
+  ITranslation *m_translation;           ///< Модуль загрузки переводов.
   NodeLog *m_log;
+  Observers *m_observers;
   PluginManager *m_pluginManager;
   Providers *m_providers;                ///< Доступные провайдеры.
   QList<QRunnable*> m_tasks;             ///< Задачи для выполнения в отдельном потоке.
   QMap<ChatId, UploadItemPtr> m_pending;
   RecentModel *m_recentModel;            ///< Модель для показа посдедних файлов.
   ServiceThread *m_service;
-  Settings *m_settings;                  ///< Настройки.
   ShareHistoryDB *m_db;                  ///< База данных c историей.
   ShareNet *m_net;
-  Translation *m_translation;            ///< Модуль загрузки переводов.
   TrayIcon *m_tray;
 };
 

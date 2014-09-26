@@ -15,27 +15,33 @@
  */
 
 #include "interfaces/IProvider.h"
+#include "interfaces/INetHandle.h"
 #include "Providers.h"
 #include "sglobal.h"
 
-Providers::Providers(QObject *parent)
+Providers::Providers(IScreenpic *screenpic, IProviderListener *listener, const QObjectList &list, QObject *parent)
   : QObject(parent)
 {
-  if (!m_list.isEmpty())
-    m_currentId = m_list.first();
-}
+  for (int i = 0; i < list.size(); ++i) {
+    IProvider *provider = qobject_cast<IProvider*>(list.at(i));
+    INetHandle *handle  = qobject_cast<INetHandle*>(list.at(i));
 
+    if (provider) {
+      provider->init(screenpic, listener);
+      if (!add(provider))
+        continue;
+    }
+    else
+      handle->init(screenpic, listener);
 
-Providers::~Providers()
-{
-  qDeleteAll(m_map);
-  m_map.clear();
+    m_handlers.insert(handle->id(), handle);
+  }
 }
 
 
 IProvider *Providers::current() const
 {
-  IProvider *provider = m_map.value(currentId());
+  IProvider *provider = m_providers.value(currentId());
   Q_ASSERT(provider);
 
   return provider;
@@ -44,37 +50,16 @@ IProvider *Providers::current() const
 
 IProvider *Providers::get(const QString &id) const
 {
-  IProvider *provider = m_map.value(id);
+  IProvider *provider = m_providers.value(id);
   Q_ASSERT(provider);
 
   return provider;
 }
 
 
-void Providers::add(IProvider *provider)
-{
-  Q_ASSERT(provider);
-  if (!provider)
-    return;
-
-  const QString id = provider->id();
-
-  if (m_map.contains(id)) {
-    delete provider;
-    return;
-  }
-
-  if (m_list.isEmpty())
-    m_currentId = id;
-
-  m_map.insert(id, provider);
-  m_list.append(id);
-}
-
-
 void Providers::create(QMap<QString, Uploader*> &map, QObject *parent)
 {
-  QMapIterator<QString, IProvider*> i(m_map);
+  QMapIterator<QString, INetHandle*> i(m_handlers);
   while (i.hasNext()) {
     i.next();
 
@@ -83,8 +68,49 @@ void Providers::create(QMap<QString, Uploader*> &map, QObject *parent)
 }
 
 
+void Providers::networkReady()
+{
+  foreach (INetHandle *handle, m_handlers) {
+    handle->networkReady();
+  }
+}
+
+
 void Providers::setCurrentId(const QString &id)
 {
-  if (m_map.contains(id))
+  if (!m_providers.contains(id) || m_currentId == id)
+    return;
+
+  m_currentId = id;
+
+  emit currentChanged(m_providers.value(id));
+}
+
+
+void Providers::handleReply(const ChatId &id, const QString &provider, const QVariant &data)
+{
+  if (m_handlers.contains(provider))
+    m_handlers.value(provider)->handleReply(id, data);
+}
+
+
+bool Providers::add(IProvider *provider)
+{
+  Q_ASSERT(provider);
+  if (!provider)
+    return false;
+
+  const QString id = provider->id();
+
+  if (m_providers.contains(id)) {
+    delete provider;
+    return false;
+  }
+
+  if (m_list.isEmpty())
     m_currentId = id;
+
+  m_providers.insert(id, provider);
+  m_list.append(id);
+  return true;
 }

@@ -48,10 +48,8 @@ void ShareNet::add(const ChatId &id, const QString &provider, const QVariant &da
 {
   Q_ASSERT(m_uploaders.contains(provider));
 
-  if (!m_uploaders.contains(provider))
-    return;
-
-  m_uploaders[provider]->request(m_net, id, data);
+  if (m_uploaders.contains(provider))
+    m_uploaders[provider]->request(m_net, id, data);
 }
 
 
@@ -59,10 +57,8 @@ void ShareNet::add(UploadItemPtr item, const QString &provider, const QVariant &
 {
   Q_ASSERT(m_uploaders.contains(provider));
 
-  if (!m_uploaders.contains(provider))
-    return;
-
-  m_uploaders[provider]->upload(m_net, item, data);
+  if (m_uploaders.contains(provider))
+    m_uploaders[provider]->upload(m_net, item, data);
 }
 
 

@@ -226,6 +226,9 @@ void EditorScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
   QGraphicsScene::mousePressEvent(event);
 
+  if (event->button() != Qt::LeftButton)
+    return;
+
   if (mode() == DropperMode) {
     emit colorSelected(colorAt(event->scenePos()));
     return;

@@ -17,6 +17,7 @@
 #include "AppCore.h"
 #include "GlobalShortcuts.h"
 #include "libqxt/qxtglobalshortcut.h"
+#include "Observers.h"
 #include "Settings.h"
 #include "sglobal.h"
 
@@ -80,6 +81,26 @@ bool GlobalShortcuts::unset(const QString &id, const QKeySequence &shortcut)
 }
 
 
+void GlobalShortcuts::grabRect()
+{
+  QxtGlobalShortcut *gs = m_map.value(kRectangle);
+  if (gs)
+    Observers::hitEvent(LS("shortcut"), LS("rectangle"), gs->shortcut().toString());
+
+  m_core->grabRect();
+}
+
+
+void GlobalShortcuts::grabScreen()
+{
+  QxtGlobalShortcut *gs = m_map.value(kFullscreen);
+  if (gs)
+    Observers::hitEvent(LS("shortcut"), LS("fullscreen"), gs->shortcut().toString());
+
+  m_core->grabScreen();
+}
+
+
 void GlobalShortcuts::init(const QString &id, const QString &str)
 {
   m_settings->setDefault(id, str);
@@ -101,7 +122,7 @@ void GlobalShortcuts::init(const QString &id, QxtGlobalShortcut *shortcut)
     return;
 
   if (id == kFullscreen)
-    connect(shortcut, SIGNAL(activated()), m_core, SLOT(grabScreen()));
+    connect(shortcut, SIGNAL(activated()), SLOT(grabScreen()));
   else if (id == kRectangle)
-    connect(shortcut, SIGNAL(activated()), m_core, SLOT(grabRect()));
+    connect(shortcut, SIGNAL(activated()), SLOT(grabRect()));
 }

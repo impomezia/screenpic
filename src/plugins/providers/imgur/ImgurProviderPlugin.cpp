@@ -24,6 +24,7 @@
 #include "ImgurSettings.h"
 #include "ImgurUploader.h"
 #include "interfaces/IProviderListener.h"
+#include "interfaces/IScreenpic.h"
 #include "interfaces/ISettings.h"
 #include "JSON.h"
 #include "sglobal.h"
@@ -143,15 +144,15 @@ void ImgurProviderPlugin::handleReply(const ChatId &id, const QVariant &data)
 }
 
 
-void ImgurProviderPlugin::init(ISettings *settings, IProviderListener *listener)
+void ImgurProviderPlugin::init(IScreenpic *screenpic, IProviderListener *listener)
 {
-  m_settings = settings;
-  m_listener = listener;
+  m_screenpic = screenpic;
+  m_listener  = listener;
 
   m_clientId     = QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientId), sizeof(clientId)));
   m_clientSecret = QString::fromLatin1(QByteArray::fromRawData(reinterpret_cast<const char*>(clientSecret), sizeof(clientSecret)).toHex());
 
-  const QByteArray token = m_settings->value(id() + LS(".provider/Token")).toString().toLatin1();
+  const QByteArray token = m_screenpic->settings()->value(id() + LS(".provider/Token")).toString().toLatin1();
   if (!token.isEmpty()) {
     QBlowfish bf(QByteArray::fromRawData(reinterpret_cast<const char*>(key), sizeof(key)));
     bf.setPaddingEnabled(true);
@@ -174,7 +175,7 @@ void ImgurProviderPlugin::onLogout()
   m_refreshToken = QString();
   m_accessToken = QString();
 
-  m_settings->setValue(id() + LS(".provider/Token"), QString());
+  m_screenpic->settings()->setValue(id() + LS(".provider/Token"), QString());
 }
 
 
@@ -207,7 +208,7 @@ void ImgurProviderPlugin::saveToken()
   QBlowfish bf(QByteArray::fromRawData(reinterpret_cast<const char*>(key), sizeof(key)));
   bf.setPaddingEnabled(true);
 
-  m_settings->setValue(id() + LS(".provider/Token"), QString::fromLatin1(bf.encrypted(JSON::generate(token)).toBase64()));
+  m_screenpic->settings()->setValue(id() + LS(".provider/Token"), QString::fromLatin1(bf.encrypted(JSON::generate(token)).toBase64()));
 }
 
 Q_EXPORT_PLUGIN2(ImgurProvider, ImgurProviderPlugin);

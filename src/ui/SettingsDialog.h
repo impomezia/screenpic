@@ -36,6 +36,7 @@ public:
 
 protected:
   void changeEvent(QEvent *event) override;
+  void showEvent(QShowEvent *event) override;
 
 private slots:
   inline void adjustSize() { QDialog::adjustSize(); }
@@ -48,6 +49,8 @@ private:
 
   AboutPage *m_aboutPage;
   HotkeysPage *m_hotkeysPage;
+  int m_width;
+  QList<QToolButton*> m_buttons;
   QStackedWidget *m_pages;
   QToolButton *m_aboutBtn;
   QToolButton *m_hotkeysBtn;

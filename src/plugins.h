@@ -23,5 +23,6 @@ IMPORT_PLUGIN(NoneProvider)
 IMPORT_PLUGIN(RupProvider)
 IMPORT_PLUGIN(ImgurProvider)
 IMPORT_PLUGIN(GeekpicProvider)
+IMPORT_PLUGIN(Statistics)
 
 #endif // PLUGINS_H_

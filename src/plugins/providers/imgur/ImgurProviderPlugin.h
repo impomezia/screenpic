@@ -21,14 +21,16 @@
 
 #include "interfaces/IPlugin.h"
 #include "interfaces/IProvider.h"
+#include "interfaces/INetHandle.h"
 
 class ImgurSettings;
 
-class ImgurProviderPlugin : public QObject, public IPlugin, public IProvider
+class ImgurProviderPlugin : public QObject, public IPlugin, public IProvider, public INetHandle
 {
   Q_OBJECT
   Q_INTERFACES(IPlugin)
   Q_INTERFACES(IProvider)
+  Q_INTERFACES(INetHandle)
   Q_PLUGIN_METADATA(IID "io.rup.provider.imgur")
 
 public:
@@ -42,7 +44,8 @@ public:
   QWidget *settingsWidget(QWidget *parent = 0) override;
   Uploader *uploader(QObject *parent = 0) const override;
   void handleReply(const ChatId &id, const QVariant &data) override;
-  void init(ISettings *settings, IProviderListener *listener) override;
+  void init(IScreenpic *screenpic, IProviderListener *listener) override;
+  void networkReady() override {}
 
 private slots:
   void onLogout();
@@ -53,7 +56,7 @@ private:
   void saveToken();
 
   IProviderListener *m_listener;
-  ISettings *m_settings;
+  IScreenpic *m_screenpic;
   qint64 m_expires;
   QPointer<ImgurSettings> m_settingsWidget;
   QString m_accessToken;

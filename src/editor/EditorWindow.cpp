@@ -21,17 +21,22 @@
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QGraphicsItem>
+#include <QGraphicsSceneContextMenuEvent>
 #include <QGraphicsView>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QToolBar>
 #include <QUndoStack>
 
 #include "data/ImageItem.h"
+#include "EditorProperties.h"
 #include "EditorScene.h"
 #include "EditorWindow.h"
+#include "interfaces/IProvider.h"
+#include "interfaces/IScreenpic.h"
 #include "ItemColorButton.h"
 #include "items/ColorCommand.h"
 #include "items/EditorItem.h"
@@ -39,14 +44,17 @@
 #include "sglobal.h"
 #include "tasks/SaveTask.h"
 #include "Translation.h"
+#include "ui/BackdropWidget.h"
 #include "ui/TitleWidget.h"
 
-EditorWindow::EditorWindow(Settings *settings, Translation *translation, QWidget *parent, Qt::WindowFlags flags)
+EditorWindow::EditorWindow(IScreenpic *screenpic, QWidget *parent, Qt::WindowFlags flags)
   : QMainWindow(parent, flags)
+  , m_discard(false)
   , m_firstShow(true)
-  , m_settings(settings)
-  , m_translation(translation)
+  , m_provider(0)
+  , m_screenpic(screenpic)
 {
+  setObjectName(LS("EditorWindow"));
   setAttribute(Qt::WA_DeleteOnClose);
   setWindowTitle("Screenpic");
   setContextMenuPolicy(Qt::NoContextMenu);
@@ -82,6 +90,8 @@ EditorWindow::EditorWindow(Settings *settings, Translation *translation, QWidget
   updateStyleSheet();
   setCentralWidget(m_view);
 
+  m_scene->installEventFilter(this);
+
   connect(m_scene, SIGNAL(modeChanged(int)), SLOT(onModeChanged(int)));
   connect(m_scene, SIGNAL(rendered(QImage)), SLOT(onRendered(QImage)));
   connect(m_scene, SIGNAL(copied(QPixmap)), SLOT(onCopied(QPixmap)));
@@ -91,6 +101,40 @@ EditorWindow::EditorWindow(Settings *settings, Translation *translation, QWidget
   connect(m_scene, SIGNAL(colorSelected(QColor)), SLOT(onColorSelected(QColor)));
   connect(m_colorBtn, SIGNAL(changed(QRgb)), SLOT(onColorChanged(QRgb)));
   connect(m_colorBtn, SIGNAL(dropperClicked()), SLOT(onDropperClicked()));
+
+  m_backdrop = new BackdropWidget(this);
+  m_backdrop->close();
+}
+
+
+bool EditorWindow::eventFilter(QObject *watched, QEvent *event)
+{
+  if (event->type() == QEvent::GraphicsSceneContextMenu && m_scene->mode() != EditorScene::TextMode) {
+    QMenu menu;
+    QAction *publish   = menu.addAction(m_publishBtn->icon(), tr("Publish"));
+    QAction *cancel    = menu.addAction(QIcon(LS(":/images/remove.png")), tr("Cancel"));
+
+    menu.addSeparator();
+    QAction *properties = menu.addAction(QIcon(LS(":/images/cog.png")), tr("Properties"));
+
+    QAction *action = menu.exec(static_cast<QGraphicsSceneContextMenuEvent*>(event)->screenPos());
+    if (action) {
+      if (action == publish) {
+        m_scene->renderImage();
+      }
+      else if (action == cancel) {
+        m_discard = true;
+        close();
+      }
+      else if (action == properties) {
+        showDialog(new EditorProperties(m_screenpic, this));
+      }
+    }
+
+    return true;
+  }
+
+  return QMainWindow::eventFilter(watched, event);
 }
 
 
@@ -109,6 +153,20 @@ void EditorWindow::open(UploadItemPtr item)
   m_item = item;
   m_scene->addPixmap(QPixmap::fromImage(*image));
   m_scene->setSceneRect(0, 0, image->width(), image->height());
+}
+
+
+void EditorWindow::showDialog(QWidget *widget)
+{
+  m_backdrop->setWidget(widget);
+  m_backdrop->show();
+}
+
+
+void EditorWindow::setProvider(IProvider *provider)
+{
+  m_provider = provider;
+  m_publishBtn->setText(publishText());
 }
 
 
@@ -132,12 +190,29 @@ void EditorWindow::changeEvent(QEvent *event)
 }
 
 
+void EditorWindow::closeEvent(QCloseEvent *event)
+{
+  if (m_screenpic->settings()->value(Settings::kPublishOnClose).toBool() && !m_discard)
+    m_scene->renderImage();
+
+  QMainWindow::closeEvent(event);
+}
+
+
 void EditorWindow::keyPressEvent(QKeyEvent *event)
 {
   QMainWindow::keyPressEvent(event);
 
   if (event->key() == Qt::Key_Escape && m_scene->mode() != EditorScene::TextMode)
     close();
+}
+
+
+void EditorWindow::resizeEvent(QResizeEvent *event)
+{
+  QMainWindow::resizeEvent(event);
+
+  m_backdrop->resize(event->size());
 }
 
 
@@ -168,9 +243,9 @@ void EditorWindow::onColorChanged(QRgb color)
 
   EditorItem *item = m_scene->item(m_scene->mode());
   if (item)
-    m_settings->setValue(LS("Modes/") + item->id() + LS(".color"), QColor(color).name());
+    m_screenpic->settings()->setValue(LS("Modes/") + item->id() + LS(".color"), QColor(color).name());
   else
-    m_settings->setValue(LS("Color"), QColor(color).name());
+    m_screenpic->settings()->setValue(LS("Color"), QColor(color).name());
 
   const QList<QGraphicsItem *> items = m_scene->selectedItems();
   if (items.isEmpty())
@@ -240,7 +315,7 @@ void EditorWindow::onModeChanged(int mode)
 
       if (item->color().isValid()) {
         if (!color.isValid())
-          color = m_settings->value(LS("Modes/") + item->id() + LS(".color"), item->color().name()).toString();
+          color = m_screenpic->settings()->value(LS("Modes/") + item->id() + LS(".color"), item->color().name()).toString();
 
         m_scene->setColor(color.rgba());
         m_colorBtn->setColor(color.rgba());
@@ -281,7 +356,7 @@ void EditorWindow::onSelectionChanged()
 
 void EditorWindow::saveAs()
 {
-  QString fileName = m_settings->value(Settings::kLastSaveDir).toString();
+  QString fileName = m_screenpic->settings()->value(Settings::kLastSaveDir).toString();
   if (m_item->type() == ImageItem::Type)
     fileName += LC('/') + QFileInfo(uploaditem_cast<ImageItem*>(m_item.data())->saveAs).fileName();
 
@@ -289,7 +364,7 @@ void EditorWindow::saveAs()
   if (fileName.isEmpty())
     return;
 
-  m_settings->setValue(Settings::kLastSaveDir, QFileInfo(fileName).absolutePath());
+  m_screenpic->settings()->setValue(Settings::kLastSaveDir, QFileInfo(fileName).absolutePath());
 
   emit taskCreated(new SaveTask(ChatId(ChatId::UserId), m_scene->toPixmap().toImage(), fileName));
 }
@@ -317,6 +392,15 @@ QAction *EditorWindow::addAction(const QIcon &icon, const QString &text, int mod
 }
 
 
+QString EditorWindow::publishText() const
+{
+  if (!m_provider || m_provider->id() == LS("none"))
+    return tr("Publish");
+
+  return tr("Publish to %1").arg(m_provider->name());
+}
+
+
 void EditorWindow::fillMainToolBar()
 {
   m_undoAction = m_scene->undoStack()->createUndoAction(m_mainToolBar, tr("Undo (Ctrl+Z)"));
@@ -335,7 +419,7 @@ void EditorWindow::fillMainToolBar()
   m_copyAction = m_mainToolBar->addAction(QIcon(":/images/copy.png"), tr("Copy (Ctrl+C)"), m_scene, SLOT(copy()));
   m_saveAction = m_mainToolBar->addAction(QIcon(":/images/save.png"), tr("Save as... (Ctrl+S)"), this, SLOT(saveAs()));
 
-  m_publishBtn = new QPushButton(QIcon(":/images/publish.png"), tr("Publish"), this);
+  m_publishBtn = new QPushButton(QIcon(":/images/publish.png"), publishText(), this);
   m_publishBtn->setDefault(true);
   m_publishBtn->setToolTip(tr("Publish (Ctrl+Enter)"));
   m_publishBtn->setIconSize(QSize(24, 24));
@@ -380,7 +464,7 @@ void EditorWindow::fillModeToolBar()
   addAction(QIcon(":/images/blur.png"), tr("Blur"), EditorScene::BlurMode);
 
   m_colorBtn = new ItemColorButton(this);
-  m_colorBtn->setColor(m_settings->value(LS("Color")).toString());
+  m_colorBtn->setColor(m_screenpic->settings()->value(LS("Color")).toString());
 
   m_modeToolBar->addSeparator();
   m_colorAction = m_modeToolBar->addWidget(m_colorBtn);
@@ -391,10 +475,8 @@ void EditorWindow::fillModeToolBar()
   m_modesGroup->addAction(dropper);
   m_modes.insert(EditorScene::DropperMode, dropper);
 
-  const QString edition = m_settings->value(Settings::kEdition, QString()).toString();
-
-  if (edition != QString()) {
-    const QString fileName = LS(":/images/") + edition + LS("-edition_") + m_translation->name().left(2) + LS(".png");
+  if (!m_screenpic->edition().isEmpty()) {
+    const QString fileName = LS(":/images/") + m_screenpic->edition() + LS("-edition_") + m_screenpic->translation()->name().left(2) + LS(".png");
     if (!QFile::exists(fileName))
       return;
 
@@ -424,7 +506,7 @@ void EditorWindow::retranslateUi()
   m_modes.value(EditorScene::BlurMode)->setText(tr("Blur"));
   m_modes.value(EditorScene::CropMode)->setText(tr("Crop"));
 
-  m_publishBtn->setText(tr("Publish"));
+  m_publishBtn->setText(publishText());
   m_publishBtn->setToolTip(tr("Publish (Ctrl+Enter)"));
 
   m_undoAction->setText(tr("Undo (Ctrl+Z)"));

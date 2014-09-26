@@ -21,12 +21,14 @@
 
 #include "interfaces/IPlugin.h"
 #include "interfaces/IProvider.h"
+#include "interfaces/INetHandle.h"
 
-class GeekpicProviderPlugin : public QObject, IPlugin, IProvider
+class GeekpicProviderPlugin : public QObject, public IPlugin, public IProvider, public INetHandle
 {
   Q_OBJECT
   Q_INTERFACES(IPlugin)
   Q_INTERFACES(IProvider)
+  Q_INTERFACES(INetHandle)
   Q_PLUGIN_METADATA(IID "io.rup.provider.geekpic")
 
 public:
@@ -39,7 +41,8 @@ public:
   QWidget *settingsWidget(QWidget *parent = 0) override;
   Uploader *uploader(QObject *parent = 0) const override;
   void handleReply(const ChatId &id, const QVariant &data) override;
-  void init(ISettings *settings, IProviderListener *listener) override;
+  void init(IScreenpic *screenpic, IProviderListener *listener) override;
+  void networkReady() override {}
 };
 
 #endif /* GEEKPICPROVIDER_H_ */

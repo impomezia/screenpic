@@ -37,6 +37,7 @@ public:
   static const QString kLastOpenDir;
   static const QString kLastSaveDir;
   static const QString kProvider;
+  static const QString kPublishOnClose;
   static const QString kSaveCopy;
   static const QString kSaveCopyIn;
   static const QString kTranslation;
@@ -45,6 +46,8 @@ public:
   Settings(const QString &organization, const QString &application = QString(), QObject *parent = 0);
   QVariant defaultValue(const QString &key) const override { return m_default.value(key); }
   QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) const override;
+  void addListener(ISettingsListener *listener) override;
+  void removeListener(ISettingsListener *listener) override;
   void setDefault(const QString &key, const QVariant &value) override;
   void setValue(const QString &key, const QVariant &value, bool notify = true) override;
 
@@ -53,6 +56,9 @@ signals:
 
 protected:
   mutable QMap<QString, QVariant> m_default; ///< Настройки по умолчанию.
+
+private:
+  QList<ISettingsListener*> m_listeners;
 };
 
 #endif /* SETTINGS_H_ */
