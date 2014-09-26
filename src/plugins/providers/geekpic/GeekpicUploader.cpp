@@ -23,6 +23,7 @@
 #include "GeekpicUploader.h"
 #include "JSON.h"
 #include "sglobal.h"
+#include "tools/OsInfo.h"
 #include "uploaders/UploadResult.h"
 
 GeekpicUploader::GeekpicUploader(QObject *parent)
@@ -41,7 +42,7 @@ void GeekpicUploader::request(QNetworkAccessManager *net, const ChatId &id, cons
 
 void GeekpicUploader::upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data)
 {
-  Q_UNUSED(data)
+  const QVariantMap map = data.toMap();
 
   QNetworkReply *reply = 0;
 
@@ -69,7 +70,15 @@ void GeekpicUploader::upload(QNetworkAccessManager *net, UploadItemPtr item, con
     multiPart->append(name);
     multiPart->append(description);
 
+    if (map.contains(LS("cid"))) {
+      QHttpPart cid;
+      cid.setBody(map.value(LS("cid")).toString().toLatin1());
+
+      multiPart->append(cid);
+    }
+
     QNetworkRequest request(QUrl(LS("http://geekpic.net/client.php")));
+    request.setRawHeader("User-Agent", OsInfo::userAgent());
 
     reply = net->post(request, multiPart);
     reply->setProperty("width",  i->image.width());

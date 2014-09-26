@@ -74,9 +74,9 @@ void NoneProviderPlugin::handleReply(const ChatId &id, const QVariant &data)
 }
 
 
-void NoneProviderPlugin::init(ISettings *settings, IProviderListener *listener)
+void NoneProviderPlugin::init(IScreenpic *screenpic, IProviderListener *listener)
 {
-  Q_UNUSED(settings);
+  Q_UNUSED(screenpic);
   Q_UNUSED(listener);
 }
 

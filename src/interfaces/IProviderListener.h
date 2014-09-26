@@ -22,6 +22,7 @@
 class IProviderListener
 {
 public:
+  virtual ~IProviderListener() {}
   virtual void onCustomRequest(const ChatId &id, const QString &provider, const QVariant &data) = 0;
 };
 

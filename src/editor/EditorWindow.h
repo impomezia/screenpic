@@ -23,34 +23,41 @@
 
 #include "data/UploadItem.h"
 
+class BackdropWidget;
 class EditorScene;
+class IProvider;
+class IScreenpic;
 class ItemColorButton;
 class QActionGroup;
 class QGraphicsView;
 class QLineEdit;
 class QPushButton;
 class QRunnable;
-class QSpinBox;
-class Settings;
 class TitleWidget;
-class Translation;
 
 class EditorWindow : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  EditorWindow(Settings *settings, Translation *translation, QWidget *parent = 0, Qt::WindowFlags flags = 0);
+  EditorWindow(IScreenpic *screenpic, QWidget *parent = 0, Qt::WindowFlags flags = 0);
+  bool eventFilter(QObject *watched, QEvent *event) override;
   void open(UploadItemPtr item);
+  void showDialog(QWidget *widget);
 
 signals:
   void editingFinished(UploadItemPtr item);
   void taskCreated(QRunnable *task);
 
+public slots:
+  void setProvider(IProvider *provider);
+
 protected:
   bool event(QEvent *event) override;
   void changeEvent(QEvent *event) override;
+  void closeEvent(QCloseEvent *event) override;
   void keyPressEvent(QKeyEvent *event) override;
+  void resizeEvent(QResizeEvent *event) override;
   void showEvent(QShowEvent *event) override;
 
 private slots:
@@ -68,13 +75,18 @@ private slots:
 
 private:
   QAction *addAction(const QIcon &icon, const QString &text, int mode);
+  QString publishText() const;
   void fillMainToolBar();
   void fillModeToolBar();
   void retranslateUi();
   void updateStyleSheet();
 
+  BackdropWidget *m_backdrop;
+  bool m_discard;
   bool m_firstShow;
   EditorScene *m_scene;
+  IProvider *m_provider;
+  IScreenpic *m_screenpic;
   ItemColorButton *m_colorBtn;
   QAction *m_colorAction;
   QAction *m_copyAction;
@@ -88,9 +100,7 @@ private:
   QSpinBox *m_widthSpBx;
   QToolBar *m_mainToolBar;
   QToolBar *m_modeToolBar;
-  Settings *m_settings;
   TitleWidget *m_titleEdit;
-  Translation *m_translation;
   UploadItemPtr m_item;
 };
 

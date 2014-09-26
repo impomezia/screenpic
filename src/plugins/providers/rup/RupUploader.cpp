@@ -21,8 +21,9 @@
 #include "data/ImageItem.h"
 #include "DateTime.h"
 #include "JSON.h"
-#include "sglobal.h"
 #include "RupUploader.h"
+#include "sglobal.h"
+#include "tools/OsInfo.h"
 #include "uploaders/UploadResult.h"
 
 RupUploader::RupUploader(QObject *parent)
@@ -64,6 +65,7 @@ void RupUploader::upload(QNetworkAccessManager *net, UploadItemPtr item, const Q
     }
 
     QNetworkRequest request(QUrl(LS("https://api.schat.me/1/image")));
+    request.setRawHeader("User-Agent", OsInfo::userAgent());
 
     if (map.contains(LS("token"))) {
       request.setRawHeader("Authorization", "Bearer " + map.value(LS("token")).toByteArray());

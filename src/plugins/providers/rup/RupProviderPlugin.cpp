@@ -17,6 +17,7 @@
 #include <QLabel>
 
 #include "3rdparty/qblowfish/qblowfish.h"
+#include "interfaces/IScreenpic.h"
 #include "interfaces/ISettings.h"
 #include "RupProviderPlugin.h"
 #include "RupSettings.h"
@@ -92,12 +93,12 @@ void RupProviderPlugin::handleReply(const ChatId &id, const QVariant &data)
 }
 
 
-void RupProviderPlugin::init(ISettings *settings, IProviderListener *listener)
+void RupProviderPlugin::init(IScreenpic *screenpic, IProviderListener *listener)
 {
   Q_UNUSED(listener)
 
-  m_settings = settings;
-  m_token = m_settings->value(id() + LS(".provider/Token")).toString();
+  m_screenpic = screenpic;
+  m_token = m_screenpic->settings()->value(id() + LS(".provider/Token")).toString();
 
   if (m_token.size() != 42) {
     QBlowfish bf(QByteArray::fromRawData(reinterpret_cast<const char*>(key), sizeof(key)));
@@ -114,7 +115,7 @@ void RupProviderPlugin::onTokenChanged(const QString &token)
   bf.setPaddingEnabled(true);
 
   m_token = token;
-  m_settings->setValue(id() + LS(".provider/Token"), QString::fromLatin1(bf.encrypted(token.toLatin1()).toBase64()));
+  m_screenpic->settings()->setValue(id() + LS(".provider/Token"), QString::fromLatin1(bf.encrypted(token.toLatin1()).toBase64()));
 }
 
 Q_EXPORT_PLUGIN2(RupProvider, RupProviderPlugin);

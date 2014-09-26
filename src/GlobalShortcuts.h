@@ -22,8 +22,8 @@
 #include <QObject>
 
 class AppCore;
+class ISettings;
 class QxtGlobalShortcut;
-class Settings;
 
 class GlobalShortcuts : public QObject
 {
@@ -39,13 +39,17 @@ public:
   inline const QMap<QString, QxtGlobalShortcut*>& map() const { return m_map; }
   inline QxtGlobalShortcut *get(const QString &id) const      { return m_map.value(id); }
 
+private slots:
+  void grabRect();
+  void grabScreen();
+
 private:
   void init(const QString &id, const QString &str);
   void init(const QString &id, QxtGlobalShortcut *shortcut);
 
   AppCore *m_core;
+  ISettings *m_settings;
   QMap<QString, QxtGlobalShortcut*> m_map;
-  Settings *m_settings;
 };
 
 #endif /* GLOBALSHORTCUTS_H_ */

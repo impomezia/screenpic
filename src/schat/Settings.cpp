@@ -14,18 +14,20 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "interfaces/ISettingsListener.h"
 #include "Settings.h"
 #include "sglobal.h"
 
-const QString Settings::kCaptureMouse = LS("CaptureMouse");
-const QString Settings::kEdition      = LS("Edition");
-const QString Settings::kEditor       = LS("Editor");
-const QString Settings::kLastOpenDir  = LS("LastOpenDir");
-const QString Settings::kLastSaveDir  = LS("LastSaveDir");
-const QString Settings::kProvider     = LS("Provider");
-const QString Settings::kSaveCopy     = LS("SaveCopy");
-const QString Settings::kSaveCopyIn   = LS("SaveCopyIn");
-const QString Settings::kTranslation  = LS("Translation");
+const QString Settings::kCaptureMouse   = LS("CaptureMouse");
+const QString Settings::kEdition        = LS("Edition");
+const QString Settings::kEditor         = LS("Editor");
+const QString Settings::kLastOpenDir    = LS("LastOpenDir");
+const QString Settings::kLastSaveDir    = LS("LastSaveDir");
+const QString Settings::kProvider       = LS("Provider");
+const QString Settings::kPublishOnClose = LS("PublishOnClose");
+const QString Settings::kSaveCopy       = LS("SaveCopy");
+const QString Settings::kSaveCopyIn     = LS("SaveCopyIn");
+const QString Settings::kTranslation    = LS("Translation");
 
 Settings::Settings(const QString &fileName, QObject *parent)
   : QSettings(fileName, QSettings::IniFormat, parent)
@@ -49,6 +51,19 @@ QVariant Settings::value(const QString &key, const QVariant &defaultValue) const
 }
 
 
+void Settings::addListener(ISettingsListener *listener)
+{
+  if (!m_listeners.contains(listener))
+    m_listeners.append(listener);
+}
+
+
+void Settings::removeListener(ISettingsListener *listener)
+{
+  m_listeners.removeAll(listener);
+}
+
+
 void Settings::setDefault(const QString &key, const QVariant &value)
 {
   m_default[key] = value;
@@ -65,6 +80,11 @@ void Settings::setValue(const QString &key, const QVariant &value, bool notify)
   else
     QSettings::setValue(key, value);
 
-  if (notify)
+  if (notify) {
     emit changed(key, value);
+
+    foreach (ISettingsListener *listener, m_listeners) {
+      listener->onSettingsChanged(key, value);
+    }
+  }
 }

@@ -22,6 +22,7 @@
 #include "AboutPage.h"
 #include "AppCore.h"
 #include "AutoUpdate.h"
+#include "interfaces/IHook.h"
 #include "Settings.h"
 #include "sglobal.h"
 #include "version.h"
@@ -30,6 +31,7 @@ AboutPage::AboutPage(AppCore *core, QWidget *parent)
   : QWidget(parent)
   , m_core(core)
 {
+  setObjectName("AboutPage");
   setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
   m_updateBtn = new QCheckBox(this);
@@ -39,7 +41,10 @@ AboutPage::AboutPage(AppCore *core, QWidget *parent)
   layout->addWidget(new QLabel(QString("<h2>%1 %2</h2>").arg(qApp->applicationName(), qApp->applicationVersion()), this));
   layout->addWidget(new QLabel(QString(ORG_COPYRIGHT).replace("(C)", "©"), this));
   layout->addStretch();
+  layout->addSpacing(16);
   layout->addWidget(m_updateBtn);
+
+  core->hooks()->hookAboutPage(layout, this);
 
   retranslateUi();
 

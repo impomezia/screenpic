@@ -20,9 +20,10 @@
 
 #include "data/ImageItem.h"
 #include "DateTime.h"
+#include "ImgurUploader.h"
 #include "JSON.h"
 #include "sglobal.h"
-#include "ImgurUploader.h"
+#include "tools/OsInfo.h"
 #include "uploaders/UploadResult.h"
 
 ImgurUploader::ImgurUploader(QObject *parent)
@@ -80,6 +81,8 @@ void ImgurUploader::upload(QNetworkAccessManager *net, UploadItemPtr item, const
     }
 
     QNetworkRequest request(QUrl(LS("https://api.imgur.com/3/image")));
+    request.setRawHeader("User-Agent", OsInfo::userAgent());
+
     if (authData.size() == 4)
       request.setRawHeader("Authorization", "Bearer " + authData.value(3).toByteArray());
     else
@@ -149,6 +152,7 @@ void ImgurUploader::getToken(const ChatId &id, const QByteArray &grantType, cons
 {
   QNetworkRequest request(QUrl(LS("https://api.imgur.com/oauth2/token")));
   request.setHeader(QNetworkRequest::ContentTypeHeader, LS("application/x-www-form-urlencoded"));
+  request.setRawHeader("User-Agent", OsInfo::userAgent());
 
   QByteArray body = "client_id="          + authData.value(0).toByteArray() +
                     "&client_secret="     + authData.value(1).toByteArray() +

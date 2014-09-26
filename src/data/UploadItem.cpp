@@ -15,7 +15,6 @@
  */
 
 #include <QtEndian>
-#include <QDebug>
 
 #include "data/UploadItem.h"
 #include "DateTime.h"
@@ -25,12 +24,6 @@ UploadItem::UploadItem(int mode)
   : m_mode(mode)
   , m_date(0)
 {
-}
-
-
-UploadItem::~UploadItem()
-{
-  qDebug() << "~UploadItem" << this;
 }
 
 

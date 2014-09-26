@@ -23,6 +23,7 @@
 
 #include "interfaces/IProvider.h"
 
+class INetHandle;
 class IProvider;
 class Uploader;
 
@@ -31,21 +32,29 @@ class Providers : public QObject
   Q_OBJECT
 
 public:
-  Providers(QObject *parent = 0);
-  ~Providers();
-  inline bool contains(const QString &id) const { return m_map.contains(id); }
+  Providers(IScreenpic *screenpic, IProviderListener *listener, const QObjectList &list, QObject *parent = 0);
+  inline bool contains(const QString &id) const { return m_providers.contains(id); }
   inline const QString& currentId() const       { return m_currentId; }
   inline const QStringList& list() const        { return m_list; }
   IProvider *current() const;
   IProvider *get(const QString &id) const;
-  void add(IProvider *provider);
   void create(QMap<QString, Uploader*> &map, QObject *parent = 0);
+  void networkReady();
   void setCurrentId(const QString &id);
 
+signals:
+  void currentChanged(IProvider *provider);
+
+public slots:
+  void handleReply(const ChatId &id, const QString &provider, const QVariant &data);
+
 private:
-  QMap<QString, IProvider*> m_map; ///< Провайдеры.
-  QString m_currentId;             ///< Идентификатор текущего провайдера.
-  QStringList m_list;              ///< Список провайдеров.
+  bool add(IProvider *provider);
+
+  QMap<QString, INetHandle*> m_handlers;
+  QMap<QString, IProvider*> m_providers; ///< Провайдеры.
+  QString m_currentId;                   ///< Идентификатор текущего провайдера.
+  QStringList m_list;                    ///< Список провайдеров.
 };
 
 #endif /* UPLOADPROVIDERS_H_ */

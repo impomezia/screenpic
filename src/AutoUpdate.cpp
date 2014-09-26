@@ -1,5 +1,4 @@
-/*   $Id$
- *   Copyright (C) 2013 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -59,12 +58,12 @@ UpdateInfo::UpdateInfo(const QVariantMap &data)
 }
 
 
-AutoUpdate::AutoUpdate(Settings *settings, QObject *parent)
+AutoUpdate::AutoUpdate(ISettings *settings, QObject *parent)
   : QObject(parent)
   , m_state(Idle)
+  , m_settings(settings)
   , m_lastCheck(0)
   , m_current(0)
-  , m_settings(settings)
   , m_status(Unknown)
 {
   m_settings->setDefault(kEnabled, true);
@@ -164,11 +163,7 @@ void AutoUpdate::startDownload()
 {
   QNetworkRequest request(m_info.url);
   request.setRawHeader("Referer",    m_info.url.toEncoded());
-  request.setRawHeader("User-Agent", QString(LS("Mozilla/5.0 (%1) Qt/%2 %3/%4"))
-      .arg(OsInfo::json().value(LS("os")).toString())
-      .arg(qVersion())
-      .arg(QCoreApplication::applicationName())
-      .arg(QCoreApplication::applicationVersion()).toLatin1());
+  request.setRawHeader("User-Agent", OsInfo::userAgent());
 
   const qint64 pos = m_file.pos();
   if (pos)

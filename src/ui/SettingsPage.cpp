@@ -31,6 +31,8 @@ SettingsPage::SettingsPage(AppCore *core, QWidget *parent)
   : QWidget(parent)
   , m_core(core)
 {
+  setObjectName("SettingsPage");
+
   m_autoRun = new QCheckBox(this);
   m_autoRun->setChecked(isAutoRun());
 

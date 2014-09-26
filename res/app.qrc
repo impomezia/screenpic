@@ -20,6 +20,7 @@
         <file>images/highlight.png</file>
         <file>images/hotkeys.png</file>
         <file>images/icon16.png</file>
+        <file>images/icon32.png</file>
         <file>images/language.png</file>
         <file>images/line.png</file>
         <file>images/link.png</file>
@@ -35,15 +36,17 @@
         <file>images/rect.png</file>
         <file>images/rectangle.png</file>
         <file>images/redo.png</file>
+        <file>images/remove.png</file>
         <file>images/ru.png</file>
         <file>images/save.png</file>
         <file>images/servers.png</file>
         <file>images/text.png</file>
+        <file>images/times.png</file>
         <file>images/undo.png</file>
         <file>style.css</file>
+        <file>style_osx.css</file>
         <file>translations/app_en.qm</file>
         <file>translations/app_ru.qm</file>
         <file>translations/qt_ru.qm</file>
-        <file>style_osx.css</file>
     </qresource>
 </RCC>
