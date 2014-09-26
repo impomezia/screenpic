@@ -335,7 +335,6 @@ void EditorWindow::onModeChanged(int mode)
 
     EditorItem *item = m_scene->item(static_cast<EditorScene::Mode>(mode));
     QColor color = m_colorBtn->customColor();
-    int width = m_widthSpBx->value();
 
     if (item) {
       m_view->viewport()->setCursor(item->cursor());
@@ -347,22 +346,16 @@ void EditorWindow::onModeChanged(int mode)
         m_scene->setColor(color.rgba());
         m_colorBtn->setColor(color.rgba());
       }
-
-      if (width > 0) {
-        width = m_settings->value(LS("Modes/") + item->id() + LS(".width"), item->width()).toInt();
-
-        m_widthSpBx->setValue(width);
-      }
     }
 
     m_colorAction->setEnabled(color.isValid());
-    m_widthSpBx->setEnabled(width > 0);
   }
 
   QAction *action = m_modes.value(mode);
   if (action)
     action->setChecked(true);
 }
+
 
 
 void EditorWindow::onRendered(const QImage &image)

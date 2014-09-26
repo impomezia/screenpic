@@ -33,6 +33,7 @@ class QGraphicsView;
 class QLineEdit;
 class QPushButton;
 class QRunnable;
+class QSpinBox;
 class TitleWidget;
 
 class EditorWindow : public QMainWindow
