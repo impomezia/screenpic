@@ -14,7 +14,6 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QAction>
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
@@ -28,7 +27,6 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPushButton>
-#include <QSpinBox>
 #include <QToolBar>
 #include <QUndoStack>
 
@@ -102,7 +100,6 @@ EditorWindow::EditorWindow(IScreenpic *screenpic, QWidget *parent, Qt::WindowFla
   connect(m_scene, SIGNAL(colorAtCursorChanged(QColor)), SLOT(onColorAtCursorChanged(QColor)));
   connect(m_scene, SIGNAL(colorSelected(QColor)), SLOT(onColorSelected(QColor)));
   connect(m_colorBtn, SIGNAL(changed(QRgb)), SLOT(onColorChanged(QRgb)));
-  connect(m_widthSpBx, SIGNAL(valueChanged(int)), SLOT(onWidthChanged(int)));
   connect(m_colorBtn, SIGNAL(dropperClicked()), SLOT(onDropperClicked()));
   connect(m_colorBtn, SIGNAL(changed(int)), SLOT(onWidthChanged(int)));
 
@@ -352,9 +349,7 @@ void EditorWindow::onModeChanged(int mode)
     }
 
     m_colorAction->setEnabled(item && item->color().isValid() && color.isValid());
-    m_widthSpBx->setValue(width);
     m_colorBtn->setWidth(width);
-    m_widthAction->setEnabled(width);
   }
 
   QAction *action = m_modes.value(mode);
@@ -387,7 +382,7 @@ void EditorWindow::onSelectionChanged()
 
   const int width = WidthCommand::getWidth(m_scene->selectedItems());
   if (width > 0)
-      m_widthSpBx->setValue(width);
+    m_colorBtn->setWidth(width);
 }
 
 
@@ -503,13 +498,8 @@ void EditorWindow::fillModeToolBar()
   m_colorBtn = new ItemColorButton(this);
   m_colorBtn->setColor(m_screenpic->settings()->value(LS("Color")).toString());
 
-  m_widthSpBx = new QSpinBox(this);
-  m_widthSpBx->setRange(1, 200);
-  m_widthSpBx->setValue(m_scene->pen().width());
-
   m_modeToolBar->addSeparator();
   m_colorAction = m_modeToolBar->addWidget(m_colorBtn);
-  m_widthAction = m_modeToolBar->addWidget(m_widthSpBx);
 
   QAction *dropper = new QAction(this);
   dropper->setCheckable(true);

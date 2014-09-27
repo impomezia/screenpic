@@ -33,7 +33,6 @@ class QGraphicsView;
 class QLineEdit;
 class QPushButton;
 class QRunnable;
-class QSpinBox;
 class TitleWidget;
 
 class EditorWindow : public QMainWindow
@@ -94,12 +93,10 @@ private:
   QAction *m_redoAction;
   QAction *m_saveAction;
   QAction *m_undoAction;
-  QAction *m_widthAction;
   QActionGroup *m_modesGroup;
   QGraphicsView *m_view;
   QMap<int, QAction*> m_modes;
   QPushButton *m_publishBtn;
-  QSpinBox *m_widthSpBx;
   QToolBar *m_mainToolBar;
   QToolBar *m_modeToolBar;
   TitleWidget *m_titleEdit;
