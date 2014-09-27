@@ -42,6 +42,7 @@ protected:
 class TextCreator : public EditorItem
 {
 public:
+  int width() const override              { return 0; }
   QString id() const override             { return QLatin1String("Text"); }
   Qt::CursorShape cursor() const override { return Qt::IBeamCursor; }
   IItemCommand *command(EditorScene *scene, const QPointF &point) override;

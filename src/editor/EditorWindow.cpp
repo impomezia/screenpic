@@ -268,10 +268,8 @@ void EditorWindow::onWidthChanged(int width)
   m_scene->setWidth(width);
 
   EditorItem *item = m_scene->item(m_scene->mode());
-  if (item)
+  if (item && item->width())
      m_screenpic->settings()->setValue(LS("Modes/") + item->id() + LS(".width"), width);
-  else
-     m_screenpic->settings()->setValue(LS("Width"), width);
 
   const QList<QGraphicsItem *> items = m_scene->selectedItems();
   if (items.isEmpty())
@@ -335,9 +333,13 @@ void EditorWindow::onModeChanged(int mode)
 
     EditorItem *item = m_scene->item(static_cast<EditorScene::Mode>(mode));
     QColor color = m_colorBtn->customColor();
+    int width = 0;
 
     if (item) {
       m_view->viewport()->setCursor(item->cursor());
+
+      if (width = m_screenpic->settings()->value(LS("Modes/") + item->id() + LS(".width"), item->width()).toInt())
+        m_scene->setWidth(width);
 
       if (item->color().isValid()) {
         if (!color.isValid())
@@ -348,7 +350,9 @@ void EditorWindow::onModeChanged(int mode)
       }
     }
 
-    m_colorAction->setEnabled(color.isValid());
+    m_colorAction->setEnabled(item && item->color().isValid() && color.isValid());
+    m_widthSpBx->setValue(width);
+    m_widthAction->setEnabled(width);
   }
 
   QAction *action = m_modes.value(mode);
@@ -503,7 +507,7 @@ void EditorWindow::fillModeToolBar()
 
   m_modeToolBar->addSeparator();
   m_colorAction = m_modeToolBar->addWidget(m_colorBtn);
-  m_colorAction = m_modeToolBar->addWidget(m_widthSpBx);
+  m_widthAction = m_modeToolBar->addWidget(m_widthSpBx);
 
   QAction *dropper = new QAction(this);
   dropper->setCheckable(true);

@@ -94,6 +94,7 @@ private:
   QAction *m_redoAction;
   QAction *m_saveAction;
   QAction *m_undoAction;
+  QAction *m_widthAction;
   QActionGroup *m_modesGroup;
   QGraphicsView *m_view;
   QMap<int, QAction*> m_modes;
