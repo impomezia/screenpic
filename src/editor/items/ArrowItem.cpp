@@ -64,7 +64,7 @@ void ArrowItem::setWidth(const int &width)
   setPen(pen);
 
   pen = m_arrowHead->pen();
-  pen.setWidth(width);
+  pen.setWidth(width > 3 ? width : 1);
 
   m_arrowHead->setPen(pen);
 }
@@ -119,24 +119,6 @@ void ArrowItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 
-qreal ArrowItem::calculateAngle(const QPointF &start, const QPointF &end) const
-{
-  const QPointF p = end - start;
-
-  const qreal a = p.x();
-  const qreal c = qSqrt(qPow(p.x(), 2) + qPow(p.y(), 2));
-
-  if (c == 0)
-    return 0;
-
-  qreal angle = qAcos(a / c) * 180 / M_PI;
-  if (end.y() > start.y())
-    angle = 360 - angle;
-
-  return -angle;
-}
-
-
 void ArrowItem::arrowHead(const QPointF &point)
 {
   if (m_arrowHead) {
@@ -144,16 +126,18 @@ void ArrowItem::arrowHead(const QPointF &point)
     delete m_arrowHead;
   }
 
-  int headFactor = this->pen().width()/2;
-
   QPolygonF polygon(4);
-  polygon[0] = QPointF(point.x() - 15*headFactor, point.y() + 5*headFactor);
+  polygon[0] = QPointF(point.x() - 15, point.y() + 5);
   polygon[1] = point;
-  polygon[2] = QPointF(point.x() - 15*headFactor, point.y() - 5*headFactor);
-  polygon[3] = QPointF(point.x() - 10*headFactor, point.y());
+  polygon[2] = QPointF(point.x() - 15, point.y() - 5);
+  polygon[3] = QPointF(point.x() - 10, point.y());
 
   QPen pen(this->pen().color());
   pen.setJoinStyle(Qt::MiterJoin);
+
+  const int width = this->pen().width();
+  if (width > 3)
+    pen.setWidth(width);
 
   QPainterPath pp;
   pp.addPolygon(polygon);
@@ -164,7 +148,7 @@ void ArrowItem::arrowHead(const QPointF &point)
   m_arrowHead->setBrush(pen.color());
   m_arrowHead->setPath(pp);
   m_arrowHead->setTransformOriginPoint(point);
-  m_arrowHead->setRotation(calculateAngle(m_point, point));
+  m_arrowHead->setRotation(-QLineF(m_point, point).angle());
 }
 
 

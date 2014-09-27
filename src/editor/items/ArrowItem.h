@@ -39,7 +39,6 @@ protected:
   void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
-  qreal calculateAngle(const QPointF &start, const QPointF &end) const;
   void arrowHead(const QPointF &point);
 
   QGraphicsPathItem *m_arrowHead;
