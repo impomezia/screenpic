@@ -14,43 +14,37 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ITEMCOLORBUTTON_H_
-#define ITEMCOLORBUTTON_H_
+#ifndef ITEMWIDTHSELECTOR_H_
+#define ITEMWIDTHSELECTOR_H_
 
-#include <QToolButton>
+#include <QToolBar>
 
-class ItemColorSelector;
-class ItemWidthSelector;
-class WebColorWidget;
+class QToolButton;
+class QBoxLayout;
+class QActionGroup;
 
-class ItemColorButton : public QToolButton
+class ItemWidthSelector : public QToolBar
 {
   Q_OBJECT
 
 public:
-  ItemColorButton(QWidget *parent = 0);
-  QColor customColor() const;
-  void setTempColor(const QColor &color);
+  ItemWidthSelector(QWidget *parent = 0);
+  void setColor(const QColor &color);
   void setWidth(int width);
 
 signals:
   void changed(int width);
-  void changed(QRgb color);
-  void dropperClicked();
-
-public slots:
-  void setColor(const QColor &color);
 
 private slots:
-  void onChanged(QRgb color);
+  void onTriggered(QAction *action);
 
 private:
-  QPixmap pixmap(const QColor &color) const;
+  QAction *add(int width, int size);
+  QPixmap pixmap(int width, const QColor &color) const;
+  void addSpacing(int size);
+  void addStretch();
 
-  ItemColorSelector *m_selector;
-  ItemWidthSelector *m_widthSelector;
-  QRgb m_color;
-  WebColorWidget *m_webColor;
+  QActionGroup *m_actionGroup;
 };
 
-#endif /* ITEMCOLORBUTTON_H_ */
+#endif // ITEMWIDTHSELECTOR_H_

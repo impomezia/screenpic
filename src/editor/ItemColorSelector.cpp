@@ -67,7 +67,6 @@ ItemColorSelector::ItemColorSelector(QWidget *parent)
 
   m_dropperLayout->addWidget(m_dropperBtn);
 
-
   addSeparator();
   addWidget(dropper);
 

@@ -21,17 +21,23 @@
 
 #include "ItemColorButton.h"
 #include "ItemColorSelector.h"
+#include "ItemWidthSelector.h"
 #include "WebColorWidget.h"
 
 ItemColorButton::ItemColorButton(QWidget *parent)
   : QToolButton(parent)
 {
-  m_selector = new ItemColorSelector(this);
-  m_webColor = new WebColorWidget(this);
+  m_selector      = new ItemColorSelector(this);
+  m_webColor      = new WebColorWidget(this);
+  m_widthSelector = new ItemWidthSelector(this);
 
   QMenu *menu = new QMenu(this);
   QWidgetAction *action = new QWidgetAction(this);
   action->setDefaultWidget(m_selector);
+  menu->addAction(action);
+
+  action = new QWidgetAction(this);
+  action->setDefaultWidget(m_widthSelector);
   menu->addAction(action);
 
   action = new QWidgetAction(this);
@@ -46,6 +52,7 @@ ItemColorButton::ItemColorButton(QWidget *parent)
   connect(m_selector, SIGNAL(dropperClicked()), SIGNAL(dropperClicked()));
   connect(m_selector, SIGNAL(changed(QRgb)), m_webColor, SLOT(setRgb(QRgb)));
   connect(m_webColor, SIGNAL(changed(QColor)), SLOT(setColor(QColor)));
+  connect(m_widthSelector, SIGNAL(changed(int)), SIGNAL(changed(int)));
 }
 
 
@@ -61,6 +68,13 @@ void ItemColorButton::setTempColor(const QColor &color)
 }
 
 
+void ItemColorButton::setWidth(int width)
+{
+  m_widthSelector->setWidth(width);
+  m_widthSelector->setEnabled(width);
+}
+
+
 void ItemColorButton::setColor(const QColor &color)
 {
   if (!color.isValid())
@@ -72,6 +86,7 @@ void ItemColorButton::setColor(const QColor &color)
 
   m_color = rgb;
   m_selector->setColor(rgb);
+  m_widthSelector->setColor(rgb);
   m_webColor->setRgb(rgb);
 }
 

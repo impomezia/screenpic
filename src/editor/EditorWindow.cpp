@@ -104,6 +104,7 @@ EditorWindow::EditorWindow(IScreenpic *screenpic, QWidget *parent, Qt::WindowFla
   connect(m_colorBtn, SIGNAL(changed(QRgb)), SLOT(onColorChanged(QRgb)));
   connect(m_widthSpBx, SIGNAL(valueChanged(int)), SLOT(onWidthChanged(int)));
   connect(m_colorBtn, SIGNAL(dropperClicked()), SLOT(onDropperClicked()));
+  connect(m_colorBtn, SIGNAL(changed(int)), SLOT(onWidthChanged(int)));
 
   m_backdrop = new BackdropWidget(this);
   m_backdrop->close();
@@ -352,6 +353,7 @@ void EditorWindow::onModeChanged(int mode)
 
     m_colorAction->setEnabled(item && item->color().isValid() && color.isValid());
     m_widthSpBx->setValue(width);
+    m_colorBtn->setWidth(width);
     m_widthAction->setEnabled(width);
   }
 

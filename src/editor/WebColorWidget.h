@@ -19,8 +19,8 @@
 
 #include <QLineEdit>
 
+class QBoxLayout;
 class QToolButton;
-
 
 class LineEdit : public QLineEdit
 {

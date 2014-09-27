@@ -30,10 +30,11 @@ LineEdit::LineEdit(QWidget *parent)
 }
 
 
-QSize	LineEdit::sizeHint() const
+QSize LineEdit::sizeHint() const
 {
   QSize size = QLineEdit::sizeHint();
-  size.setWidth(64);
+  QFontMetrics fm(font());
+  size.setWidth(fm.width(LS("#000000")));
 
   return size;
 }
@@ -51,9 +52,9 @@ WebColorWidget::WebColorWidget(QWidget *parent)
   QHBoxLayout *layout = new QHBoxLayout(this);
   layout->addWidget(m_lineEdit);
   layout->addWidget(m_copyBtn);
+  layout->addStretch();
   layout->setContentsMargins(9, 6, 0, 4);
-  layout->setSpacing(2);
-  layout->setStretch(0, 1);
+  layout->setSpacing(0);
 
   connect(m_lineEdit, SIGNAL(returnPressed()), SLOT(onReturnPressed()));
   connect(m_copyBtn, SIGNAL(clicked()), SLOT(copy()));
