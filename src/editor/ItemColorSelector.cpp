@@ -38,7 +38,7 @@ ItemColorSelector::ItemColorSelector(QWidget *parent)
 
   layout->addLayout(line1);
   layout->addLayout(line2);
-  layout->setMargin(4);
+  layout->setContentsMargins(4, 4, 4, 0);
   layout->setSpacing(0);
 
   add(0xffd60808, line1);
@@ -67,11 +67,12 @@ ItemColorSelector::ItemColorSelector(QWidget *parent)
 
   m_dropperLayout->addWidget(m_dropperBtn);
 
-
   addSeparator();
   addWidget(dropper);
 
   reload();
+
+  setStyleSheet(LS("QToolBar { border:none; }"));
 }
 
 

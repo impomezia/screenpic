@@ -46,10 +46,11 @@ private:
 class BlurCreator : public EditorItem
 {
 public:
-  inline virtual QColor color() const { return QColor(); }
-  inline virtual QString id() const   { return QLatin1String("Blur"); }
-  virtual IItemCommand *command(EditorScene *scene, const QPointF &point);
-  virtual QGraphicsItem *create(EditorScene *scene, const QPointF &point);
+  int width() const override    { return 0; }
+  QColor color() const override { return QColor(); }
+  QString id() const override   { return QLatin1String("Blur"); }
+  IItemCommand *command(EditorScene *scene, const QPointF &point) override;
+  QGraphicsItem *create(EditorScene *scene, const QPointF &point) override;
 };
 
 

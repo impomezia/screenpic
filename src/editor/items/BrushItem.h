@@ -41,7 +41,8 @@ private:
 class BrushCreator : public EditorItem
 {
 public:
-  QString id() const override            { return QLatin1String("Brush"); }
+  int width() const override              { return 16; }
+  QString id() const override             { return QLatin1String("Brush"); }
   Qt::CursorShape cursor() const override { return Qt::PointingHandCursor; }
   QGraphicsItem *create(EditorScene *scene, const QPointF &point) override;
 };

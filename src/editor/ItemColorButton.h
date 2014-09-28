@@ -20,7 +20,9 @@
 #include <QToolButton>
 
 class ItemColorSelector;
+class ItemWidthSelector;
 class WebColorWidget;
+class QWidgetAction;
 
 class ItemColorButton : public QToolButton
 {
@@ -28,10 +30,13 @@ class ItemColorButton : public QToolButton
 
 public:
   ItemColorButton(QWidget *parent = 0);
+  bool eventFilter(QObject *watched, QEvent *event) override;
   QColor customColor() const;
   void setTempColor(const QColor &color);
+  void setWidth(int width);
 
 signals:
+  void changed(int width);
   void changed(QRgb color);
   void dropperClicked();
 
@@ -39,13 +44,20 @@ public slots:
   void setColor(const QColor &color);
 
 private slots:
+  void onAboutToShow();
   void onChanged(QRgb color);
 
 private:
   QPixmap pixmap(const QColor &color) const;
+  QWidgetAction *add(QWidget *widget);
 
   ItemColorSelector *m_selector;
+  ItemWidthSelector *m_advWidthSelector;
+  ItemWidthSelector *m_widthSelector;
   QRgb m_color;
+  QWidgetAction *m_advWidthAction;
+  QWidgetAction *m_webColorAction;
+  QWidgetAction *m_widthAction;
   WebColorWidget *m_webColor;
 };
 

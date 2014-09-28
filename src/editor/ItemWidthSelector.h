@@ -14,50 +14,45 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WEBCOLORWIDGET_H_
-#define WEBCOLORWIDGET_H_
+#ifndef ITEMWIDTHSELECTOR_H_
+#define ITEMWIDTHSELECTOR_H_
 
-#include <QLineEdit>
+#include <QWidget>
 
+class QActionGroup;
 class QBoxLayout;
+class QSlider;
+class QSpinBox;
+class QToolBar;
 class QToolButton;
 
-class LineEdit : public QLineEdit
+class ItemWidthSelector : public QWidget
 {
   Q_OBJECT
 
 public:
-  LineEdit(QWidget *parent = 0);
-  QSize	sizeHint() const override;
-};
-
-
-class WebColorWidget : public QWidget
-{
-  Q_OBJECT
-
-public:
-  WebColorWidget(QWidget *parent = 0);
+  ItemWidthSelector(QWidget *parent = 0);
+  void setAdvanced(bool advanced);
+  void setColor(const QColor &color);
+  void setWidth(int width);
 
 signals:
-  void changed(const QColor &color);
-
-public slots:
-  void copy();
-  void setRgb(QRgb color);
-
-protected:
-  void changeEvent(QEvent *event) override;
-  void showEvent(QShowEvent *event) override;
+  void changed(int width);
 
 private slots:
-  void onReturnPressed();
+  void onTriggered(QAction *action);
+  void onValueChanged(int value);
 
 private:
-  void retranslateUi();
+  QAction *add(int width, int size);
+  QPixmap pixmap(int width, const QColor &color) const;
+  void addSpacing(int size);
+  void addStretch();
 
-  LineEdit *m_lineEdit;
-  QToolButton *m_copyBtn;
+  QActionGroup *m_actionGroup;
+  QSlider *m_slider;
+  QSpinBox *m_spinBox;
+  QToolBar *m_toolBar;
 };
 
-#endif // WEBCOLORWIDGET_H_
+#endif // ITEMWIDTHSELECTOR_H_

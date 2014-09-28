@@ -14,7 +14,6 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QAction>
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
@@ -40,6 +39,7 @@
 #include "ItemColorButton.h"
 #include "items/ColorCommand.h"
 #include "items/EditorItem.h"
+#include "items/WidthCommand.h"
 #include "Settings.h"
 #include "sglobal.h"
 #include "tasks/SaveTask.h"
@@ -101,6 +101,7 @@ EditorWindow::EditorWindow(IScreenpic *screenpic, QWidget *parent, Qt::WindowFla
   connect(m_scene, SIGNAL(colorSelected(QColor)), SLOT(onColorSelected(QColor)));
   connect(m_colorBtn, SIGNAL(changed(QRgb)), SLOT(onColorChanged(QRgb)));
   connect(m_colorBtn, SIGNAL(dropperClicked()), SLOT(onDropperClicked()));
+  connect(m_colorBtn, SIGNAL(changed(int)), SLOT(onWidthChanged(int)));
 
   m_backdrop = new BackdropWidget(this);
   m_backdrop->close();
@@ -260,6 +261,32 @@ void EditorWindow::onColorChanged(QRgb color)
   m_scene->undoStack()->push(command);
 }
 
+void EditorWindow::onWidthChanged(int width)
+{
+  m_colorBtn->setWidth(width);
+
+  if (m_scene->pen().width() == width)
+    return;
+
+  m_scene->setWidth(width);
+
+  EditorItem *item = m_scene->item(m_scene->mode());
+  if (item && item->width())
+     m_screenpic->settings()->setValue(LS("Modes/") + item->id() + LS(".width"), width);
+
+  const QList<QGraphicsItem *> items = m_scene->selectedItems();
+  if (items.isEmpty())
+    return;
+
+  WidthCommand *command = new WidthCommand(items, width);
+  if (!command->isValid()) {
+    delete command;
+    return;
+  }
+
+  m_scene->undoStack()->push(command);
+}
+
 
 void EditorWindow::onColorSelected(const QColor &color)
 {
@@ -309,9 +336,13 @@ void EditorWindow::onModeChanged(int mode)
 
     EditorItem *item = m_scene->item(static_cast<EditorScene::Mode>(mode));
     QColor color = m_colorBtn->customColor();
+    int width = 0;
 
     if (item) {
       m_view->viewport()->setCursor(item->cursor());
+
+      if (width = m_screenpic->settings()->value(LS("Modes/") + item->id() + LS(".width"), item->width()).toInt())
+        m_scene->setWidth(width);
 
       if (item->color().isValid()) {
         if (!color.isValid())
@@ -322,13 +353,15 @@ void EditorWindow::onModeChanged(int mode)
       }
     }
 
-    m_colorAction->setEnabled(color.isValid());
+    m_colorAction->setEnabled(item && item->color().isValid() && color.isValid());
+    m_colorBtn->setWidth(width);
   }
 
   QAction *action = m_modes.value(mode);
   if (action)
     action->setChecked(true);
 }
+
 
 
 void EditorWindow::onRendered(const QImage &image)
@@ -351,6 +384,10 @@ void EditorWindow::onSelectionChanged()
   const QColor color = ColorCommand::getColor(m_scene->selectedItems());
   if (color.isValid())
     m_colorBtn->setColor(color.rgba());
+
+  const int width = WidthCommand::getWidth(m_scene->selectedItems());
+  if (width > 0)
+    m_colorBtn->setWidth(width);
 }
 
 

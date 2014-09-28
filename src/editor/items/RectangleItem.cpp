@@ -42,8 +42,10 @@ void RectangleItem::start(const QPointF &point, const QPen &pen)
 
   m_point = point;
 
-  setPen(pen);
-  setRect(QRectF(point, QSizeF(pen.widthF(), pen.widthF())));
+  QPen p = pen;
+  p.setJoinStyle(Qt::MiterJoin);
+
+  setPen(p);
 }
 
 

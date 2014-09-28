@@ -69,6 +69,7 @@ private slots:
   void onModeChanged(int mode);
   void onRendered(const QImage &image);
   void onSelectionChanged();
+  void onWidthChanged(int width);
   void saveAs();
   void setMode();
 

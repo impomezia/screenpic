@@ -51,6 +51,7 @@ public:
   inline Mode mode() const                 { return m_mode; }
   inline QUndoStack *undoStack()           { return m_undoStack; }
   inline void setColor(QRgb color)         { m_pen.setColor(color); }
+  inline void setWidth(int width)          { m_pen.setWidth(width); }
   QColor colorAt(const QPointF &pos);
   QPixmap toPixmap(bool resize = true, const QRectF &rect = QRectF());
   void crop(const QRectF &rect);

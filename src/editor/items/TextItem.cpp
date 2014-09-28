@@ -37,7 +37,7 @@ void TextItem::start(const QPointF &point, const QPen &pen)
   setDefaultTextColor(pen.color());
 
   QFont f = font();
-  f.setPixelSize(16);
+  f.setPixelSize(13 + pen.width());
 
   QPointF p = point;
   p.setY(p.y() - 12);

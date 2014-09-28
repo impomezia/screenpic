@@ -41,6 +41,7 @@ private:
 class CropCreator : public EditorItem
 {
 public:
+  int width() const override    { return 0; }
   QColor color() const override { return QColor(); }
   QString id() const override   { return QLatin1String("Crop"); }
   IItemCommand *command(EditorScene *scene, const QPointF &point) override;

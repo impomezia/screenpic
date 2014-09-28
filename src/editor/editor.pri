@@ -8,6 +8,7 @@ HEADERS += \
     items/BlurItem.h \
     items/BrushItem.h \
     items/ColorCommand.h \
+    items/WidthCommand.h \
     items/CropItem.h \
     items/EditorItem.h \
     items/EllipseItem.h \
@@ -18,6 +19,7 @@ HEADERS += \
     items/PenItem.h \
     items/RectangleItem.h \
     items/TextItem.h \
+    editor/ItemWidthSelector.h
 
 SOURCES += \
     EditorScene.cpp \
@@ -29,6 +31,7 @@ SOURCES += \
     items/BlurItem.cpp \
     items/BrushItem.cpp \
     items/ColorCommand.cpp \
+    items/WidthCommand.cpp \
     items/CropItem.cpp \
     items/EditorItem.cpp \
     items/EllipseItem.cpp \
@@ -39,3 +42,4 @@ SOURCES += \
     items/PenItem.cpp \
     items/RectangleItem.cpp \
     items/TextItem.cpp \
+    editor/ItemWidthSelector.cpp

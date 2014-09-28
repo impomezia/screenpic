@@ -43,7 +43,6 @@ void EllipseItem::start(const QPointF &point, const QPen &pen)
   m_point = point;
 
   setPen(pen);
-  setRect(QRectF(point, QSizeF(pen.widthF(), pen.widthF())));
 }
 
 

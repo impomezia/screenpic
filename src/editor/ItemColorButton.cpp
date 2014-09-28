@@ -14,6 +14,9 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QApplication>
+#include <QClipboard>
+#include <QKeyEvent>
 #include <QLineEdit>
 #include <QMenu>
 #include <QPainter>
@@ -21,24 +24,30 @@
 
 #include "ItemColorButton.h"
 #include "ItemColorSelector.h"
+#include "ItemWidthSelector.h"
 #include "WebColorWidget.h"
 
 ItemColorButton::ItemColorButton(QWidget *parent)
   : QToolButton(parent)
 {
-  m_selector = new ItemColorSelector(this);
-  m_webColor = new WebColorWidget(this);
+  m_selector      = new ItemColorSelector(this);
+  m_webColor      = new WebColorWidget(this);
+  m_widthSelector = new ItemWidthSelector(this);
+  m_widthSelector->setAdvanced(false);
 
-  QMenu *menu = new QMenu(this);
-  QWidgetAction *action = new QWidgetAction(this);
-  action->setDefaultWidget(m_selector);
-  menu->addAction(action);
+  m_advWidthSelector = new ItemWidthSelector(this);
+  m_advWidthSelector->setAdvanced(true);
 
-  action = new QWidgetAction(this);
-  action->setDefaultWidget(m_webColor);
-  menu->addAction(action);
+  setMenu(new QMenu(this));
 
-  setMenu(menu);
+  menu()->setFocusPolicy(Qt::WheelFocus);
+  menu()->installEventFilter(this);
+
+  add(m_selector);
+  m_webColorAction = add(m_webColor);
+  m_widthAction    = add(m_widthSelector);
+  m_advWidthAction = add(m_advWidthSelector);
+
   setPopupMode(InstantPopup);
   setColor(0xffd60808);
 
@@ -46,6 +55,18 @@ ItemColorButton::ItemColorButton(QWidget *parent)
   connect(m_selector, SIGNAL(dropperClicked()), SIGNAL(dropperClicked()));
   connect(m_selector, SIGNAL(changed(QRgb)), m_webColor, SLOT(setRgb(QRgb)));
   connect(m_webColor, SIGNAL(changed(QColor)), SLOT(setColor(QColor)));
+  connect(m_widthSelector, SIGNAL(changed(int)), SIGNAL(changed(int)));
+  connect(m_advWidthSelector, SIGNAL(changed(int)), SIGNAL(changed(int)));
+  connect(menu(), SIGNAL(aboutToShow()), SLOT(onAboutToShow()));
+}
+
+
+bool ItemColorButton::eventFilter(QObject *watched, QEvent *event)
+{
+  if (event->type() == QEvent::KeyPress && static_cast<QKeyEvent*>(event)->matches(QKeySequence::Copy))
+    QApplication::clipboard()->setText(QColor(m_color).name());
+
+  return QToolButton::eventFilter(watched, event);
 }
 
 
@@ -61,6 +82,15 @@ void ItemColorButton::setTempColor(const QColor &color)
 }
 
 
+void ItemColorButton::setWidth(int width)
+{
+  m_widthSelector->setWidth(width);
+  m_widthSelector->setEnabled(width);
+  m_advWidthSelector->setWidth(width);
+  m_advWidthSelector->setEnabled(width);
+}
+
+
 void ItemColorButton::setColor(const QColor &color)
 {
   if (!color.isValid())
@@ -72,7 +102,24 @@ void ItemColorButton::setColor(const QColor &color)
 
   m_color = rgb;
   m_selector->setColor(rgb);
+  m_widthSelector->setColor(rgb);
+  m_advWidthSelector->setColor(rgb);
   m_webColor->setRgb(rgb);
+}
+
+
+void ItemColorButton::onAboutToShow()
+{
+  const bool advanced = QApplication::keyboardModifiers() == Qt::ShiftModifier;
+
+  m_webColorAction->setVisible(advanced);
+  m_webColor->setVisible(advanced);
+
+  m_widthSelector->setVisible(!advanced);
+  m_widthAction->setVisible(!advanced);
+
+  m_advWidthAction->setVisible(advanced);
+  m_advWidthSelector->setVisible(advanced);
 }
 
 
@@ -103,4 +150,14 @@ QPixmap ItemColorButton::pixmap(const QColor &color) const
   painter.end();
 
   return pix;
+}
+
+
+QWidgetAction *ItemColorButton::add(QWidget *widget)
+{
+  QWidgetAction *action = new QWidgetAction(this);
+  action->setDefaultWidget(widget);
+  menu()->addAction(action);
+
+  return action;
 }

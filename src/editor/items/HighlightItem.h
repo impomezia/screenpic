@@ -40,7 +40,8 @@ private:
 class HighlightCreator : public EditorItem
 {
 public:
-  QColor color() const override           { return 0xffffff00; }
+  int width() const override              { return 20; }
+  QColor color() const override           { return 0xfff3e00e; }
   QString id() const override             { return QLatin1String("Marker"); }
   Qt::CursorShape cursor() const override { return Qt::IBeamCursor; }
   virtual QGraphicsItem *create(EditorScene *scene, const QPointF &point);
