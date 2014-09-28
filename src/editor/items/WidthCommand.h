@@ -32,7 +32,7 @@ public:
   void undo() override;
 
 private:
-  void apply(const int &width);
+  void apply(int width);
 
   int m_width;
   int m_originalWidth;

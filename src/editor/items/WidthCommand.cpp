@@ -15,6 +15,7 @@
  */
 
 #include <QAbstractGraphicsShapeItem>
+#include <QFont>
 #include <QPen>
 
 #include "ArrowItem.h"
@@ -50,8 +51,8 @@ int WidthCommand::getWidth(QGraphicsItem *item)
   if (item->type() == QGraphicsLineItem::Type)
     return qgraphicsitem_cast<QGraphicsLineItem*>(item)->pen().width();
 
-  //if (item->type() == TextItem::Type)
-    //return qgraphicsitem_cast<TextItem*>(item)->defaultTextColor();
+  if (item->type() == TextItem::Type)
+    return qgraphicsitem_cast<TextItem*>(item)->font().pixelSize() - 13;
 
   if (item->type() == ArrowItem::Type)
     return qgraphicsitem_cast<ArrowItem*>(item)->pen().width();
@@ -86,7 +87,7 @@ void WidthCommand::undo()
 }
 
 
-void WidthCommand::apply(const int &width)
+void WidthCommand::apply(int width)
 {
   if (!m_item)
     return;
@@ -107,9 +108,12 @@ void WidthCommand::apply(const int &width)
 
     item->setPen(pen);
   }
-//  else if (m_item->type() == TextItem::Type) {
-//    qgraphicsitem_cast<TextItem*>(m_item)->setDefaultTextColor(color);
-//  }
+  else if (m_item->type() == TextItem::Type) {
+    TextItem *item = qgraphicsitem_cast<TextItem*>(m_item);
+    QFont font = item->font();
+    font.setPixelSize(width + 13);
+    item->setFont(font);
+  }
   else if (m_item->type() == ArrowItem::Type) {
     qgraphicsitem_cast<ArrowItem*>(m_item)->setWidth(width);
   }
