@@ -15,6 +15,8 @@
  */
 
 #include <QApplication>
+#include <QClipboard>
+#include <QKeyEvent>
 #include <QLineEdit>
 #include <QMenu>
 #include <QPainter>
@@ -38,6 +40,9 @@ ItemColorButton::ItemColorButton(QWidget *parent)
 
   setMenu(new QMenu(this));
 
+  menu()->setFocusPolicy(Qt::WheelFocus);
+  menu()->installEventFilter(this);
+
   add(m_selector);
   m_webColorAction = add(m_webColor);
   m_widthAction    = add(m_widthSelector);
@@ -53,6 +58,15 @@ ItemColorButton::ItemColorButton(QWidget *parent)
   connect(m_widthSelector, SIGNAL(changed(int)), SIGNAL(changed(int)));
   connect(m_advWidthSelector, SIGNAL(changed(int)), SIGNAL(changed(int)));
   connect(menu(), SIGNAL(aboutToShow()), SLOT(onAboutToShow()));
+}
+
+
+bool ItemColorButton::eventFilter(QObject *watched, QEvent *event)
+{
+  if (event->type() == QEvent::KeyPress && static_cast<QKeyEvent*>(event)->matches(QKeySequence::Copy))
+    QApplication::clipboard()->setText(QColor(m_color).name());
+
+  return QToolButton::eventFilter(watched, event);
 }
 
 

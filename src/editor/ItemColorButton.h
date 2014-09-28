@@ -30,6 +30,7 @@ class ItemColorButton : public QToolButton
 
 public:
   ItemColorButton(QWidget *parent = 0);
+  bool eventFilter(QObject *watched, QEvent *event) override;
   QColor customColor() const;
   void setTempColor(const QColor &color);
   void setWidth(int width);
