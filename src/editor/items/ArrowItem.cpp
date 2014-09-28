@@ -77,7 +77,6 @@ void ArrowItem::start(const QPointF &point, const QPen &pen)
   m_point = point;
 
   setPen(pen);
-  setLine(m_point.x(), m_point.y(), m_point.x(), m_point.y());
 }
 
 
