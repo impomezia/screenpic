@@ -21,6 +21,8 @@
 
 class QActionGroup;
 class QBoxLayout;
+class QSlider;
+class QSpinBox;
 class QToolBar;
 class QToolButton;
 
@@ -30,6 +32,7 @@ class ItemWidthSelector : public QWidget
 
 public:
   ItemWidthSelector(QWidget *parent = 0);
+  void setAdvanced(bool advanced);
   void setColor(const QColor &color);
   void setWidth(int width);
 
@@ -38,6 +41,7 @@ signals:
 
 private slots:
   void onTriggered(QAction *action);
+  void onValueChanged(int value);
 
 private:
   QAction *add(int width, int size);
@@ -46,6 +50,8 @@ private:
   void addStretch();
 
   QActionGroup *m_actionGroup;
+  QSlider *m_slider;
+  QSpinBox *m_spinBox;
   QToolBar *m_toolBar;
 };
 

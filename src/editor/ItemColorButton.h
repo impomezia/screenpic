@@ -22,6 +22,7 @@
 class ItemColorSelector;
 class ItemWidthSelector;
 class WebColorWidget;
+class QWidgetAction;
 
 class ItemColorButton : public QToolButton
 {
@@ -42,15 +43,20 @@ public slots:
   void setColor(const QColor &color);
 
 private slots:
+  void onAboutToShow();
   void onChanged(QRgb color);
 
 private:
   QPixmap pixmap(const QColor &color) const;
-  void add(QMenu *menu, QWidget *widget);
+  QWidgetAction *add(QWidget *widget);
 
   ItemColorSelector *m_selector;
+  ItemWidthSelector *m_advWidthSelector;
   ItemWidthSelector *m_widthSelector;
   QRgb m_color;
+  QWidgetAction *m_advWidthAction;
+  QWidgetAction *m_webColorAction;
+  QWidgetAction *m_widthAction;
   WebColorWidget *m_webColor;
 };
 

@@ -263,6 +263,11 @@ void EditorWindow::onColorChanged(QRgb color)
 
 void EditorWindow::onWidthChanged(int width)
 {
+  m_colorBtn->setWidth(width);
+
+  if (m_scene->pen().width() == width)
+    return;
+
   m_scene->setWidth(width);
 
   EditorItem *item = m_scene->item(m_scene->mode());
