@@ -15,17 +15,22 @@
  */
 
 #include <QAction>
+#include <QFrame>
 #include <QHBoxLayout>
 #include <QMenu>
 #include <QPainter>
+#include <QToolBar>
 #include <QToolButton>
+#include <QVBoxLayout>
 
 #include "ItemWidthSelector.h"
+#include "sglobal.h"
 
 ItemWidthSelector::ItemWidthSelector(QWidget *parent)
-  : QToolBar(parent)
+  : QWidget(parent)
 {
-  setIconSize(QSize(20, 20));
+  m_toolBar = new QToolBar(this);
+  m_toolBar->setIconSize(QSize(20, 20));
 
   m_actionGroup = new QActionGroup(this);
   m_actionGroup->setExclusive(true);
@@ -40,7 +45,17 @@ ItemWidthSelector::ItemWidthSelector(QWidget *parent)
   addSpacing(5);
   addStretch();
 
+  QFrame *line = new QFrame(this);
+  line->setFrameStyle(QFrame::HLine | QFrame::Sunken);
+
+  QVBoxLayout *layout = new QVBoxLayout(this);
+  layout->addWidget(line);
+  layout->addWidget(m_toolBar);
+  layout->setContentsMargins(4, 9, 4, 4);
+
   connect(m_actionGroup, SIGNAL(triggered(QAction*)), SLOT(onTriggered(QAction*)));
+
+  setStyleSheet(LS("QToolBar { border:none; }"));
 }
 
 
@@ -62,7 +77,7 @@ void ItemWidthSelector::setWidth(int width)
 
 QAction *ItemWidthSelector::add(int width, int size)
 {
-  QAction *action = addAction(QIcon(), QString());
+  QAction *action = m_toolBar->addAction(QIcon(), QString());
   action->setCheckable(true);
   action->setChecked(m_actionGroup->actions().isEmpty());
   action->setProperty("width", width);
@@ -104,7 +119,7 @@ void ItemWidthSelector::addSpacing(int size)
   QWidget *widget = new QWidget(this);
   widget->setFixedSize(size, 20);
 
-  addWidget(widget);
+  m_toolBar->addWidget(widget);
 }
 
 
@@ -112,5 +127,5 @@ void ItemWidthSelector::addStretch()
 {
   QWidget *stretch = new QWidget(this);
   stretch->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-  addWidget(stretch);
+  m_toolBar->addWidget(stretch);
 }

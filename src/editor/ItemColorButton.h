@@ -46,6 +46,7 @@ private slots:
 
 private:
   QPixmap pixmap(const QColor &color) const;
+  void add(QMenu *menu, QWidget *widget);
 
   ItemColorSelector *m_selector;
   ItemWidthSelector *m_widthSelector;

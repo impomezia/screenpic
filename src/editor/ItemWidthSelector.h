@@ -17,13 +17,14 @@
 #ifndef ITEMWIDTHSELECTOR_H_
 #define ITEMWIDTHSELECTOR_H_
 
-#include <QToolBar>
+#include <QWidget>
 
-class QToolButton;
-class QBoxLayout;
 class QActionGroup;
+class QBoxLayout;
+class QToolBar;
+class QToolButton;
 
-class ItemWidthSelector : public QToolBar
+class ItemWidthSelector : public QWidget
 {
   Q_OBJECT
 
@@ -45,6 +46,7 @@ private:
   void addStretch();
 
   QActionGroup *m_actionGroup;
+  QToolBar *m_toolBar;
 };
 
 #endif // ITEMWIDTHSELECTOR_H_

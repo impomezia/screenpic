@@ -32,17 +32,10 @@ ItemColorButton::ItemColorButton(QWidget *parent)
   m_widthSelector = new ItemWidthSelector(this);
 
   QMenu *menu = new QMenu(this);
-  QWidgetAction *action = new QWidgetAction(this);
-  action->setDefaultWidget(m_selector);
-  menu->addAction(action);
 
-  action = new QWidgetAction(this);
-  action->setDefaultWidget(m_widthSelector);
-  menu->addAction(action);
-
-  action = new QWidgetAction(this);
-  action->setDefaultWidget(m_webColor);
-  menu->addAction(action);
+  add(menu, m_selector);
+  add(menu, m_webColor);
+  add(menu, m_widthSelector);
 
   setMenu(menu);
   setPopupMode(InstantPopup);
@@ -118,4 +111,12 @@ QPixmap ItemColorButton::pixmap(const QColor &color) const
   painter.end();
 
   return pix;
+}
+
+
+void ItemColorButton::add(QMenu *menu, QWidget *widget)
+{
+  QWidgetAction *action = new QWidgetAction(this);
+  action->setDefaultWidget(widget);
+  menu->addAction(action);
 }
