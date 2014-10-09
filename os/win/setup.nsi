@@ -20,7 +20,7 @@ Name "${APP_NAME}"
 BrandingText "${APP_COPYRIGHT}"
 OutFile "..\..\bin\${APP_NAME_LOW}-${APP_VERSION}.exe"
 InstallDir "$LOCALAPPDATA\${APP_NAME}"
-InstallDirRegKey HKCU "Software\${APP_NAME}" ""
+InstallDirRegKey HKCU "${APP_REGKEY}" ""
 RequestExecutionLevel user
 
 VIProductVersion "${APP_VERSION}.${APP_REVISION}"
@@ -189,6 +189,7 @@ Section "Uninstall"
   
   !insertmacro KILL_ALL "$INSTDIR\${APP_NAME_LOW}.exe"
 
+  Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
   RMDir "$SMPROGRAMS\${APP_NAME}"
   
   Delete "$DESKTOP\${APP_NAME}.lnk"
