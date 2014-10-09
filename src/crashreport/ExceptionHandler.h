@@ -1,4 +1,5 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/* Simple Chat
+ * Copyright (c) 2008-2014 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -14,21 +15,12 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef VERSION_H_
-#define VERSION_H_
+#ifndef EXCEPTIONHANDLER_H_
+#define EXCEPTIONHANDLER_H_
 
-#define VERSION_MAJOR     0
-#define VERSION_MINOR     13
-#define VERSION_BUILD     3
-#define VERSION_REV       0
+#include <qt_windows.h>
 
-#define VERSION_STRING "0.13.3"
-#define PRODUCT_NAME   "Screenpic"
-#define ORG_NAME       "Alexander Sedov"
-#define ORG_COPYRIGHT  "Copyright (C) 2013-2014 Alexander Sedov"
-#define ORG_DOMAIN     "rup.io"
-#define ORG_SITE       "https://rup.io"
-#define ORG_UPDATE_URL "https://download.schat.me/screenpic"
-#define ORG_PROVIDER   "rup"
+extern void initExceptionHandler();
+extern LONG WINAPI exceptionFilter(EXCEPTION_POINTERS *pExceptionInfo);
 
-#endif /* VERSION_H_ */
+#endif // EXCEPTIONHANDLER_H_

@@ -103,11 +103,15 @@ void SettingsPage::browse()
 
 void SettingsPage::onAutoRunClicked(bool checked)
 {
+  QString key = QApplication::applicationName();
+  if (!m_core->edition().isEmpty())
+    key = QString(LS("%1 %2 edition")).arg(key).arg(m_core->edition());
+
   QSettings reg(LS("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"), QSettings::NativeFormat);
   if (checked)
-    reg.setValue(QApplication::applicationName(), QDir::toNativeSeparators(QApplication::applicationFilePath()));
+    reg.setValue(key, QDir::toNativeSeparators(QApplication::applicationFilePath()));
   else
-    reg.remove(QApplication::applicationName());
+    reg.remove(key);
 }
 
 

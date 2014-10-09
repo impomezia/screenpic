@@ -30,15 +30,25 @@ HEADERS += \
     data/ImageItem.h \
     data/Thumbnail.h \
     data/UploadItem.h \
+    editor/EditorProperties.h \
     Grabber.h \
+    Hooks.h \
+    interfaces/IHook.h \
     interfaces/IItemCommand.h \
+    interfaces/INetHandle.h \
+    interfaces/IObserver.h \
+    interfaces/IObserverListener.h \
     interfaces/IPlugin.h \
     interfaces/IProvider.h \
     interfaces/IProviderListener.h \
+    interfaces/IScreenpic.h \
     interfaces/IServiceTask.h \
     interfaces/ISettings.h \
+    interfaces/ISettingsListener.h \
+    interfaces/ITranslation.h \
     k8json/k8json.h \
     NodeLog.h \
+    Observers.h \
     PluginManager.h \
     plugins.h \
     Providers.h \
@@ -84,16 +94,6 @@ HEADERS += \
     uploaders/Uploader.h \
     uploaders/UploadResult.h \
     version.h \
-    interfaces/IObserver.h \
-    interfaces/IObserverListener.h \
-    Observers.h \
-    interfaces/ITranslation.h \
-    interfaces/IScreenpic.h \
-    interfaces/ISettingsListener.h \
-    interfaces/IHook.h \
-    Hooks.h \
-    interfaces/INetHandle.h \
-    editor/EditorProperties.h
 
 SOURCES += \
     App.cpp \
@@ -104,9 +104,12 @@ SOURCES += \
     data/ImageCrop.cpp \
     data/ImageItem.cpp \
     data/UploadItem.cpp \
+    editor/EditorProperties.cpp \
     Grabber.cpp \
+    Hooks.cpp \
     k8json/k8json.cpp \
     main.cpp \
+    Observers.cpp \
     PluginManager.cpp \
     Providers.cpp \
     qblowfish/qblowfish.cpp \
@@ -147,18 +150,23 @@ SOURCES += \
     ui/TrayWindow.cpp \
     uploaders/Uploader.cpp \
     uploaders/UploadResult.cpp \
-    Observers.cpp \
-    Hooks.cpp \
-    editor/EditorProperties.cpp
 
 RESOURCES += ../res/app.qrc
 
 win32 {
     RC_FILE = ../res/app.rc
-    HEADERS += capture/GDICapture.h
-    SOURCES += capture/GDICapture.cpp tools/OsInfo_win.cpp
+    HEADERS += \
+        capture/GDICapture.h \
+        crashreport/CrashUpload.h \
+        crashreport/ExceptionHandler.h \
 
-    LIBS += -luser32 -lgdi32
+    SOURCES += \
+        capture/GDICapture.cpp \
+        crashreport/CrashUpload.cpp \
+        crashreport/ExceptionHandler.cpp \
+        tools/OsInfo_win.cpp \
+
+    LIBS += -luser32 -lgdi32 -lshell32
 }
 
 unix:!macx: {
@@ -205,6 +213,16 @@ contains(DEBUG_LOG, 1) {
 else {
     DEFINES += NO_DEBUG_LOG
 }
+
+isEmpty(GIT_TIMESTAMP) {
+    GIT_TIMESTAMP = $$system($$quote(git log -n 1 --format=format:"%at"))
+    GIT_REVISION  = $$system($$quote(git rev-parse HEAD))
+
+    lessThan(GIT_TIMESTAMP, 1):GIT_TIMESTAMP = 0
+}
+
+DEFINES += GIT_TIMESTAMP=$$GIT_TIMESTAMP
+DEFINES += GIT_REVISION=\\\"$${GIT_REVISION}\\\"
 
 include(plugins.pri)
 include(editor/editor.pri)

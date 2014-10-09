@@ -1,4 +1,5 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/* Simple Chat
+ * Copyright (c) 2008-2014 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -14,21 +15,31 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef VERSION_H_
-#define VERSION_H_
+#ifndef CRASHUPLOAD_H_
+#define CRASHUPLOAD_H_
 
-#define VERSION_MAJOR     0
-#define VERSION_MINOR     13
-#define VERSION_BUILD     3
-#define VERSION_REV       0
+#include <QObject>
+#include <QFileInfo>
 
-#define VERSION_STRING "0.13.3"
-#define PRODUCT_NAME   "Screenpic"
-#define ORG_NAME       "Alexander Sedov"
-#define ORG_COPYRIGHT  "Copyright (C) 2013-2014 Alexander Sedov"
-#define ORG_DOMAIN     "rup.io"
-#define ORG_SITE       "https://rup.io"
-#define ORG_UPDATE_URL "https://download.schat.me/screenpic"
-#define ORG_PROVIDER   "rup"
+class QNetworkAccessManager;
+class QNetworkReply;
 
-#endif /* VERSION_H_ */
+class CrashUpload : public QObject
+{
+  Q_OBJECT
+
+public:
+  CrashUpload(const QFileInfoList &files, QObject *parent = 0);
+  ~CrashUpload();
+
+private slots:
+  void onFinished(QNetworkReply *reply);
+  void start();
+
+private:
+  const QFileInfoList m_files;
+  int m_error;
+  QNetworkAccessManager *m_net;
+};
+
+#endif // CRASHUPLOAD_H_

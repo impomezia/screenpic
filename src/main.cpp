@@ -16,13 +16,35 @@
 
 #include "App.h"
 
+#if defined(Q_OS_WIN) && defined(Q_CC_MSVC)
+# define WIN_CRASHREPORT
+# include <QDir>
+# include <QStringList>
+# include "crashreport/CrashUpload.h"
+#endif
+
+#ifdef WIN_CRASHREPORT
+# include "crashreport/ExceptionHandler.h"
+#endif
+
 int main(int argc, char *argv[])
 {
-  App app(argc, argv);
-  if (app.isRunning())
-    return 0;
+# ifdef WIN_CRASHREPORT
+  initExceptionHandler();
+# endif
 
-  if (App::selfUpdate())
+  App app(argc, argv);
+
+# ifdef WIN_CRASHREPORT
+  const QFileInfoList files = QDir(app.applicationDirPath()).entryInfoList(QStringList(QLatin1String("*.dmp")), QDir::Files);
+  if (!files.isEmpty())
+    new CrashUpload(files, &app);
+
+  if (app.arguments().contains(QLatin1String("-report")))
+    return app.exec();
+# endif
+
+  if (app.isRunning() || App::selfUpdate())
     return 0;
 
   app.start();
