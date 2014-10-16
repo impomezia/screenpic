@@ -15,6 +15,7 @@
  */
 
 #include <QApplication>
+#include <QClipboard>
 #include <QDateTime>
 #include <QDesktopServices>
 #include <QDir>
@@ -259,6 +260,8 @@ void AppCore::onEditingFinished(UploadItemPtr item)
       return;
 
     m_pending.insert(item->id(), item);
+
+    QApplication::clipboard()->setText(QString());
 
     SaveTask *task = new SaveTask(item->id(), i->image, i->saveAs, i->raw, QSize(32, 32));
     connect(task, SIGNAL(ready(ChatId,QByteArray,Thumbnail)), SLOT(onImageSaved(ChatId,QByteArray,Thumbnail)));
