@@ -40,4 +40,8 @@
 #  define SCHAT_DEBUG_CODE(...)
 #endif
 
+#ifndef Q_DECL_OVERRIDE
+#  define Q_DECL_OVERRIDE override
+#endif
+
 #endif /* SCHAT_H_ */
