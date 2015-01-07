@@ -12,12 +12,12 @@
 <context>
     <name>AppCore</name>
     <message>
-        <location filename="../../src/AppCore.cpp" line="223"/>
+        <location filename="../../src/AppCore.cpp" line="225"/>
         <source>Images (*.jpg *.jpeg *.png *.gif *.JPG *.PNG)</source>
         <translation>Изображения (*.jpg *.jpeg *.png *.gif *.JPG *.PNG)</translation>
     </message>
     <message>
-        <location filename="../../src/AppCore.cpp" line="223"/>
+        <location filename="../../src/AppCore.cpp" line="225"/>
         <source>Open image</source>
         <translation>Открыть изображение</translation>
     </message>
@@ -34,146 +34,145 @@
 <context>
     <name>EditorProperties</name>
     <message>
-        <location filename="../../src/editor/EditorProperties.cpp" line="48"/>
+        <location filename="../../src/editor/EditorProperties.cpp" line="53"/>
         <source>Editor properties</source>
         <translation>Cвойства редактора</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorProperties.cpp" line="50"/>
+        <location filename="../../src/editor/EditorProperties.cpp" line="55"/>
         <source>Publish image when closing the editor</source>
         <translation>Опубликовать изображение при закрытии редактора</translation>
+    </message>
+    <message>
+        <location filename="../../src/editor/EditorProperties.cpp" line="56"/>
+        <source>Text with border</source>
+        <translation>Текст с рамкой</translation>
     </message>
 </context>
 <context>
     <name>EditorWindow</name>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="497"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="558"/>
         <source>Hand (H)</source>
         <translation>Рука (H)</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="450"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="498"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="526"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="559"/>
         <source>Rectangle (U)</source>
         <translation>Прямоугольник (U)</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="115"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="126"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="118"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="129"/>
         <source>Properties</source>
         <translation>Свойства</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="400"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="476"/>
         <source>Publish to %1</source>
         <translation>Отправить на %1</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="446"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="522"/>
         <source>Move (H)</source>
         <translation>Переместить (H)</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="451"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="499"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="527"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="560"/>
         <source>Ellipse</source>
         <translation>Эллипс</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="454"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="500"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="530"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="561"/>
         <source>Arrow</source>
         <translation>Стрелка</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="455"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="501"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="531"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="562"/>
         <source>Line</source>
         <translation>Линия</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="458"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="502"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="534"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="563"/>
         <source>Pen (P)</source>
         <translation>Карандаш</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="459"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="503"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="535"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="564"/>
         <source>Brush</source>
         <translation>Кисть</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="460"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="504"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="536"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="565"/>
         <source>Marker</source>
         <translation>Маркер</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="463"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="505"/>
-        <source>Text (T)</source>
-        <translation>Текст (T)</translation>
-    </message>
-    <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="464"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="506"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="540"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="566"/>
         <source>Blur</source>
         <translation>Размытие</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="447"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="507"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="523"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="567"/>
         <source>Crop</source>
         <translation>Кадрирование</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="363"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="418"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="363"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="418"/>
         <source>PNG (*.png)</source>
         <translation>PNG (*.png)</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="114"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="398"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="125"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="474"/>
         <source>Publish</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="424"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="510"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="500"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="570"/>
         <source>Publish (Ctrl+Enter)</source>
         <translation>Отправить (Ctrl+Enter)</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="406"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="512"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="482"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="572"/>
         <source>Undo (Ctrl+Z)</source>
         <translation>Отменить (Ctrl+Z)</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="410"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="513"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="486"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="573"/>
         <source>Redo (Ctrl+Y)</source>
         <translation>Повторить (Ctrl+Y) </translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="419"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="515"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="495"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="575"/>
         <source>Copy (Ctrl+C)</source>
         <translation>Копировать (Ctrl+C)</translation>
     </message>
     <message>
-        <location filename="../../src/editor/EditorWindow.cpp" line="420"/>
-        <location filename="../../src/editor/EditorWindow.cpp" line="516"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="496"/>
+        <location filename="../../src/editor/EditorWindow.cpp" line="576"/>
         <source>Save as... (Ctrl+S)</source>
         <translation>Сохранить как... (Ctrl+S)</translation>
     </message>
@@ -319,9 +318,25 @@
     <name>ItemColorSelector</name>
     <message>
         <location filename="../../src/editor/ItemColorSelector.cpp" line="64"/>
-        <location filename="../../src/editor/ItemColorSelector.cpp" line="205"/>
+        <location filename="../../src/editor/ItemColorSelector.cpp" line="206"/>
         <source>Dropper</source>
         <translation>Пипетка</translation>
+    </message>
+</context>
+<context>
+    <name>ItemTextButton</name>
+    <message>
+        <location filename="../../src/editor/ItemTextButton.cpp" line="33"/>
+        <location filename="../../src/editor/ItemTextButton.cpp" line="75"/>
+        <source>Text (T)</source>
+        <translation>Текст (T)</translation>
+    </message>
+    <message>
+        <location filename="../../src/editor/ItemTextButton.cpp" line="40"/>
+        <location filename="../../src/editor/ItemTextButton.cpp" line="69"/>
+        <location filename="../../src/editor/ItemTextButton.cpp" line="76"/>
+        <source>Border</source>
+        <translation>Рамка</translation>
     </message>
 </context>
 <context>
@@ -498,27 +513,27 @@
 <context>
     <name>SettingsPage</name>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="160"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="164"/>
         <source>Run at Windows start up</source>
         <translation>Запускать при загрузке Windows</translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="161"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="165"/>
         <source>Skip editor window (instant upload)</source>
         <translation>Пропускать при загрузке окно редактора</translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="162"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="166"/>
         <source>Capture mouse cursor</source>
         <translation>Захватывать курсор мыши</translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="163"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="167"/>
         <source>Save screenshot copy in selected folder</source>
         <translation>Сохранять копию скриншота в выбранную папку</translation>
     </message>
     <message>
-        <location filename="../../src/ui/SettingsPage.cpp" line="164"/>
+        <location filename="../../src/ui/SettingsPage.cpp" line="168"/>
         <source>Browse...</source>
         <translation>Обзор...</translation>
     </message>
@@ -542,8 +557,8 @@
 <context>
     <name>Translation</name>
     <message>
-        <location filename="../../src/schat/Translation.cpp" line="35"/>
-        <location filename="../../src/schat/Translation.cpp" line="134"/>
+        <location filename="../../src/schat/Translation.cpp" line="34"/>
+        <location filename="../../src/schat/Translation.cpp" line="137"/>
         <location filename="../../src/ui/TrayWindow.cpp" line="250"/>
         <source>English</source>
         <translation>Русский</translation>
@@ -635,7 +650,7 @@
 <context>
     <name>WebColorWidget</name>
     <message>
-        <location filename="../../src/editor/WebColorWidget.cpp" line="114"/>
+        <location filename="../../src/editor/WebColorWidget.cpp" line="115"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>

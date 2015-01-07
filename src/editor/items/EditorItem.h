@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #define EDITORITEM_H_
 
 #include <QColor>
+#include <QVariant>
 
 class EditorScene;
 class IItemCommand;
@@ -33,8 +34,12 @@ public:
   inline virtual QColor color() const           { return 0xffd60808; }
   inline virtual QString id() const             { return QString(); }
   inline virtual Qt::CursorShape cursor() const { return Qt::CrossCursor; }
+  inline void setData(const QVariant &data)     { m_data = data; }
   virtual IItemCommand *command(EditorScene *scene, const QPointF &point);
   virtual QGraphicsItem *create(EditorScene *scene, const QPointF &point) = 0;
+
+protected:
+  QVariant m_data;
 };
 
 #endif /* EDITORITEM_H_ */

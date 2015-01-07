@@ -19,7 +19,9 @@ HEADERS += \
     items/PenItem.h \
     items/RectangleItem.h \
     items/TextItem.h \
-    editor/ItemWidthSelector.h
+    editor/ItemWidthSelector.h \
+    $$PWD/ItemTextButton.h \
+    $$PWD/ToolBarItem.h
 
 SOURCES += \
     EditorScene.cpp \
@@ -42,4 +44,6 @@ SOURCES += \
     items/PenItem.cpp \
     items/RectangleItem.cpp \
     items/TextItem.cpp \
-    editor/ItemWidthSelector.cpp
+    editor/ItemWidthSelector.cpp \
+    $$PWD/ItemTextButton.cpp \
+    $$PWD/ToolBarItem.cpp

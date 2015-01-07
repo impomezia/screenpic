@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -14,20 +14,26 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EDITORPROPERTIES_H_
-#define EDITORPROPERTIES_H_
+#ifndef ITEMTEXTBUTTON_H_
+#define ITEMTEXTBUTTON_H_
 
-#include "ui/DialogFrame.h"
+#include "interfaces/ISettingsListener.h"
+#include "ToolBarItem.h"
 
-class QCheckBox;
 class IScreenpic;
+class QToolButton;
 
-class EditorProperties : public DialogFrame
+class ItemTextButton : public ToolBarItem, public ISettingsListener
 {
   Q_OBJECT
 
 public:
-  EditorProperties(IScreenpic *screenpic, QWidget *parent = 0);
+  ItemTextButton(IScreenpic *screenpic, QWidget *parent = 0);
+  ~ItemTextButton();
+  void onSettingsChanged(const QString &key, const QVariant &value) override;
+  void setChecked(bool checked) override;
+
+protected:
   void retranslateUi() override;
 
 private slots:
@@ -35,8 +41,8 @@ private slots:
 
 private:
   IScreenpic *m_screenpic;
-  QCheckBox *m_publishOnCloseBtn;
-  QCheckBox *m_textBorderBtn;
+  QToolButton *m_button;
+  QAction *m_borderAction;
 };
 
-#endif // EDITORPROPERTIES_H_
+#endif // ITEMTEXTBUTTON_H_

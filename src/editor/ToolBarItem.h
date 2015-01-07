@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -14,29 +14,27 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EDITORPROPERTIES_H_
-#define EDITORPROPERTIES_H_
+#ifndef TOOLBARITEM_H_
+#define TOOLBARITEM_H_
 
-#include "ui/DialogFrame.h"
+#include <QWidget>
 
-class QCheckBox;
-class IScreenpic;
-
-class EditorProperties : public DialogFrame
+class ToolBarItem : public QWidget
 {
   Q_OBJECT
 
 public:
-  EditorProperties(IScreenpic *screenpic, QWidget *parent = 0);
-  void retranslateUi() override;
+  ToolBarItem(QWidget *parent = 0);
 
-private slots:
-  void reload();
+signals:
+  void toggled(bool checked);
 
-private:
-  IScreenpic *m_screenpic;
-  QCheckBox *m_publishOnCloseBtn;
-  QCheckBox *m_textBorderBtn;
+public slots:
+  virtual void setChecked(bool checked) = 0;
+
+protected:
+  virtual void retranslateUi() = 0;
+  void changeEvent(QEvent *event) override;
 };
 
-#endif // EDITORPROPERTIES_H_
+#endif // TOOLBARITEM_H_

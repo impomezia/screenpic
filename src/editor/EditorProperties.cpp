@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,8 +30,12 @@ EditorProperties::EditorProperties(IScreenpic *screenpic, QWidget *parent)
   m_publishOnCloseBtn = new QCheckBox(this);
   m_publishOnCloseBtn->setChecked(m_screenpic->settings()->value(Settings::kPublishOnClose).toBool());
 
+  m_textBorderBtn = new QCheckBox(this);
+  m_textBorderBtn->setChecked(m_screenpic->settings()->value(Settings::kTextBorder).toBool());
+
   QVBoxLayout *layout = new QVBoxLayout();
   layout->addWidget(m_publishOnCloseBtn);
+  layout->addWidget(m_textBorderBtn);
   layout->setContentsMargins(0, 10, 0, 0);
   layout->setSpacing(10);
 
@@ -40,6 +44,7 @@ EditorProperties::EditorProperties(IScreenpic *screenpic, QWidget *parent)
   retranslateUi();
 
   connect(m_publishOnCloseBtn, SIGNAL(clicked()), SLOT(reload()));
+  connect(m_textBorderBtn, SIGNAL(clicked()), SLOT(reload()));
 }
 
 
@@ -48,10 +53,12 @@ void EditorProperties::retranslateUi()
   setTitle(tr("Editor properties"));
 
   m_publishOnCloseBtn->setText(tr("Publish image when closing the editor"));
+  m_textBorderBtn->setText(tr("Text with border"));
 }
 
 
 void EditorProperties::reload()
 {
   m_screenpic->settings()->setValue(Settings::kPublishOnClose, m_publishOnCloseBtn->isChecked());
+  m_screenpic->settings()->setValue(Settings::kTextBorder, m_textBorderBtn->isChecked());
 }

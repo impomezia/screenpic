@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -175,7 +175,7 @@ bool App::release()
 
   QVariantMap data;
   data.insert("version", applicationVersion());
-  data.insert("url",     QString(LS(ORG_UPDATE_URL) + LS("/screenpic-%1.exe")).arg(applicationVersion()));
+  data.insert("url",     QString(LS("%1/%2/screenpic-%2.exe")).arg(LS(ORG_UPDATE_URL)).arg(applicationVersion()));
   data.insert("size",    file.size());
   data.insert("hash",    hash);
 

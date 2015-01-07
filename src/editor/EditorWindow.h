@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include <QStringList>
 
 #include "data/UploadItem.h"
+#include "interfaces/ISettingsListener.h"
 
 class BackdropWidget;
 class EditorScene;
@@ -34,14 +35,17 @@ class QLineEdit;
 class QPushButton;
 class QRunnable;
 class TitleWidget;
+class ToolBarItem;
 
-class EditorWindow : public QMainWindow
+class EditorWindow : public QMainWindow, public ISettingsListener
 {
   Q_OBJECT
 
 public:
   EditorWindow(IScreenpic *screenpic, QWidget *parent = 0, Qt::WindowFlags flags = 0);
+  ~EditorWindow();
   bool eventFilter(QObject *watched, QEvent *event) override;
+  void onSettingsChanged(const QString &key, const QVariant &value) override;
   void open(UploadItemPtr item);
   void showDialog(QWidget *widget);
 
@@ -71,10 +75,11 @@ private slots:
   void onSelectionChanged();
   void onWidthChanged(int width);
   void saveAs();
-  void setMode();
+  void setMode(bool checked = false);
 
 private:
   QAction *addAction(const QIcon &icon, const QString &text, int mode);
+  QAction *addAction(ToolBarItem *item, int mode);
   QString publishText() const;
   void fillMainToolBar();
   void fillModeToolBar();

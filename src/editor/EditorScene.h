@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -57,6 +57,7 @@ public:
   void crop(const QRectF &rect);
   void resetTextInteraction();
   void setMode(Mode mode);
+  void setModeData(Mode mode, const QVariant &data);
 
 signals:
   void colorAtCursorChanged(const QColor &color);

@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,17 +17,27 @@
 #include <QCursor>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
+#include <QPainter>
 #include <QTextCursor>
+#include <QTextDocument>
 
 #include "EditorScene.h"
 #include "items/TextItem.h"
 
 TextItem::TextItem(QGraphicsItem *parent)
   : QGraphicsTextItem(parent)
+  , m_textBorder(true)
 {
   setFlag(ItemIsMovable);
   setFlag(ItemIsSelectable);
   setFlag(ItemIsFocusable);
+
+  document()->setDocumentMargin(8);
+
+  QFont font = this->font();
+  font.setFamily("PT Sans");
+
+  setFont(font);
 }
 
 
@@ -83,18 +93,27 @@ void TextItem::keyPressEvent(QKeyEvent *event)
 }
 
 
-void TextItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void TextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-  QGraphicsTextItem::mouseDoubleClickEvent(event);
+  if (!m_textBorder || (!hasFocus() && toPlainText().isEmpty())) {
+    return QGraphicsTextItem::paint(painter, option, widget);
+  }
 
-//  setTextInteractionFlags(Qt::TextEditorInteraction);
-//  setFocus();
+  painter->save();
+  painter->setPen(QPen(QBrush(0x002c559d), 2));
+  painter->setBrush(QColor(0, 0, 0, 204));
+  painter->drawRoundedRect(boundingRect(), 4, 4);
+  painter->restore();
+
+  QGraphicsTextItem::paint(painter, option, widget);
 }
 
 
 IItemCommand *TextCreator::command(EditorScene *scene, const QPointF &point)
 {
-  return new TextCommand(scene, point);
+  TextCommand *command = new TextCommand(scene, point);
+  command->setTextBorder(m_data.toBool());
+  return command;
 }
 
 
@@ -123,6 +142,7 @@ bool TextCommand::validate()
 void TextCommand::create()
 {
   TextItem *item = new TextItem();
+  item->setTextBorder(m_textBorder);
   m_scene->addItem(item);
   item->start(m_point, m_scene->pen());
 

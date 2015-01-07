@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -84,6 +84,20 @@ void EditorScene::setMode(Mode mode)
 
   m_mode = mode;
   emit modeChanged(mode);
+}
+
+
+void EditorScene::setModeData(Mode mode, const QVariant &data)
+{
+  if (m_items.contains(mode))
+    m_items.value(mode)->setData(data);
+
+  if (mode == TextMode) {
+    QList<QGraphicsItem *> items = selectedItems();
+    if (!items.isEmpty() && items.first()->type() == TextItem::Type) {
+      qgraphicsitem_cast<TextItem*>(items.first())->setTextBorder(data.toBool());
+    }
+  }
 }
 
 

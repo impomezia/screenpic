@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@
 #include "items/ColorCommand.h"
 #include "items/EditorItem.h"
 #include "items/WidthCommand.h"
+#include "ItemTextButton.h"
 #include "Settings.h"
 #include "sglobal.h"
 #include "tasks/SaveTask.h"
@@ -54,12 +55,15 @@ EditorWindow::EditorWindow(IScreenpic *screenpic, QWidget *parent, Qt::WindowFla
   , m_provider(0)
   , m_screenpic(screenpic)
 {
+  m_screenpic->settings()->addListener(this);
+
   setObjectName(LS("EditorWindow"));
   setAttribute(Qt::WA_DeleteOnClose);
   setWindowTitle("Screenpic");
   setContextMenuPolicy(Qt::NoContextMenu);
 
   m_scene = new EditorScene(this);
+  m_scene->setModeData(EditorScene::TextMode, m_screenpic->settings()->value(Settings::kTextBorder));
 
   m_mainToolBar = new QToolBar(this);
   m_mainToolBar->setMovable(false);
@@ -108,12 +112,18 @@ EditorWindow::EditorWindow(IScreenpic *screenpic, QWidget *parent, Qt::WindowFla
 }
 
 
+EditorWindow::~EditorWindow()
+{
+  m_screenpic->settings()->removeListener(this);
+}
+
+
 bool EditorWindow::eventFilter(QObject *watched, QEvent *event)
 {
-  if (event->type() == QEvent::GraphicsSceneContextMenu && m_scene->mode() != EditorScene::TextMode) {
+  if (event->type() == QEvent::GraphicsSceneContextMenu && (m_scene->mode() != EditorScene::TextMode || (m_scene->mode() == EditorScene::TextMode && !m_scene->focusItem()))) {
     QMenu menu;
-    QAction *publish   = menu.addAction(m_publishBtn->icon(), tr("Publish"));
-    QAction *cancel    = menu.addAction(QIcon(LS(":/images/remove.png")), tr("Cancel"));
+    QAction *publish = menu.addAction(m_publishBtn->icon(), tr("Publish"));
+    QAction *cancel  = menu.addAction(QIcon(LS(":/images/remove.png")), tr("Cancel"));
 
     menu.addSeparator();
     QAction *properties = menu.addAction(QIcon(LS(":/images/cog.png")), tr("Properties"));
@@ -136,6 +146,13 @@ bool EditorWindow::eventFilter(QObject *watched, QEvent *event)
   }
 
   return QMainWindow::eventFilter(watched, event);
+}
+
+
+void EditorWindow::onSettingsChanged(const QString &key, const QVariant &value)
+{
+  if (key == Settings::kTextBorder)
+    m_scene->setModeData(EditorScene::TextMode, value);
 }
 
 
@@ -260,6 +277,7 @@ void EditorWindow::onColorChanged(QRgb color)
 
   m_scene->undoStack()->push(command);
 }
+
 
 void EditorWindow::onWidthChanged(int width)
 {
@@ -407,8 +425,11 @@ void EditorWindow::saveAs()
 }
 
 
-void EditorWindow::setMode()
+void EditorWindow::setMode(bool checked)
 {
+  if (!checked)
+    return;
+
   QAction *action = qobject_cast<QAction*>(sender());
   if (!action)
     return;
@@ -419,9 +440,27 @@ void EditorWindow::setMode()
 
 QAction *EditorWindow::addAction(const QIcon &icon, const QString &text, int mode)
 {
-  QAction *action = m_modeToolBar->addAction(icon, text, this, SLOT(setMode()));
+  QAction *action = m_modeToolBar->addAction(icon, text);
   action->setData(mode);
   action->setCheckable(true);
+
+  connect(action, SIGNAL(toggled(bool)), SLOT(setMode(bool)));
+
+  m_modesGroup->addAction(action);
+  m_modes.insert(mode, action);
+  return action;
+}
+
+
+QAction *EditorWindow::addAction(ToolBarItem *item, int mode)
+{
+  QAction *action = m_modeToolBar->addWidget(item);
+  action->setData(mode);
+  action->setCheckable(true);
+
+  connect(action, SIGNAL(toggled(bool)), SLOT(setMode(bool)));
+  connect(action, SIGNAL(toggled(bool)), item, SLOT(setChecked(bool)));
+  connect(item, SIGNAL(toggled(bool)), action, SLOT(setChecked(bool)));
 
   m_modesGroup->addAction(action);
   m_modes.insert(mode, action);
@@ -497,7 +536,7 @@ void EditorWindow::fillModeToolBar()
   addAction(QIcon(":/images/highlight.png"), tr("Marker"),  EditorScene::HighlightMode);
 
   m_modeToolBar->addSeparator();
-  addAction(QIcon(":/images/text.png"), tr("Text (T)"), EditorScene::TextMode);
+  addAction(new ItemTextButton(m_screenpic, this), EditorScene::TextMode);
   addAction(QIcon(":/images/blur.png"), tr("Blur"), EditorScene::BlurMode);
 
   m_colorBtn = new ItemColorButton(this);
@@ -511,21 +550,6 @@ void EditorWindow::fillModeToolBar()
 
   m_modesGroup->addAction(dropper);
   m_modes.insert(EditorScene::DropperMode, dropper);
-
-  if (!m_screenpic->edition().isEmpty()) {
-    const QString fileName = LS(":/images/") + m_screenpic->edition() + LS("-edition_") + m_screenpic->translation()->name().left(2) + LS(".png");
-    if (!QFile::exists(fileName))
-      return;
-
-    QWidget *stretch = new QWidget(this);
-    stretch->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-    m_modeToolBar->addWidget(stretch);
-
-    label = new QLabel(this);
-    label->setPixmap(QPixmap(fileName));
-    label->setContentsMargins(6, 0, 6, 0);
-    m_modeToolBar->addWidget(label);
-  }
 }
 
 
@@ -539,7 +563,6 @@ void EditorWindow::retranslateUi()
   m_modes.value(EditorScene::PenMode)->setText(tr("Pen (P)"));
   m_modes.value(EditorScene::BrushMode)->setText(tr("Brush"));
   m_modes.value(EditorScene::HighlightMode)->setText(tr("Marker"));
-  m_modes.value(EditorScene::TextMode)->setText(tr("Text (T)"));
   m_modes.value(EditorScene::BlurMode)->setText(tr("Blur"));
   m_modes.value(EditorScene::CropMode)->setText(tr("Crop"));
 

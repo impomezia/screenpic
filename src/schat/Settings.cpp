@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ const QString Settings::kProvider       = LS("Provider");
 const QString Settings::kPublishOnClose = LS("PublishOnClose");
 const QString Settings::kSaveCopy       = LS("SaveCopy");
 const QString Settings::kSaveCopyIn     = LS("SaveCopyIn");
+const QString Settings::kTextBorder     = LS("TextBorder");
 const QString Settings::kTranslation    = LS("Translation");
 
 Settings::Settings(const QString &fileName, QObject *parent)

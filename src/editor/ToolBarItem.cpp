@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -14,29 +14,20 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EDITORPROPERTIES_H_
-#define EDITORPROPERTIES_H_
+#include <QEvent>
 
-#include "ui/DialogFrame.h"
+#include "ToolBarItem.h"
 
-class QCheckBox;
-class IScreenpic;
-
-class EditorProperties : public DialogFrame
+ToolBarItem::ToolBarItem(QWidget *parent)
+  : QWidget(parent)
 {
-  Q_OBJECT
+}
 
-public:
-  EditorProperties(IScreenpic *screenpic, QWidget *parent = 0);
-  void retranslateUi() override;
 
-private slots:
-  void reload();
+void ToolBarItem::changeEvent(QEvent *event)
+{
+  if (event->type() == QEvent::LanguageChange)
+    retranslateUi();
 
-private:
-  IScreenpic *m_screenpic;
-  QCheckBox *m_publishOnCloseBtn;
-  QCheckBox *m_textBorderBtn;
-};
-
-#endif // EDITORPROPERTIES_H_
+  QWidget::changeEvent(event);
+}
