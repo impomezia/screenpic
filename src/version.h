@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,13 +19,13 @@
 
 #define VERSION_MAJOR     0
 #define VERSION_MINOR     13
-#define VERSION_BUILD     3
+#define VERSION_BUILD     5
 #define VERSION_REV       0
 
-#define VERSION_STRING "0.13.3"
+#define VERSION_STRING "0.13.5"
 #define PRODUCT_NAME   "Screenpic"
 #define ORG_NAME       "Alexander Sedov"
-#define ORG_COPYRIGHT  "Copyright (C) 2013-2014 Alexander Sedov"
+#define ORG_COPYRIGHT  "Copyright (C) 2013-2015 Alexander Sedov"
 #define ORG_DOMAIN     "rup.io"
 #define ORG_SITE       "https://rup.io"
 #define ORG_UPDATE_URL "https://download.schat.me/screenpic"
