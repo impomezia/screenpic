@@ -151,8 +151,14 @@ bool EditorWindow::eventFilter(QObject *watched, QEvent *event)
 
 void EditorWindow::onSettingsChanged(const QString &key, const QVariant &value)
 {
-  if (key == Settings::kTextBorder)
+  if (key == Settings::kTextBorder) {
     m_scene->setModeData(EditorScene::TextMode, value);
+
+    if (m_scene->mode() == EditorScene::TextMode) {
+      reloadItem(m_scene->mode());
+      m_scene->setModeData(EditorScene::TextMode, value); // Workaround, call it twice to dynamically reload text color.
+    }
+  }
 }
 
 
@@ -352,27 +358,7 @@ void EditorWindow::onModeChanged(int mode)
     if (mode == EditorScene::BlurMode && m_scene->sceneRect() != m_scene->itemsBoundingRect())
       m_scene->toPixmap();
 
-    EditorItem *item = m_scene->item(static_cast<EditorScene::Mode>(mode));
-    QColor color = m_colorBtn->customColor();
-    int width = 0;
-
-    if (item) {
-      m_view->viewport()->setCursor(item->cursor());
-
-      if (width = m_screenpic->settings()->value(LS("Modes/") + item->id() + LS(".width"), item->width()).toInt())
-        m_scene->setWidth(width);
-
-      if (item->color().isValid()) {
-        if (!color.isValid())
-          color = m_screenpic->settings()->value(LS("Modes/") + item->id() + LS(".color"), item->color().name()).toString();
-
-        m_scene->setColor(color.rgba());
-        m_colorBtn->setColor(color.rgba());
-      }
-    }
-
-    m_colorAction->setEnabled(item && item->color().isValid() && color.isValid());
-    m_colorBtn->setWidth(width);
+    reloadItem(mode);
   }
 
   QAction *action = m_modes.value(mode);
@@ -550,6 +536,32 @@ void EditorWindow::fillModeToolBar()
 
   m_modesGroup->addAction(dropper);
   m_modes.insert(EditorScene::DropperMode, dropper);
+}
+
+
+void EditorWindow::reloadItem(int mode)
+{
+  EditorItem *item = m_scene->item(static_cast<EditorScene::Mode>(mode));
+  QColor color     = m_colorBtn->customColor();
+  int width        = 0;
+
+  if (item) {
+    m_view->viewport()->setCursor(item->cursor());
+
+    if (width = m_screenpic->settings()->value(LS("Modes/") + item->id() + LS(".width"), item->width()).toInt())
+      m_scene->setWidth(width);
+
+    if (item->color().isValid()) {
+      if (!color.isValid())
+        color = m_screenpic->settings()->value(LS("Modes/") + item->id() + LS(".color"), item->color().name()).toString();
+
+      m_scene->setColor(color.rgba());
+      m_colorBtn->setColor(color.rgba());
+    }
+  }
+
+  m_colorAction->setEnabled(item && item->color().isValid() && color.isValid());
+  m_colorBtn->setWidth(width);
 }
 
 

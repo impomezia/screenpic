@@ -16,7 +16,9 @@
 
 #include <QHBoxLayout>
 #include <QMenu>
+#include <QToolBar>
 #include <QToolButton>
+#include <QWidgetAction>
 
 #include "interfaces/IScreenpic.h"
 #include "ItemTextButton.h"
@@ -29,7 +31,6 @@ ItemTextButton::ItemTextButton(IScreenpic *screenpic, QWidget *parent)
   m_screenpic->settings()->addListener(this);
 
   m_button = new QToolButton(this);
-  m_button->setIcon(QIcon(":/images/text.png"));
   m_button->setToolTip(tr("Text (T)"));
   m_button->setAutoRaise(true);
   m_button->setIconSize(QSize(24, 24));
@@ -37,16 +38,31 @@ ItemTextButton::ItemTextButton(IScreenpic *screenpic, QWidget *parent)
   m_button->setPopupMode(QToolButton::MenuButtonPopup);
   m_button->setMenu(new QMenu(this));
 
-  m_borderAction = m_button->menu()->addAction(tr("Border"));
+  QToolBar *toolBar = new QToolBar(this);
+  toolBar->setIconSize(QSize(24, 24));
+
+  m_borderlessAction = toolBar->addAction(QIcon(":/images/text.png"), tr("Borderless text"), this, SLOT(apply()));
+  m_borderlessAction->setCheckable(true);
+
+  m_borderAction = toolBar->addAction(QIcon(":/images/text-border.png"), tr("Text with border"), this, SLOT(apply()));
   m_borderAction->setCheckable(true);
-  m_borderAction->setChecked(m_screenpic->settings()->value(Settings::kTextBorder).toBool());
+
+  QActionGroup *group = new QActionGroup(this);
+  group->setExclusive(true);
+  group->addAction(m_borderAction);
+  group->addAction(m_borderlessAction);
+
+  QWidgetAction *widgetAction = new QWidgetAction(this);
+  widgetAction->setDefaultWidget(toolBar);
+
+  m_button->menu()->addAction(widgetAction);
 
   QHBoxLayout *layout = new QHBoxLayout(this);
   layout->addWidget(m_button);
   layout->setMargin(0);
 
+  reload(m_screenpic->settings()->value(Settings::kTextBorder).toBool());
   connect(m_button, SIGNAL(toggled(bool)), SIGNAL(toggled(bool)));
-  connect(m_borderAction, SIGNAL(toggled(bool)), SLOT(reload()));
 }
 
 
@@ -58,27 +74,52 @@ ItemTextButton::~ItemTextButton()
 
 void ItemTextButton::onSettingsChanged(const QString &key, const QVariant &value)
 {
-  if (key == Settings::kTextBorder)
+  if (key == Settings::kTextBorder) {
     m_borderAction->setChecked(value.toBool());
+    reload(value.toBool());
+  }
 }
 
 
 void ItemTextButton::setChecked(bool checked)
 {
   m_button->setChecked(checked);
-  m_button->menu()->actions().first()->setText(tr("Border"));
+}
+
+
+void ItemTextButton::contextMenuEvent(QContextMenuEvent *event)
+{
+  Q_UNUSED(event)
+
+  m_button->showMenu();
 }
 
 
 void ItemTextButton::retranslateUi()
 {
   m_button->setToolTip(tr("Text (T)"));
-  m_borderAction->setText(tr("Border"));
+  m_borderAction->setText(tr("Text with border"));
+  m_borderlessAction->setText(tr("Borderless text"));
 }
 
 
-void ItemTextButton::reload()
+void ItemTextButton::apply()
 {
   setChecked(true);
+  m_button->menu()->close();
+
   m_screenpic->settings()->setValue(Settings::kTextBorder, m_borderAction->isChecked());
+}
+
+
+void ItemTextButton::reload(bool border)
+{
+  if (border) {
+    m_button->setIcon(QIcon(":/images/text-border.png"));
+    m_borderAction->setChecked(true);
+  }
+  else {
+    m_button->setIcon(QIcon(":/images/text.png"));
+    m_borderlessAction->setChecked(true);
+  }
 }

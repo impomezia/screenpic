@@ -34,15 +34,19 @@ public:
   void setChecked(bool checked) override;
 
 protected:
+  void contextMenuEvent(QContextMenuEvent *event) override;
   void retranslateUi() override;
 
 private slots:
-  void reload();
+  void apply();
 
 private:
+  void reload(bool border);
+
   IScreenpic *m_screenpic;
   QToolButton *m_button;
   QAction *m_borderAction;
+  QAction *m_borderlessAction;
 };
 
 #endif // ITEMTEXTBUTTON_H_

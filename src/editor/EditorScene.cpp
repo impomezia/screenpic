@@ -95,7 +95,9 @@ void EditorScene::setModeData(Mode mode, const QVariant &data)
   if (mode == TextMode) {
     QList<QGraphicsItem *> items = selectedItems();
     if (!items.isEmpty() && items.first()->type() == TextItem::Type) {
-      qgraphicsitem_cast<TextItem*>(items.first())->setTextBorder(data.toBool());
+      TextItem *item = qgraphicsitem_cast<TextItem*>(items.first());
+      item->setTextBorder(data.toBool());
+      item->setDefaultTextColor(pen().color());
     }
   }
 }

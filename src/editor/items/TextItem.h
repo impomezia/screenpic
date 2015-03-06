@@ -47,8 +47,8 @@ class TextCreator : public EditorItem
 {
 public:
   int width() const override              { return 10; }
-  QString id() const override             { return QLatin1String("Text"); }
-  QColor color() const override           { return 0xffffffff; }
+  QString id() const override;
+  QColor color() const override;
   Qt::CursorShape cursor() const override { return Qt::IBeamCursor; }
   IItemCommand *command(EditorScene *scene, const QPointF &point) override;
   QGraphicsItem *create(EditorScene *scene, const QPointF &point) override;

@@ -83,6 +83,7 @@ private:
   QString publishText() const;
   void fillMainToolBar();
   void fillModeToolBar();
+  void reloadItem(int mode);
   void retranslateUi();
   void updateStyleSheet();
 

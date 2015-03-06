@@ -33,11 +33,6 @@ TextItem::TextItem(QGraphicsItem *parent)
   setFlag(ItemIsFocusable);
 
   document()->setDocumentMargin(8);
-
-  QFont font = this->font();
-  font.setFamily("PT Sans");
-
-  setFont(font);
 }
 
 
@@ -106,6 +101,21 @@ void TextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   painter->restore();
 
   QGraphicsTextItem::paint(painter, option, widget);
+}
+
+
+QString TextCreator::id() const
+{
+  return QLatin1String("Text") + (m_data.toBool() ? QLatin1String("1") : QLatin1String("2"));
+}
+
+
+QColor TextCreator::color() const
+{
+  if (!m_data.toBool())
+    return EditorItem::color();
+
+  return 0xffffffff;
 }
 
 

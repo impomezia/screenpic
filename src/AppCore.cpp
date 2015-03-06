@@ -78,7 +78,7 @@ AppCore::AppCore(QObject *parent)
   m_settings->setDefault(Settings::kCaptureMouse, true);
   m_settings->setDefault(Settings::kEditor,       true);
   m_settings->setDefault(Settings::kSaveCopy,     false);
-  m_settings->setDefault(Settings::kTextBorder,   true);
+  m_settings->setDefault(Settings::kTextBorder,   false);
 
 # if QT_VERSION >= 0x050000
   const QString documents = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
