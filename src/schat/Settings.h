@@ -34,6 +34,7 @@ public:
   static const QString kCaptureMouse;
   static const QString kEdition;
   static const QString kEditor;
+  static const QString kFailbackProvider;
   static const QString kLastOpenDir;
   static const QString kLastSaveDir;
   static const QString kProvider;

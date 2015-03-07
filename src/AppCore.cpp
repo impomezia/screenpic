@@ -329,9 +329,30 @@ void AppCore::onTaskReady(qint64 counter, QObject *object)
  */
 void AppCore::onUploadFinished(const UploadResult &result)
 {
-  UploadItemPtr item = m_pending.take(result.id);
+  UploadItemPtr item = m_pending.value(result.id);
   if (!item)
     return;
+
+  if ((result.error || result.status != 200) && !item->retries()) {
+    item->retry();
+
+    if (item->type() == ImageItem::Type && m_service->isReady()) {
+      IProvider *provider = m_providers->get(m_settings->value(Settings::kFailbackProvider).toString());
+      Q_ASSERT(provider);
+
+      if (provider && provider->id() != LS("none")) {
+        Observers::hitEvent(LS("retry"), provider->id());
+
+        QVariant data = provider->data();
+        m_hooks->hookUploadData(provider->id(), data);
+
+        QMetaObject::invokeMethod(m_net, "add", Qt::QueuedConnection, Q_ARG(UploadItemPtr, item), Q_ARG(QString, provider->id()), Q_ARG(QVariant, data));
+        return;
+      }
+    }
+  }
+
+  m_pending.remove(result.id);
 
   QString saveAs;
   if (item->type() == ImageItem::Type)
@@ -369,6 +390,7 @@ void AppCore::initProviders()
     provider = LS(ORG_PROVIDER);
 
   m_settings->setDefault(Settings::kProvider, provider);
+  m_settings->setDefault(Settings::kFailbackProvider, LS("imgur"));
   m_providers->setCurrentId(m_settings->value(Settings::kProvider).toString());
 }
 

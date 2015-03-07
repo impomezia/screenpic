@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 class AppCore;
 class QComboBox;
+class QLabel;
 class QStackedWidget;
 
 class ServersPage : public QWidget
@@ -37,13 +38,17 @@ protected:
   void changeEvent(QEvent *event) override;
 
 private slots:
+  void onFailbackChanged(int index);
   void onIndexChanged(int index);
 
 private:
   void retranslateUi();
 
   AppCore *m_core;
+  QComboBox *m_failbackCombo;
   QComboBox *m_serversCombo;
+  QLabel *m_failbackLabel;
+  QLabel *m_primaryLabel;
   QStackedWidget *m_stackedWidget;
 };
 

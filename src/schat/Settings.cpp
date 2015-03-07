@@ -18,17 +18,18 @@
 #include "Settings.h"
 #include "sglobal.h"
 
-const QString Settings::kCaptureMouse   = LS("CaptureMouse");
-const QString Settings::kEdition        = LS("Edition");
-const QString Settings::kEditor         = LS("Editor");
-const QString Settings::kLastOpenDir    = LS("LastOpenDir");
-const QString Settings::kLastSaveDir    = LS("LastSaveDir");
-const QString Settings::kProvider       = LS("Provider");
-const QString Settings::kPublishOnClose = LS("PublishOnClose");
-const QString Settings::kSaveCopy       = LS("SaveCopy");
-const QString Settings::kSaveCopyIn     = LS("SaveCopyIn");
-const QString Settings::kTextBorder     = LS("TextBorder");
-const QString Settings::kTranslation    = LS("Translation");
+const QString Settings::kCaptureMouse     = LS("CaptureMouse");
+const QString Settings::kEdition          = LS("Edition");
+const QString Settings::kEditor           = LS("Editor");
+const QString Settings::kFailbackProvider = LS("FailbackProvider");
+const QString Settings::kLastOpenDir      = LS("LastOpenDir");
+const QString Settings::kLastSaveDir      = LS("LastSaveDir");
+const QString Settings::kProvider         = LS("Provider");
+const QString Settings::kPublishOnClose   = LS("PublishOnClose");
+const QString Settings::kSaveCopy         = LS("SaveCopy");
+const QString Settings::kSaveCopyIn       = LS("SaveCopyIn");
+const QString Settings::kTextBorder       = LS("TextBorder");
+const QString Settings::kTranslation      = LS("Translation");
 
 Settings::Settings(const QString &fileName, QObject *parent)
   : QSettings(fileName, QSettings::IniFormat, parent)

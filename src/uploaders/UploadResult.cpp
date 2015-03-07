@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,4 +23,6 @@ UploadResult::UploadResult(QNetworkReply *reply)
   , error(reply->error())
   , status(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())
 {
+  if (error && status == 0)
+    status = 503;
 }

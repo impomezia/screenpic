@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -33,9 +33,11 @@ public:
   inline const ChatId& roomId() const                  { return m_roomId; }
   inline const Thumbnail& thumbnail() const            { return m_thumbnail; }
   inline int mode() const                              { return m_mode; }
+  inline int retries() const                           { return m_retries; }
   inline qint64 date() const                           { return m_date; }
   inline QString title() const                         { return m_title; }
   inline virtual int type() const                      { return Type; }
+  inline void retry()                                  { ++m_retries; }
   inline void setThumbnail(const Thumbnail &thumbnail) { m_thumbnail = thumbnail; }
   inline void setTitle(const QString &title)           { m_title = title; }
   virtual bool isNull() const;
@@ -47,6 +49,7 @@ protected:
   ChatId m_id;           ///< Идентификатор итема.
   ChatId m_roomId;       ///< Идентификатор комнаты.
   int m_mode;            ///< Опциональный режим работы.
+  int m_retries;
   qint64 m_date;         ///< Дата создания.
   QString m_title;       ///< Описание.
   Thumbnail m_thumbnail; ///< Миниатюра.

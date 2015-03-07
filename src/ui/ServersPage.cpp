@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 #include <QComboBox>
 #include <QEvent>
 #include <QGridLayout>
+#include <QLabel>
 #include <QStackedWidget>
 
 #include "AppCore.h"
@@ -24,6 +25,7 @@
 #include "Providers.h"
 #include "ServersPage.h"
 #include "Settings.h"
+#include "sglobal.h"
 
 ServersPage::ServersPage(AppCore *core, QWidget *parent)
   : QWidget(parent)
@@ -32,8 +34,13 @@ ServersPage::ServersPage(AppCore *core, QWidget *parent)
   setObjectName("ServersPage");
   setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
+  m_primaryLabel = new QLabel(this);
+  m_failbackLabel = new QLabel(this);
+
   m_serversCombo = new QComboBox(this);
   m_stackedWidget = new QStackedWidget(this);
+
+  m_failbackCombo = new QComboBox(this);
 
   Providers *providers = core->providers();
 
@@ -41,6 +48,7 @@ ServersPage::ServersPage(AppCore *core, QWidget *parent)
     IProvider *provider = providers->get(id);
     if (provider) {
       m_serversCombo->addItem(provider->icon(), provider->name(), provider->id());
+      m_failbackCombo->addItem(provider->icon(), provider->name(), provider->id());
 
       QWidget *widget = provider->settingsWidget(this);
       if (!widget)
@@ -51,20 +59,41 @@ ServersPage::ServersPage(AppCore *core, QWidget *parent)
     }
   }
 
-  const int index = m_serversCombo->findData(providers->currentId());
+  int index = m_serversCombo->findData(providers->currentId());
   if (index != -1)
     m_serversCombo->setCurrentIndex(index);
 
-  QGridLayout *layout = new QGridLayout(this);
-  layout->addWidget(m_serversCombo, 0, 0);
-  layout->addWidget(m_stackedWidget, 1, 0, 1, 2);
-  layout->setColumnStretch(1, 1);
-  layout->setRowStretch(2, 1);
+  index = m_serversCombo->findData(m_core->settings()->value(Settings::kFailbackProvider).toString());
+  if (index != -1)
+    m_failbackCombo->setCurrentIndex(index);
+
+  QGridLayout *primaryLay = new QGridLayout;
+  primaryLay->addWidget(m_serversCombo, 0, 0);
+  primaryLay->addWidget(m_stackedWidget, 1, 0, 1, 2);
+  primaryLay->setColumnStretch(1, 1);
+  primaryLay->setRowStretch(2, 1);
+  primaryLay->setContentsMargins(10, 0, 0, 0);
+
+  QGridLayout *failbackLay = new QGridLayout;
+  failbackLay->addWidget(m_failbackCombo, 0, 0);
+  failbackLay->setColumnStretch(1, 1);
+  failbackLay->setRowStretch(2, 1);
+  failbackLay->setContentsMargins(10, 0, 0, 0);
+
+  QVBoxLayout *layout = new QVBoxLayout(this);
+  layout->addWidget(m_primaryLabel);
+  layout->addLayout(primaryLay);
+  layout->addWidget(m_failbackLabel);
+  layout->addLayout(failbackLay);
+  layout->addStretch();
 
   m_stackedWidget->setCurrentIndex(m_serversCombo->currentIndex());
   m_stackedWidget->currentWidget()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
   connect(m_serversCombo, SIGNAL(currentIndexChanged(int)), SLOT(onIndexChanged(int)));
+  connect(m_failbackCombo, SIGNAL(currentIndexChanged(int)), SLOT(onFailbackChanged(int)));
+
+  retranslateUi();
 }
 
 
@@ -74,6 +103,12 @@ void ServersPage::changeEvent(QEvent *event)
     retranslateUi();
 
   QWidget::changeEvent(event);
+}
+
+
+void ServersPage::onFailbackChanged(int index)
+{
+  m_core->settings()->setValue(Settings::kFailbackProvider, m_failbackCombo->itemData(index));
 }
 
 
@@ -96,4 +131,6 @@ void ServersPage::onIndexChanged(int index)
 
 void ServersPage::retranslateUi()
 {
+  m_primaryLabel->setText(LS("<b>") + tr("Primary server") + LS("</b>"));
+  m_failbackLabel->setText(LS("<b>") + tr("Failback server") + LS("</b>"));
 }
