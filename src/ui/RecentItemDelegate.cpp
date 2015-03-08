@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,19 +18,25 @@
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QEvent>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QTimer>
 
+#include "AppCore.h"
+#include "Providers.h"
 #include "RecentItem.h"
 #include "RecentItemDelegate.h"
 #include "RecentModel.h"
 #include "sglobal.h"
 #include "TimeAgo.h"
 
-RecentItemDelegate::RecentItemDelegate(QObject *parent)
+RecentItemDelegate::RecentItemDelegate(AppCore *core, QObject *parent)
   : QStyledItemDelegate(parent)
+  , m_core(core)
   , m_column(RecentModel::ThumbColumn)
   , m_link(LS(":/images/link.png"))
+  , m_menuActive(false)
 {
 }
 
@@ -40,12 +46,53 @@ bool RecentItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
   if (event->type() == QEvent::MouseMove)
     m_column = index.column();
 
-  const RecentItem *item = static_cast<RecentItem*>(index.internalPointer());
-  if (event->type() == QEvent::MouseButtonRelease && index.column() == RecentModel::InfoColumn && static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton && item->link.isValid() && item->link.scheme() != LS("file")) {
-    QApplication::clipboard()->setText(item->link.toString());
-    emit closeRequest();
-    emit linkCopied(item->link);
-    return true;
+  RecentItem *item = static_cast<RecentItem*>(index.internalPointer());
+
+  if (event->type() == QEvent::MouseButtonRelease) {
+    QMouseEvent *e      = static_cast<QMouseEvent*>(event);
+    IProvider *provider = m_core->providers()->get(item->provider);
+
+    if (e->button() == Qt::LeftButton && index.column() == RecentModel::InfoColumn && item->link.isValid() && item->link.scheme() != LS("file")) {
+      copyLink(item->link);
+      return true;
+    }
+
+    if (e->button() == Qt::RightButton) {
+      m_menuActive = true;
+      QAction *copyLinkAction = 0;
+      QAction *openLinkAction = 0;
+      QAction *deleteAction   = 0;
+
+      QMenu menu;
+      if (item->link.isValid() && item->link.scheme() != LS("file")) {
+        copyLinkAction = menu.addAction(QIcon(LS(":/images/copy_sm.png")), tr("Copy link"));
+        openLinkAction = menu.addAction(provider ? provider->icon() : QIcon(LS(":/images/globe_gray.png")), tr("Open link"));
+      }
+
+      menu.addSeparator();
+
+      QAction *hideAction = menu.addAction(QIcon(LS(":/images/times.png")), tr("Hide"));
+
+      if (provider && provider->features() & IProvider::DeleteImages)
+        deleteAction = menu.addAction(QIcon(LS(":/images/trash.png")), tr("Delete"));
+
+      QAction *action = menu.exec(e->globalPos());
+      m_menuActive = false;
+
+      if (action) {
+        if (action == copyLinkAction)
+          copyLink(item->link);
+        else if (action == openLinkAction)
+          openLink(item->link);
+        else if (action == hideAction)
+          hide(qobject_cast<RecentModel*>(model), index);
+        else if (action == deleteAction)
+          remove(qobject_cast<RecentModel*>(model), index, item);
+      }
+
+      return true;
+    }
+
   }
 
   if (event->type() == QEvent::MouseButtonDblClick && index.column() == RecentModel::ThumbColumn && static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton) {
@@ -76,13 +123,23 @@ void RecentItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
   if (index.column() == RecentModel::InfoColumn) {
     const RecentItem *item = static_cast<RecentItem*>(index.internalPointer());
-    if (option.state & QStyle::State_MouseOver && m_column == RecentModel::InfoColumn && item->udate && item->link.scheme() != LS("file"))
+    if (!m_menuActive && option.state & QStyle::State_MouseOver && m_column == RecentModel::InfoColumn && item->udate && item->link.scheme() != LS("file"))
       return drawCopyLink(painter, opt);
 
     QRect boundingRect;
     drawLine1(painter, opt, item, &boundingRect);
     drawLine2(painter, opt, item, boundingRect.height() + 6);
   }
+}
+
+
+QIcon RecentItemDelegate::providerIcon(const QString &id) const
+{
+  IProvider *provider = m_core->providers()->get(id);
+  if (provider)
+    return provider->icon();
+
+  return QIcon(LS(":/images/globe_gray.png"));
 }
 
 
@@ -116,6 +173,15 @@ QString RecentItemDelegate::bytesToHuman(qint64 size) const
     return tr("%1 kB").arg((double)size / 1024, 0, 'f', 0);
 
   return tr("%1 MB").arg((double)size / (1024 * 1024), 0, 'f', 2);;
+}
+
+
+void RecentItemDelegate::copyLink(const QUrl &url)
+{
+  QApplication::clipboard()->setText(url.toString());
+  emit linkCopied(url);
+
+  QTimer::singleShot(40, this, SIGNAL(closeRequest()));
 }
 
 
@@ -194,4 +260,29 @@ void RecentItemDelegate::drawLine2(QPainter *painter, const QStyleOptionViewItem
   rect.setLeft(rect.left() + 64);
   painter->drawText(rect, Qt::AlignLeft | Qt::AlignTop, bytesToHuman(item->size));
   painter->restore();
+}
+
+
+void RecentItemDelegate::hide(RecentModel *model, const QModelIndex &index)
+{
+  Q_ASSERT(model);
+  if (!model)
+    return;
+
+  model->remove(index);
+}
+
+
+void RecentItemDelegate::openLink(const QUrl &url)
+{
+  QDesktopServices::openUrl(url);
+
+  QTimer::singleShot(40, this, SIGNAL(closeRequest()));
+}
+
+
+void RecentItemDelegate::remove(RecentModel *model, const QModelIndex &index, RecentItem *item)
+{
+  m_core->remove(item->deletehash, item->provider);
+  hide(model, index);
 }

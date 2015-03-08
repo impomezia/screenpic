@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,6 +29,20 @@
 ImgurUploader::ImgurUploader(QObject *parent)
   : Uploader(parent)
 {
+}
+
+
+void ImgurUploader::remove(QNetworkAccessManager *net, const QString &deletehash, const QVariant &data)
+{
+  const QVariantMap map       = data.toMap();
+  const QVariantList authData = map.value(LS("a")).toList();
+
+  QNetworkRequest request(QUrl(LS("https://api.imgur.com/3/image/") + deletehash));
+  request.setRawHeader("User-Agent", OsInfo::userAgent());
+  request.setRawHeader("Authorization", "Client-ID " + authData.value(0).toByteArray());
+
+  QNetworkReply *reply = net->deleteResource(request);
+  connect(reply, SIGNAL(finished()), reply, SLOT(deleteLater()));
 }
 
 

@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -28,7 +28,13 @@ class Uploader;
 class IProvider
 {
 public:
+  enum Features {
+    NoFeatures,
+    DeleteImages
+  };
+
   inline virtual ~IProvider() {}
+  virtual int features() const                                          = 0;
   virtual int maxImages() const                                         = 0;
   virtual QIcon icon() const                                            = 0;
   virtual qint64 maxSize() const                                        = 0;

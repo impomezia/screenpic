@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -59,6 +59,13 @@ void ShareNet::add(UploadItemPtr item, const QString &provider, const QVariant &
 
   if (m_uploaders.contains(provider))
     m_uploaders[provider]->upload(m_net, item, data);
+}
+
+
+void ShareNet::remove(const QString &deletehash, const QString &provider, const QVariant &data)
+{
+  if (m_uploaders.contains(provider))
+    m_uploaders[provider]->remove(m_net, deletehash, data);
 }
 
 

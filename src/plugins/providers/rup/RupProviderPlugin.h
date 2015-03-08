@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ class RupProviderPlugin : public QObject, public IPlugin, public IProvider, publ
   Q_PLUGIN_METADATA(IID "io.rup.provider.rup")
 
 public:
+  int features() const override;
   int maxImages() const override;
   QIcon icon() const override;
   qint64 maxSize() const override;

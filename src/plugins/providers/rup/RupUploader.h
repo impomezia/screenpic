@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ class RupUploader : public Uploader
 
 public:
   RupUploader(QObject *parent = 0);
+  void remove(QNetworkAccessManager *net, const QString &deletehash, const QVariant &data) override;
   void request(QNetworkAccessManager *net, const ChatId &id, const QVariant &data) override;
   void upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data) override;
 

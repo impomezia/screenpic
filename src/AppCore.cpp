@@ -137,16 +137,30 @@ AppCore::~AppCore()
 }
 
 
+QString AppCore::edition() const
+{
+  return m_settings->value(Settings::kEdition, QString()).toString();
+}
+
+
+void AppCore::remove(const QString &deletehash, const QString &providerId)
+{
+  IProvider *provider = m_providers->get(providerId);
+  Q_ASSERT(provider);
+
+  if (!provider)
+    return;
+
+  Observers::hitEvent(LS("remove"), provider->id());
+
+  QMetaObject::invokeMethod(m_net, "remove", Qt::QueuedConnection, Q_ARG(QString, deletehash), Q_ARG(QString, provider->id()), Q_ARG(QVariant, provider->data()));
+}
+
+
 void AppCore::stop()
 {
   m_service->quit();
   m_service->wait();
-}
-
-
-QString AppCore::edition() const
-{
-  return m_settings->value(Settings::kEdition, QString()).toString();
 }
 
 
@@ -235,7 +249,7 @@ void AppCore::openFile(const QString &fileName)
   if (!file.open(QFile::ReadOnly) || file.size() > (10 * 1024 * 1024))
     return;
 
-  ImageItem *image = new ImageItem();
+  ImageItem *image = new ImageItem;
   image->raw       = file.readAll();
 
   if (!image->image.loadFromData(image->raw)) {

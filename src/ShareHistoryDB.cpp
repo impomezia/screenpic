@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -105,7 +105,7 @@ QList<RecentItem*> ShareHistoryDB::recent(int limit) const
   query.exec();
 
   while (query.next()) {
-    RecentItem *item = new RecentItem();
+    RecentItem *item = new RecentItem;
     item->id         = query.value(0).toLongLong();
     item->pid        = query.value(1).toString();
     item->cdate      = query.value(2).toLongLong();
@@ -124,6 +124,16 @@ QList<RecentItem*> ShareHistoryDB::recent(int limit) const
   }
 
   return items;
+}
+
+
+void ShareHistoryDB::remove(qint64 id)
+{
+  QSqlQuery query(QSqlDatabase::database(m_id));
+
+  query.prepare(QString(LS("DELETE FROM uploads WHERE id = :id;")));
+  query.bindValue(":id", id);
+  query.exec();
 }
 
 

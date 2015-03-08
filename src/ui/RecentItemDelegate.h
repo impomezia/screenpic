@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,29 +19,38 @@
 
 #include <QStyledItemDelegate>
 
+class AppCore;
 class RecentItem;
+class RecentModel;
 
 class RecentItemDelegate : public QStyledItemDelegate
 {
   Q_OBJECT
 
 public:
-  RecentItemDelegate(QObject *parent = 0);
-  virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
-  virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-  virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+  RecentItemDelegate(AppCore *core, QObject *parent = 0);
+  bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
+  QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+  void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 signals:
   void closeRequest();
   void linkCopied(const QUrl &url);
 
 private:
+  QIcon providerIcon(const QString &id) const;
   QRect adjustRect(const QRect &rect, int column) const;
   QString bytesToHuman(qint64 size) const;
+  void copyLink(const QUrl &url);
   void drawCopyLink(QPainter *painter, const QStyleOptionViewItemV4 &option) const;
   void drawLine1(QPainter *painter, const QStyleOptionViewItemV4 &option, const RecentItem *item, QRect *boundingRect) const;
   void drawLine2(QPainter *painter, const QStyleOptionViewItemV4 &option, const RecentItem *item, int offset) const;
+  void hide(RecentModel *model, const QModelIndex &index);
+  void openLink(const QUrl &url);
+  void remove(RecentModel *model, const QModelIndex &index, RecentItem *item);
 
+  AppCore *m_core;
+  bool m_menuActive;
   int m_column;
   QPixmap m_link;
 };

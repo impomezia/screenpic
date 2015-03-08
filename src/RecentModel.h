@@ -1,5 +1,4 @@
-/*   $Id$
- *   Copyright (C) 2013 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -43,17 +42,18 @@ public:
 
   RecentModel(ShareHistoryDB *db, QObject *parent = 0);
   ~RecentModel();
-  virtual bool canFetchMore(const QModelIndex &parent) const;
-  virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-  virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-  virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-  virtual QModelIndex parent(const QModelIndex &index) const;
-  virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-  virtual void fetchMore(const QModelIndex &parent);
+  bool canFetchMore(const QModelIndex &parent) const override;
+  int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+  int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+  QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+  QModelIndex parent(const QModelIndex &index) const override;
+  QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
   void add(UploadItemPtr item);
+  void fetchMore(const QModelIndex &parent) override;
   void finished(const UploadResult &result);
   void init();
   void progress(const ChatId &id, int percent);
+  void remove(const QModelIndex &index);
 
 signals:
   void taskCreated(QRunnable *task);

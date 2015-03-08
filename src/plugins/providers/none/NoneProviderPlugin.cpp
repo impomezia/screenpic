@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,6 +17,12 @@
 #include "NoneProviderPlugin.h"
 #include "NoneUploader.h"
 #include "sglobal.h"
+
+int NoneProviderPlugin::features() const
+{
+  return NoFeatures;
+}
+
 
 int NoneProviderPlugin::maxImages() const
 {

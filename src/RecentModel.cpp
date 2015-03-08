@@ -1,5 +1,4 @@
-/*   $Id$
- *   Copyright (C) 2013 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -108,15 +107,9 @@ QVariant RecentModel::data(const QModelIndex &index, int role) const
 }
 
 
-void RecentModel::fetchMore(const QModelIndex &parent)
-{
-  Q_UNUSED(parent)
-}
-
-
 void RecentModel::add(UploadItemPtr item)
 {
-  RecentItem *i = new RecentItem();
+  RecentItem *i = new RecentItem;
   i->cdate      = item->date();
   i->thumbnail  = QPixmap::fromImage(item->thumbnail().image);
 
@@ -135,13 +128,17 @@ void RecentModel::add(UploadItemPtr item)
 }
 
 
+void RecentModel::fetchMore(const QModelIndex &parent)
+{
+  Q_UNUSED(parent)
+}
+
+
 void RecentModel::finished(const UploadResult &result)
 {
-  RecentItem *item = m_ids.value(result.id);
+  RecentItem *item = m_ids.take(result.id);
   if (!item)
     return;
-
-  m_ids.remove(result.id);
 
   if (result.status == 200 && !result.images.isEmpty()) {
     item->udate    = DateTime::utc();
@@ -187,6 +184,21 @@ void RecentModel::progress(const ChatId &id, int percent)
   const QModelIndex index = this->index(m_items.indexOf(item), 1);
   if (index.isValid())
     emit dataChanged(index, index);
+}
+
+
+void RecentModel::remove(const QModelIndex &index)
+{
+  RecentItem *item = static_cast<RecentItem*>(index.internalPointer());
+  const int i = m_items.indexOf(item);
+  if (i == -1)
+    return;
+
+  beginRemoveColumns(index, i, i);
+  m_items.removeAt(i);
+  m_map.remove(item->id);
+  m_db->remove(item->id);
+  endRemoveRows();
 }
 
 

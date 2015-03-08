@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ class RecentView : public QTreeView
 
 public:
   RecentView(QWidget *parent = 0);
-  virtual QSize sizeHint() const override;
+  QSize sizeHint() const override;
 };
 
 #endif /* RECENTVIEW_H_ */

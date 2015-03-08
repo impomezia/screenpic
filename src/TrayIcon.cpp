@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ TrayIcon::TrayIcon(AppCore *core)
   setToolTip(QString("%1 %2").arg(PRODUCT_NAME).arg(VERSION_STRING));
 
   m_widget = new QWidget();
-  RecentItemDelegate *delegate = new RecentItemDelegate(this);
+  RecentItemDelegate *delegate = new RecentItemDelegate(core, this);
 
   m_window = new TrayWindow(core, m_widget);
   m_window->installEventFilter(this);

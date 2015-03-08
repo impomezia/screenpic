@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -50,7 +50,6 @@ class AppCore : public QObject, public IProviderListener, public IScreenpic, pub
 public:
   AppCore(QObject *parent = 0);
   ~AppCore();
-  void stop();
   inline AutoUpdate *autoUpdate() const      { return m_autoUpdate; }
   inline GlobalShortcuts *shortcuts() const  { return m_shortcuts; }
   inline IHook *hooks() const                { return m_hooks; }
@@ -59,6 +58,8 @@ public:
   ISettings *settings() const override       { return m_settings; }
   ITranslation *translation() const override { return m_translation; }
   QString edition() const override;
+  void remove(const QString &deletehash, const QString &providerId);
+  void stop();
 
   void onCustomRequest(const ChatId &id, const QString &provider, const QVariant &data) override;
   void onSettingsChanged(const QString &key, const QVariant &value) override;

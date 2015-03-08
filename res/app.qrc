@@ -7,6 +7,7 @@
         <file>images/cog.png</file>
         <file>images/cog32.png</file>
         <file>images/copy.png</file>
+        <file>images/copy_sm.png</file>
         <file>images/crop.png</file>
         <file>images/desktop.png</file>
         <file>images/dropper.png</file>
@@ -16,6 +17,7 @@
         <file>images/ellipse.png</file>
         <file>images/en.png</file>
         <file>images/globe.png</file>
+        <file>images/globe_gray.png</file>
         <file>images/hand.png</file>
         <file>images/highlight.png</file>
         <file>images/hotkeys.png</file>
@@ -43,6 +45,7 @@
         <file>images/text.png</file>
         <file>images/text-border.png</file>
         <file>images/times.png</file>
+        <file>images/trash.png</file>
         <file>images/undo.png</file>
         <file>style.css</file>
         <file>style_osx.css</file>

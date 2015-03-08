@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ public:
   int open(const QString &fileName);
   qint64 add(const UploadResult &result, qint64 cdate, const QString &file = QString(), const QByteArray &thumbnail = QByteArray());
   QList<RecentItem*> recent(int limit) const;
+  void remove(qint64 id);
 
 private:
   void version();

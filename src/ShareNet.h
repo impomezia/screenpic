@@ -1,5 +1,5 @@
 /* Simple Chat
- * Copyright (c) 2008-2014 Alexander Sedov <imp@schat.me>
+ * Copyright (c) 2008-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -47,6 +47,7 @@ signals:
 public slots:
   void add(const ChatId &id, const QString &provider, const QVariant &data);
   void add(UploadItemPtr item, const QString &provider, const QVariant &data);
+  void remove(const QString &deletehash, const QString &provider, const QVariant &data);
 
 private:
   QMap<QString, Uploader*> m_uploaders; ///< Список загрузчиков файла.

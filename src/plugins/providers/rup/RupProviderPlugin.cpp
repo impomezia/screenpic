@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -28,6 +28,12 @@ const unsigned char key[] = {
   0x03, 0xb9, 0x74, 0xde, 0xc3, 0xf3, 0xee, 0x4a,
   0xf1, 0xfa, 0x95, 0x46, 0xaa, 0x0c, 0xa9, 0x5f
 };
+
+
+int RupProviderPlugin::features() const
+{
+  return DeleteImages;
+}
 
 
 int RupProviderPlugin::maxImages() const

@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,14 @@
 Uploader::Uploader(QObject *parent)
   : QObject(parent)
 {
+}
+
+
+void Uploader::remove(QNetworkAccessManager *net, const QString &deletehash, const QVariant &data)
+{
+  Q_UNUSED(net)
+  Q_UNUSED(deletehash)
+  Q_UNUSED(data)
 }
 
 

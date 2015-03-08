@@ -1,4 +1,4 @@
-/* Copyright (c) 2008-2014 Alexander Sedov <imp@schat.me>
+/* Copyright (c) 2008-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -105,7 +105,7 @@ void GeekpicUploader::read(UploadResult &result, QNetworkReply *reply)
   image.size       = reply->property("size").toInt();
   image.width      = reply->property("width").toInt();
 
-  result.provider  = LS("pic4net");
+  result.provider  = LS("geekpic");
   result.json      = json;
   result.images.append(image);
 }

@@ -12,12 +12,12 @@
 <context>
     <name>AppCore</name>
     <message>
-        <location filename="../../src/AppCore.cpp" line="225"/>
+        <location filename="../../src/AppCore.cpp" line="239"/>
         <source>Images (*.jpg *.jpeg *.png *.gif *.JPG *.PNG)</source>
         <translation>Изображения (*.jpg *.jpeg *.png *.gif *.JPG *.PNG)</translation>
     </message>
     <message>
-        <location filename="../../src/AppCore.cpp" line="225"/>
+        <location filename="../../src/AppCore.cpp" line="239"/>
         <source>Open image</source>
         <translation>Открыть изображение</translation>
     </message>
@@ -347,7 +347,7 @@
 <context>
     <name>NoneProviderPlugin</name>
     <message>
-        <location filename="../../src/plugins/providers/none/NoneProviderPlugin.cpp" line="47"/>
+        <location filename="../../src/plugins/providers/none/NoneProviderPlugin.cpp" line="53"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
@@ -433,12 +433,28 @@
 <context>
     <name>RecentItemDelegate</name>
     <message>
-        <location filename="../../src/ui/RecentItemDelegate.cpp" line="136"/>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="68"/>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="202"/>
         <source>Copy link</source>
         <translation>Копировать ссылку</translation>
     </message>
+    <message>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="69"/>
+        <source>Open link</source>
+        <translation>Открыть ссылку</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="74"/>
+        <source>Hide</source>
+        <translation>Скрыть</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="77"/>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
     <message numerus="yes">
-        <location filename="../../src/ui/RecentItemDelegate.cpp" line="113"/>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="170"/>
         <source>%n bytes</source>
         <translation>
             <numerusform>%n байт</numerusform>
@@ -447,17 +463,17 @@
         </translation>
     </message>
     <message>
-        <location filename="../../src/ui/RecentItemDelegate.cpp" line="116"/>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="173"/>
         <source>%1 kB</source>
         <translation>%1 КБ</translation>
     </message>
     <message>
-        <location filename="../../src/ui/RecentItemDelegate.cpp" line="118"/>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="175"/>
         <source>%1 MB</source>
         <translation>%1 МБ</translation>
     </message>
     <message>
-        <location filename="../../src/ui/RecentItemDelegate.cpp" line="177"/>
+        <location filename="../../src/ui/RecentItemDelegate.cpp" line="243"/>
         <source>Upload error: %1</source>
         <translation>Ошибка: %1</translation>
     </message>
