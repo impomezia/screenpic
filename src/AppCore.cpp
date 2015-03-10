@@ -213,6 +213,8 @@ void AppCore::add(UploadItemPtr item)
 
   window->open(item);
   window->show();
+  window->raise();
+  window->activateWindow();
 }
 
 
@@ -229,6 +231,14 @@ void AppCore::grabScreen()
   Observers::hitEvent(LS("capture"), LS("fullscreen"));
 
   m_grabber->grab(Grabber::FullScreen);
+}
+
+
+void AppCore::grabWindow()
+{
+  Observers::hitEvent(LS("capture"), LS("window"));
+
+  m_grabber->grab(Grabber::Window);
 }
 
 

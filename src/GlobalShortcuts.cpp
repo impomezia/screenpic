@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 
 const QString GlobalShortcuts::kFullscreen = LS("Shortcuts/Fullscreen");
 const QString GlobalShortcuts::kRectangle  = LS("Shortcuts/Rectangle");
+const QString GlobalShortcuts::kWindow     = LS("Shortcuts/Window");
 
 GlobalShortcuts::GlobalShortcuts(AppCore *core, QObject *parent)
   : QObject(parent)
@@ -34,6 +35,10 @@ GlobalShortcuts::GlobalShortcuts(AppCore *core, QObject *parent)
 # else
   init(kFullscreen, LS("Print"));
   init(kRectangle,  LS("Ctrl+Print"));
+# endif
+
+# ifdef Q_OS_WIN
+  init(kWindow, LS("Alt+Print"));
 # endif
 }
 
@@ -101,6 +106,16 @@ void GlobalShortcuts::grabScreen()
 }
 
 
+void GlobalShortcuts::grabWindow()
+{
+  QxtGlobalShortcut *gs = m_map.value(kWindow);
+  if (gs)
+    Observers::hitEvent(LS("shortcut"), LS("window"), gs->shortcut().toString());
+
+  m_core->grabWindow();
+}
+
+
 void GlobalShortcuts::init(const QString &id, const QString &str)
 {
   m_settings->setDefault(id, str);
@@ -125,4 +140,9 @@ void GlobalShortcuts::init(const QString &id, QxtGlobalShortcut *shortcut)
     connect(shortcut, SIGNAL(activated()), SLOT(grabScreen()));
   else if (id == kRectangle)
     connect(shortcut, SIGNAL(activated()), SLOT(grabRect()));
+
+# ifdef Q_OS_WIN
+  if (id == kWindow)
+    connect(shortcut, SIGNAL(activated()), SLOT(grabWindow()));
+# endif
 }

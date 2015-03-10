@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -43,6 +43,10 @@ HotkeysPage::HotkeysPage(AppCore *core, QWidget *parent)
 
   init(primaryLay, GlobalShortcuts::kRectangle,  tr("Capture rectangle"));
   init(primaryLay, GlobalShortcuts::kFullscreen, tr("Capture fullscreen"));
+
+# ifdef Q_OS_WIN
+  init(primaryLay, GlobalShortcuts::kWindow, tr("Capture active window"));
+# endif
 
   QVBoxLayout *layout = new QVBoxLayout(this);
   layout->addWidget(m_primaryLabel);

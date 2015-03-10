@@ -161,12 +161,15 @@ win32 {
         crashreport/ExceptionHandler.h \
 
     SOURCES += \
+        Grabber_win.cpp \
         capture/GDICapture.cpp \
         crashreport/CrashUpload.cpp \
         crashreport/ExceptionHandler.cpp \
         tools/OsInfo_win.cpp \
 
     LIBS += -luser32 -lgdi32 -lshell32
+    CONFIG -= embed_manifest_exe
+    QMAKE_POST_LINK = $$quote(mt.exe -nologo -manifest \"$$replace(PWD,/,\\)\\..\\res\\app.manifest\" -outputresource:$(DESTDIR_TARGET);1)$$QMAKE_POST_LINK
 }
 
 unix:!macx: {

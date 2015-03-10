@@ -12,12 +12,12 @@
 <context>
     <name>AppCore</name>
     <message>
-        <location filename="../../src/AppCore.cpp" line="239"/>
+        <location filename="../../src/AppCore.cpp" line="249"/>
         <source>Images (*.jpg *.jpeg *.png *.gif *.JPG *.PNG)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/AppCore.cpp" line="239"/>
+        <location filename="../../src/AppCore.cpp" line="249"/>
         <source>Open image</source>
         <translation type="unfinished"></translation>
     </message>
@@ -254,24 +254,29 @@
 <context>
     <name>HotkeysPage</name>
     <message>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="184"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="188"/>
         <source>Global shortcuts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/ui/HotkeysPage.cpp" line="44"/>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="186"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="190"/>
         <source>Capture rectangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/ui/HotkeysPage.cpp" line="45"/>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="187"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="191"/>
         <source>Capture fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/HotkeysPage.cpp" line="178"/>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="48"/>
+        <source>Capture active window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/HotkeysPage.cpp" line="182"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>

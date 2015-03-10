@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,17 +18,26 @@
 
 #include "GDICapture.h"
 
-QPoint screenToClient(int x, int y)
+QPoint screenToClient(QPoint p)
 {
   QPoint point;
-  point.setX(x - GetSystemMetrics(SM_XVIRTUALSCREEN));
-  point.setY(y - GetSystemMetrics(SM_YVIRTUALSCREEN));
+  point.setX(p.x() - GetSystemMetrics(SM_XVIRTUALSCREEN));
+  point.setY(p.y() - GetSystemMetrics(SM_YVIRTUALSCREEN));
 
   return point;
 }
 
 
-void drawMouse(HDC hdc)
+QPoint getCursorPos()
+{
+  POINT point;
+  GetCursorPos(&point);
+
+  return QPoint(point.x, point.y);
+}
+
+
+void drawMouse(HDC hdc, const QRect &rect)
 {
   CURSORINFO ci;
   ZeroMemory(&ci, sizeof(ci));
@@ -45,9 +54,11 @@ void drawMouse(HDC hdc)
   ZeroMemory(&ii, sizeof(ii));
 
   if (GetIconInfo(icon, &ii)) {
-    const QPoint point = screenToClient(ci.ptScreenPos.x, ci.ptScreenPos.y);
+    const QPoint cursorPosition = screenToClient(getCursorPos());
+    const QPoint pos(cursorPosition.x() - ii.xHotspot, cursorPosition.y() - ii.yHotspot);
+    const QPoint cursorOffset(screenToClient(rect.topLeft()));
 
-    DrawIconEx(hdc, point.x() - ii.xHotspot, point.y() - ii.yHotspot, icon, 0, 0, 0, NULL, DI_NORMAL);
+    DrawIconEx(hdc, pos.x() - cursorOffset.x(), pos.y() - cursorOffset.y(), icon, 0, 0, 0, NULL, DI_NORMAL);
 
     if (ii.hbmMask)
       DeleteObject(ii.hbmMask);
@@ -102,25 +113,24 @@ static QImage imageFromWinHBITMAP(HDC hdc, HBITMAP bitmap, int w, int h, bool al
 QPixmap GDICapture::capture(WId window, const QRect &rect, int screens, bool cursor)
 {
   Q_UNUSED(screens)
-  Q_UNUSED(cursor)
 
-  HWND hwnd      = window ? (HWND) window : GetDesktopWindow();
-  HDC display_dc = GetDC(hwnd);
-  HDC bitmap_dc  = CreateCompatibleDC(display_dc);
-  HBITMAP bitmap = CreateCompatibleBitmap(display_dc, rect.width(), rect.height());
+  HWND hwnd       = window ? (HWND) window : GetDesktopWindow();
+  HDC hdcSrc      = GetWindowDC(hwnd);
+  HDC hdcDest     = CreateCompatibleDC(hdcSrc);
+  HBITMAP hBitmap = CreateCompatibleBitmap(hdcSrc, rect.width(), rect.height());
+  HGDIOBJ hOld    = SelectObject(hdcDest, hBitmap);
 
-  SelectObject(bitmap_dc, bitmap);
-
-  BitBlt(bitmap_dc, 0, 0, rect.width(), rect.height(), display_dc, rect.x(), rect.y(), SRCCOPY | CAPTUREBLT);
+  BitBlt(hdcDest, 0, 0, rect.width(), rect.height(), hdcSrc, rect.x(), rect.y(), SRCCOPY | CAPTUREBLT);
   
   if (cursor)
-    drawMouse(bitmap_dc);
+    drawMouse(hdcDest, rect);
 
-  const QPixmap pixmap = QPixmap::fromImage(imageFromWinHBITMAP(bitmap_dc, bitmap, rect.width(), rect.height(), false));
+  const QPixmap pixmap = QPixmap::fromImage(imageFromWinHBITMAP(hdcDest, hBitmap, rect.width(), rect.height(), false));
 
-  ReleaseDC(hwnd, display_dc);
-  DeleteDC(bitmap_dc);
-  DeleteObject(bitmap);
+  SelectObject(hdcDest, hOld);
+  ReleaseDC(hwnd, hdcSrc);
+  DeleteDC(hdcDest);
+  DeleteObject(hBitmap);
 
   return pixmap;
 }

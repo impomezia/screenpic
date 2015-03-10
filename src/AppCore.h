@@ -69,6 +69,7 @@ public slots:
   void add(UploadItemPtr item);
   void grabRect();
   void grabScreen();
+  void grabWindow();
   void openFile();
   void openFile(const QString &fileName);
 

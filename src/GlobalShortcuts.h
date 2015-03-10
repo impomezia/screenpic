@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ class GlobalShortcuts : public QObject
 public:
   static const QString kFullscreen;
   static const QString kRectangle;
+  static const QString kWindow;
 
   GlobalShortcuts(AppCore *core, QObject *parent = 0);
   bool set(const QString &id, const QKeySequence &shortcut);
@@ -42,6 +43,7 @@ public:
 private slots:
   void grabRect();
   void grabScreen();
+  void grabWindow();
 
 private:
   void init(const QString &id, const QString &str);

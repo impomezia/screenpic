@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2014 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,21 +22,15 @@
 #include "Grabber.h"
 #include "RegionGrab.h"
 
-#ifdef Q_OS_WIN
-# include "capture/GDICapture.h"
-#endif
-
 Grabber::Grabber(QObject *parent)
   : QObject(parent)
   , m_captureMouse(true)
   , m_mode(FullScreen)
   , m_regionGrab(0)
 {
-# ifdef Q_OS_WIN
-  m_capture.append(new GDICapture());
-# endif
-
   m_capture.append(new QtCapture());
+
+  init();
 }
 
 
@@ -62,10 +56,27 @@ void Grabber::grabRegion()
 }
 
 
+#ifndef Q_OS_WIN
+void Grabber::grabWindow()
+{
+  grabFullScreen();
+}
+
+
+void Grabber::init()
+{
+}
+#endif
+
+
 void Grabber::performGrab()
 {
   if (m_mode == FullScreen) {
     grabFullScreen();
+    ready();
+  }
+  else if (m_mode == Window) {
+    grabWindow();
     ready();
   }
   else if (m_mode == Region)
@@ -101,7 +112,7 @@ const QPixmap &Grabber::grabFullScreen()
 
   foreach (ICapture *capture, m_capture) {
     m_snapshot = capture->capture(desktop->winId(), rect, screenCount, m_captureMouse);
-    if (!m_capture.isEmpty())
+    if (!m_snapshot.isNull())
       return m_snapshot;
   }
 
