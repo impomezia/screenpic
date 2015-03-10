@@ -18,11 +18,11 @@
 #define VERSION_H_
 
 #define VERSION_MAJOR     0
-#define VERSION_MINOR     13
-#define VERSION_BUILD     5
+#define VERSION_MINOR     14
+#define VERSION_BUILD     0
 #define VERSION_REV       0
 
-#define VERSION_STRING "0.13.5"
+#define VERSION_STRING "0.14.0"
 #define PRODUCT_NAME   "Screenpic"
 #define ORG_NAME       "Alexander Sedov"
 #define ORG_COPYRIGHT  "Copyright (C) 2013-2015 Alexander Sedov"

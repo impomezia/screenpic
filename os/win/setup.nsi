@@ -8,7 +8,7 @@
 !define APP_NAME_LOW  "screenpic"
 !define APP_DOMAIN    "rup.io"
 !define APP_REGKEY    "Software\${APP_NAME}"
-!define APP_VERSION   "0.13.5"
+!define APP_VERSION   "0.14.0"
 !define APP_REVISION  "0"
 !define APP_COPYRIGHT "Copyright © 2013-2015 Alexander Sedov"
 !define APP_SITE      "http://${APP_DOMAIN}"
