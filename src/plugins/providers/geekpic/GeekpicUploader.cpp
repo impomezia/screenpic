@@ -32,6 +32,20 @@ GeekpicUploader::GeekpicUploader(QObject *parent)
 }
 
 
+void GeekpicUploader::remove(QNetworkAccessManager *net, const QString &deletehash, const QVariant &data)
+{
+  Q_UNUSED(data)
+
+  QNetworkRequest request(QUrl(LS("http://geekpic.net/client.php")));
+  request.setRawHeader("User-Agent", OsInfo::userAgent());
+  request.setRawHeader("X-HTTP-Method-Override", "DELETE");
+  request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+  QNetworkReply *reply = net->post(request, "deletehash=" + deletehash.toLatin1());
+  connect(reply, SIGNAL(finished()), reply, SLOT(deleteLater()));
+}
+
+
 void GeekpicUploader::request(QNetworkAccessManager *net, const ChatId &id, const QVariant &data)
 {
   Q_UNUSED(net)
@@ -100,7 +114,8 @@ void GeekpicUploader::read(UploadResult &result, QNetworkReply *reply)
 
   UploadResult::Image image;
   image.id         = json.value(LS("id")).toString();
-  image.link       = QUrl(LS("http://geekpic.net/pm-") + image.id + LS(".html"));
+  image.link       = json.value(LS("link")).toString();
+  image.deletehash = json.value(LS("deletehash")).toString();
   image.height     = reply->property("height").toInt();
   image.size       = reply->property("size").toInt();
   image.width      = reply->property("width").toInt();

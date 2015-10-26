@@ -25,6 +25,7 @@ class GeekpicUploader : public Uploader
 
 public:
   GeekpicUploader(QObject *parent = 0);
+  void remove(QNetworkAccessManager *net, const QString &deletehash, const QVariant &data) override;
   void request(QNetworkAccessManager *net, const ChatId &id, const QVariant &data) override;
   void upload(QNetworkAccessManager *net, UploadItemPtr item, const QVariant &data) override;
 

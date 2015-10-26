@@ -22,6 +22,7 @@ const QString Settings::kCaptureMouse     = LS("CaptureMouse");
 const QString Settings::kEdition          = LS("Edition");
 const QString Settings::kEditor           = LS("Editor");
 const QString Settings::kFailbackProvider = LS("FailbackProvider");
+const QString Settings::kFirstRun         = LS("FirstRun");
 const QString Settings::kLastOpenDir      = LS("LastOpenDir");
 const QString Settings::kLastSaveDir      = LS("LastSaveDir");
 const QString Settings::kProvider         = LS("Provider");

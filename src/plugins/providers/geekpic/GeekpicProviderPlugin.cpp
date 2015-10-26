@@ -21,7 +21,7 @@
 
 int GeekpicProviderPlugin::features() const
 {
-  return NoFeatures;
+  return DeleteImages;
 }
 
 
