@@ -94,6 +94,7 @@ HEADERS += \
     uploaders/Uploader.h \
     uploaders/UploadResult.h \
     version.h \
+    Clipboard.h
 
 SOURCES += \
     App.cpp \
@@ -166,10 +167,14 @@ win32 {
         crashreport/CrashUpload.cpp \
         crashreport/ExceptionHandler.cpp \
         tools/OsInfo_win.cpp \
+        Clipboard_win.cpp \
 
     LIBS += -luser32 -lgdi32 -lshell32
     CONFIG -= embed_manifest_exe
     QMAKE_POST_LINK = $$quote(mt.exe -nologo -manifest \"$$replace(PWD,/,\\)\\..\\res\\app.manifest\" -outputresource:$(DESTDIR_TARGET);1)$$QMAKE_POST_LINK
+}
+else {
+    SOURCES += Clipboard.cpp
 }
 
 unix:!macx: {
