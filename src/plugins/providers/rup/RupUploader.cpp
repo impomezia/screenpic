@@ -36,7 +36,7 @@ void RupUploader::remove(QNetworkAccessManager *net, const QString &deletehash, 
 {
   Q_UNUSED(data)
 
-  QNetworkRequest request(QUrl(LS("https://api.schat.me/1/image/") + deletehash));
+  QNetworkRequest request(QUrl(LS("https://api.rup.io/1/image/") + deletehash));
   request.setRawHeader("User-Agent", OsInfo::userAgent());
 
   QNetworkReply *reply = net->deleteResource(request);
@@ -76,7 +76,7 @@ void RupUploader::upload(QNetworkAccessManager *net, UploadItemPtr item, const Q
       multiPart->append(title);
     }
 
-    QNetworkRequest request(QUrl(LS("https://api.schat.me/1/image")));
+    QNetworkRequest request(QUrl(LS("https://api.rup.io/1/image")));
     request.setRawHeader("User-Agent", OsInfo::userAgent());
 
     if (map.contains(LS("token"))) {
