@@ -1,4 +1,4 @@
-/*   Copyright (C) 2013-2015 Alexander Sedov <imp@schat.me>
+/*   Copyright (C) 2013-2016 Alexander Sedov <imp@schat.me>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include <QToolBar>
 #include <QUndoStack>
 
+#include "Clipboard.h"
 #include "data/ImageItem.h"
 #include "EditorProperties.h"
 #include "EditorScene.h"
@@ -47,6 +48,7 @@
 #include "Translation.h"
 #include "ui/BackdropWidget.h"
 #include "ui/TitleWidget.h"
+
 
 EditorWindow::EditorWindow(IScreenpic *screenpic, QWidget *parent, Qt::WindowFlags flags)
   : QMainWindow(parent, flags)
@@ -320,7 +322,7 @@ void EditorWindow::onColorSelected(const QColor &color)
 
 void EditorWindow::onCopied(const QPixmap &pixmap)
 {
-  QApplication::clipboard()->setPixmap(pixmap);
+  Clipboard::setPixmap(pixmap);
 }
 
 
